@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% load render_bundle from webpack_loader %}
+{% load static %}
+{% load staticfiles %}
+
+{%block content%}
+<!DOCTYPE html>
+<html>
+  <head>
+      <link rel="stylesheet" type="text/css" href="{% static 'css/app.css' %}">
+      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+      <!-- <link rel="stylesheet" media="screen" href="//netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"> -->
+    <!-- <link rel="stylesheet" href={% static "css/custom.css" %}> -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>De tai Khoa Hoc</title>
+  </head>
+  <body>
+    <div id="root">
+    </div>
+      {% render_bundle 'main' %}
+      <!-- Latest compiled and minified CSS & JS -->
+      
+      <script src="//code.jquery.com/jquery.js"></script>
+      <script src="//netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+  </body>
+</html>
+{%endblock%}

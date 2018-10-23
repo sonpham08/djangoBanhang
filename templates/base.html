@@ -1,0 +1,73 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block title %}SPKT University{% endblock %}</title>
+    <!-- <link rel="stylesheet" href="/cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"/> -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <link rel="icon" href="{% static 'img/favicon.png' %}">
+    <link href="https://fonts.googleapis.com/css?family=Clicker+Script" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">    <link rel="stylesheet" type="text/css" href="{% static 'vendor/fontello-2f186091/css/fontello.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/app.css' %}">
+    {% if user.is_authenticated and user.is_teacher %}
+      <link rel="stylesheet" type="text/css" href="{% static 'css/teachers.css' %}">
+    {% else %}
+      <link rel="stylesheet" type="text/css" href="{% static 'css/students.css' %}">
+    {% endif %}
+  </head>
+  <body>
+    <nav class="navbar navbar-light bg-light justify-content-between">
+      <a href="{% url 'home' %}" id="nav-menu">
+        SPKT University
+        {% if user.is_authenticated %}
+          {% if user.is_teacher and user.is_superuser%}
+            <a href="{%url 'signup'%}"><span class="icon-feather" data-toggle="tooltip" data-placement="right" title="Add account"></span></a>
+          {% else %}
+            {%if user.is_student%}
+            <span class="icon-graduation-cap" data-toggle="tooltip" data-placement="right" title="Student profile"></span>
+            {%endif%}
+          {% endif %}
+        {% endif %}      
+      </a>
+      <ul class="list-nav">
+        <li class="list-nav-li"><a href="{% url 'home' %}">Home</a></li>
+        <li class="list-nav-li"><a href="{%url 'contact'%}">Contact</a></li>
+        <li class="list-nav-li"><a href="{%url 'help'%}">Help</a></li>
+      </ul>
+      <form class="form-inline">
+          {% if user.is_authenticated %}
+          <p class="pt-3">Logged in as <strong>{{ user.username }}</strong>. <a href="{% url 'logout' %}">Log out</a>.</p>
+        {% else %}
+
+        <button class="btn btn-outline-info my-2 my-sm-0" type="submit"><a href="{%url 'login'%}" role="button" style="text-decoration: none;">Log in</a></button>
+        {% endif %}
+      </form>
+    </nav>
+    <!-- SideBar -->
+
+    {%block content%}
+    {%endblock%}
+  
+    <!-- Footer -->
+    <div class="footer">
+
+        <div class="footer_contents">
+          <span class="footer-left">© 2005 - 2018 dailymotion.</span>
+          <span class="footer-right">Design with in Vietnam</span>
+          
+        </div>
+    
+    </div>
+    <!-- Footer -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.bundle.min.js" integrity="sha384-pjaaA8dDz/5BgdFUPX6M/9SUZv4d12SUPF0axWc+VRZkx5xU3daN+lYb49+Ax+Tl" crossorigin="anonymous"></script>    <script type="text/javascript">
+      $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+      })
+    </script>
+  </body>
+</html>
