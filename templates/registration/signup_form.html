@@ -3,15 +3,17 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-  <div class="row">
-    <div class="col-md-8 col-sm-10 col-12">
+  <div class="row sign-up-form">
+      <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2"></div>
+      <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
       <h2>Sign up as a {{ user_type }}</h2>
-      <form method="post" novalidate>
+      <form class="form-signup" method="post" novalidate>
         {% csrf_token %}
         <input type="hidden" name="next" value="{{ next }}">
         {{ form|crispy }}
         <button type="submit" class="btn btn-success">Sign up</button>
       </form>
     </div>
+    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2"></div>
   </div>
 {% endblock %}

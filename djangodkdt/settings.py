@@ -43,9 +43,9 @@ INSTALLED_APPS = (
     'rest_framework',
     'rest_framework.authtoken',
     'rest_auth',
-    'subject_auth',
-    'subjects',
     'crispy_forms',
+    'user',
+    'product'
 )
 
 MIDDLEWARE = (
@@ -76,6 +76,7 @@ ROOT_URLCONF = 'djangodkdt.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        # 'DIRS': [os.path.join(BASE_DIR, "templates"), ],
         'DIRS': [os.path.join(BASE_DIR, "templates"), ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -128,12 +129,13 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
+    os.path.join(BASE_DIR, "assets"),
+    # 'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats.json'),
 ]
 
 # Custom Django auth settings
 
-AUTH_USER_MODEL = 'subject_auth.User'
+AUTH_USER_MODEL = 'user.User'
 
 LOGIN_URL = 'login'
 
@@ -157,4 +159,4 @@ MESSAGE_TAGS = {
 }
 
 
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
+# CRISPY_TEMPLATE_PACK = 'bootstrap4'
