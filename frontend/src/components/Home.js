@@ -18,8 +18,24 @@ class Home extends Component {
         }
     }
 
-    render() {
+    componentWillMount() {
+        
+        $(document).ready(function(){
+            $(".menu-product-tivi").hide();
+            $(".menu-product-mobiphone").hide();
+        })
+    }
 
+    showSubMenuProductTivi() {
+        $(".menu-product-tivi").toggle();
+    }
+
+    showSubMenuProductMobiphone() {
+        $(".menu-product-mobiphone").toggle();
+    }
+
+    render() {
+        
         return (
 
             <div style={{background:'silver'}}>
@@ -77,21 +93,92 @@ class Home extends Component {
                 <div className="container">
                     <div className="menu-product">
                         <ul className="ul-menu-product">
-                            <li><i className="fas fa-tv"></i>&nbsp;<a href="#">Tivi</a></li>
-                            <li><i className="fas fa-phone"></i>&nbsp;<a href="#">Dien thoai</a></li>
+                            <li onMouseOver={this.showSubMenuProductTivi()}><i className="fas fa-tv"></i>&nbsp;<a href="#">Tivi</a></li>
+                            <li onMouseOver={this.showSubMenuProductMobiphone()}><i className="fas fa-phone"></i>&nbsp;<a href="#">Dien thoai</a></li>
                             <li><i className="fas fa-laptop"></i>&nbsp;<a href="#">Laptop</a></li>
                             <li><i className="fas fa-tablet"></i>&nbsp;<a href="#">Tu lanh</a></li>
                             <li><i className="fab fa-adn"></i>&nbsp;<a href="#">Phan mem va phu kien</a></li>
                             <li><i className="fas fa-wrench"></i>&nbsp;<a href="#">Thiet bi ngoai vi</a></li>
                             <li><i className="fas fa-sliders-h"></i>&nbsp;<a href="#">Linh kien PC</a></li>
                         </ul>
-                        <ul className="ul-menu-product-tivi">
-                            <li>
-                                <a href="#"><h4>Tivi ban chay</h4></a>
-                            </li>
-                            <li><a href="#">Dien thoai</a></li>
-                            <li><a href="#">Laptop</a></li>
-                        </ul>
+                        {/* sub menu for tivi */}
+                        <div className="menu-product-tivi">
+                            <ul className="ul-menu-product-tivi">
+                                <li>
+                                    <a href="#">Tivi ban chay > </a>
+                                </li>
+                                <li><a href="#">Duoi 49inch</a></li>
+                                <li><a href="#">Duoi 50inch</a></li>
+                                <li><a href="#">Duoi 49inch</a></li>
+                                <li><a href="#">Duoi 50inch</a></li>
+                            </ul>
+                            <ul className="ul-menu-product-tivi">
+                                <li>
+                                    <a href="#">Tivi ban chay > </a>
+                                </li>
+                                <li><a href="#">Duoi 49inch</a></li>
+                                <li><a href="#">Duoi 50inch</a></li>
+                                <li><a href="#">Duoi 49inch</a></li>
+                                <li><a href="#">Duoi 50inch</a></li>
+                            </ul>
+                            <ul className="ul-menu-product-tivi">
+                                <li>
+                                    <a href="#">Tivi ban chay > </a>
+                                </li>
+                                <li><a href="#">Duoi 49inch</a></li>
+                                <li><a href="#">Duoi 50inch</a></li>
+                                <li><a href="#">Duoi 49inch</a></li>
+                                <li><a href="#">Duoi 50inch</a></li>
+                            </ul>
+                            <ul className="ul-menu-product-tivi">
+                                <li>
+                                    <a href="#">Tivi ban chay > </a>
+                                </li>
+                                <li><a href="#">Duoi 49inch</a></li>
+                                <li><a href="#">Duoi 50inch</a></li>
+                                <li><a href="#">Duoi 49inch</a></li>
+                                <li><a href="#">Duoi 50inch</a></li>
+                            </ul>
+                        </div>
+                        {/* sub menu for dien thoai */}
+                        <div className="menu-product-mobiphone">
+                            <ul className="ul-menu-product-mobiphone">
+                                <li>
+                                    <a href="#">ASUS > </a>
+                                </li>
+                                <li><a href="#">Asus 49inch</a></li>
+                                <li><a href="#">Asus 50inch</a></li>
+                                <li><a href="#">Asus 49inch</a></li>
+                                <li><a href="#">Asus 50inch</a></li>
+                            </ul>
+                            <ul className="ul-menu-product-mobiphone">
+                                <li>
+                                    <a href="#">Nokia > </a>
+                                </li>
+                                <li><a href="#">Nokia 49inch</a></li>
+                                <li><a href="#">Nokia 50inch</a></li>
+                                <li><a href="#">Nokia 49inch</a></li>
+                                <li><a href="#">Nokia 50inch</a></li>
+                            </ul>
+                            <ul className="ul-menu-product-mobiphone">
+                                <li>
+                                    <a href="#">Samsung ban chay > </a>
+                                </li>
+                                <li><a href="#">Samsung 49inch</a></li>
+                                <li><a href="#">Samsung 50inch</a></li>
+                                <li><a href="#">Samsung 49inch</a></li>
+                                <li><a href="#">Samsung 50inch</a></li>
+                            </ul>
+                            <ul className="ul-menu-product-mobiphone">
+                                <li>
+                                    <a href="#">Oppo ban chay > </a>
+                                </li>
+                                <li><a href="#">Oppo 49inch</a></li>
+                                <li><a href="#">Oppo 50inch</a></li>
+                                <li><a href="#">Oppo 49inch</a></li>
+                                <li><a href="#">Oppo 50inch</a></li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
                 <div className="body" style={{ marginTop: '150px', padding: '5px 40px' }}>
@@ -103,7 +190,7 @@ class Home extends Component {
 
                                     <div className="row">
                                         <div className="col-xs-3 col-sm-3 col-md-3 col-lg-3 product-list-panel">
-                                            <img src="https://images.ctfassets.net/wcfotm6rrl7u/5zMaxqvVlu26yymcmiae4E/935bacff5bf8687866045426e393d011/Nokia_105-Hero.png?fm=png" className="img-responsive" alt="Image" />
+                                            <img src="static/img/header.jpg" className="img-responsive" alt="Image" />
                                             <p>Dien thoai nokia 3435 chinh hang gia soc</p>
                                             <h3>17.420.400vnd</h3>
                                         </div>

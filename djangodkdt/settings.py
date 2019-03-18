@@ -129,8 +129,14 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "assets"),
+    'static'
     # 'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats.json'),
+]
+
+STATIC_DIRL = [
+    ("css", os.path.join(BASE_DIR,'static','css')),
+    ("js", os.path.join(BASE_DIR,'static','js')),
+    ("img", os.path.join(BASE_DIR,'static','img')),
 ]
 
 # Custom Django auth settings

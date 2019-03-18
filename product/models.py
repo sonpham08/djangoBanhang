@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
-from user.models import Customer
-
+# from user.models import User
 User = get_user_model()
 
 # Create your models here.
@@ -49,8 +48,8 @@ class StatusProduct(models.Model):
 class Staff(models.Model):
     staff_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255)
-    phone1 = models.CharField(max_length=11)
-    phone2 = models.CharField(max_length=11)
+    phone = models.CharField(max_length=11)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, default=0)
 
     def __str__(self):
         return self.name
@@ -62,7 +61,7 @@ class Bill(models.Model):
     total_price = models.IntegerField()
     address = models.CharField(max_length=255)
     status = models.CharField(max_length=255)
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=0)
     status_product = models.ForeignKey(StatusProduct, on_delete=models.CASCADE)
     staff = models.ForeignKey(Staff, on_delete=models.CASCADE)
 

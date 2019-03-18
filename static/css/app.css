@@ -1,4 +1,73 @@
 .menu-product {
     border-radius: 30px;
     background: black;
+    color: white;
+    position: fixed;
+    top: 60px;
+    z-index: 1000;
+}
+
+.ul-menu-product {
+    list-style: none;
+    display: flex;
+    padding: 20px 10px;
+    margin: 5px 20px;
+}
+
+ul.ul-menu-product li {
+    padding: 5px 30px;
+}
+
+ul.ul-menu-product li a {
+    color: white;
+    text-decoration: none;
+}
+
+.product-list {
+    background: silver;
+}
+
+.product-list-panel {
+    margin-left: 6px;
+    margin-right: 6px;
+    width: 24%;
+    background: white;
+    margin-bottom: 10px;
+
+}
+
+.product-list-panel img {
+    padding: 10px 60px;
+}
+
+.product-list-panel h3, p {
+    text-align: center;
+}
+
+ul.ul-menu-product-tivi {
+    list-style: none;
+    display: flex;
+}
+
+ul.ul-menu-product-tivi li {
+    padding: 5px 10px;
+}
+
+ul.ul-menu-product-tivi li a {
+    color: white;
+    text-decoration: none;
+}
+
+ul.ul-menu-product-mobiphone {
+    list-style: none;
+    display: flex;
+}
+
+ul.ul-menu-product-mobiphone li {
+    padding: 5px 10px;
+}
+
+ul.ul-menu-product-mobiphone li a {
+    color: white;
+    text-decoration: none;
 }
