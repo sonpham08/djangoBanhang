@@ -22,7 +22,6 @@ class MeViewSet(viewsets.ModelViewSet):
             res = []
             users = User.objects.all()
             for user in users:
-                print(user)
                 res.append({
                     "id": user.id,
                     "fullname": user.fullname,

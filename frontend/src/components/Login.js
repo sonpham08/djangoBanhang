@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import Home from './Home';
 import * as actions from '../actions/index';
 import { browserHistory } from 'react-router';
+import Header from './Header';
 
 var $ = require("jquery");
 
@@ -45,8 +46,9 @@ class Login extends Component {
     render() {
         var {username, password, s_email, s_password,s_username} = this.state;
         var {isAuthenticated} = this.props;
-        console.log(this.props.isAuthenticated);
         return (
+            <div>
+                <Header/>
             <div className="login-page">
             <div className="form">
               <form className="register-form">
@@ -69,6 +71,7 @@ class Login extends Component {
                 <p className="message">Not registered? <a href="#">Create an account</a></p>
               </form>
             </div>
+          </div>
           </div>
         )}
 }

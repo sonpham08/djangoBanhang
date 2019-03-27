@@ -6,7 +6,6 @@ from django.views.generic import TemplateView
 from django.contrib.auth.views import LoginView
 from rest_framework.authtoken import views as rest_framework_views
 from user import endpoints
-from product import endpoints
 from . import routers
 # from subjects.views import classroom, students, teachers
 from .views import change_password
@@ -16,13 +15,14 @@ from .views import login
 from rest_framework.authtoken import views
 from user.views import SignUpView
 from user import endpoints
-# from product import endpoints
+from product import endpointsv1
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     # url(r'api/', include(routers.SharedAPIRootRouter.router.urls)),
     url(r'^api/', include(endpoints)),
-
+    url(r'^api/v1/', include(endpointsv1)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^get_auth_token/$', rest_framework_views.obtain_auth_token, name='get_auth_token'),
     path('', include('user.urls')),
