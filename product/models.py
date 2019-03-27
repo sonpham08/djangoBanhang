@@ -4,8 +4,8 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 # Create your models here.
-class Menu(models.Model):
-    menu_id = models.AutoField(primary_key=True)
+class Category(models.Model):
+    category_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255)
 
     def __str__(self):
@@ -28,7 +28,7 @@ class Product(models.Model):
     promotion = models.IntegerField()
     start_promo = models.DateTimeField()
     end_promo = models.DateTimeField()
-    menu = models.ForeignKey(Menu, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
 class DealedProduct(models.Model):
     dealed_id = models.AutoField(primary_key=True)
