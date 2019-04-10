@@ -80,14 +80,4 @@ class ProductListPC extends Component {
     }
 }
 
-const mapStateToProps = state => {
-    return {
-    };
-};
-
-const mapDispatchToProps = (dispatch, props) => {
-    return {
-    };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(ProductListPC);
+export default ProductListPC;

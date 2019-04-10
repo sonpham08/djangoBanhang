@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import * as actions from '../../actions/index';
+// import * as authActions from '../../actions/authActions';
 
 class Sort extends Component {
 
@@ -49,9 +49,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = (dispatch, props) => {
     return {
-        onSort : (sort) => { // sort.by sort.value
-            dispatch(actions.sortTask(sort));
-        }
+        // onSort : (sort) => { // sort.by sort.value
+        //     dispatch(actions.sortTask(sort));
+        // }
     };
 };
 

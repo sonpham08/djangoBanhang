@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { BrowserRouter, Link, Route, Router, NavLink } from 'react-router-dom';
 import Login from './Login';
-import * as actions from '../actions/index';
 import { Button, Modal, ModalBody, ModalFooter , ModalTitle} from 'react-bootstrap';
 import ModalLogin from './commons/ModalLogin';
+import * as authActions from '../actions/authActions';
+
+import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 var $ = require("jquery");
 
 
@@ -13,57 +15,97 @@ class Header extends Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
+            username: "",
+            token: null
         }
     }
 
+    componentWillMount() {
+        let token = localStorage.getItem('token');
+        if(token) {
+            this.props.getUserInfo();
+            this.setState({
+                username: this.props.user.username,
+                token: this.props.isAuthenticated
+            });
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if(nextProps.user) {
+            this.setState({
+                username: nextProps.user.username,
+                token: nextProps.isAuthenticated
+            });
+        }
+        
+    }
 
     onLogout = () => {
-        this.props.onLogout();
+        this.props.logout();
         window.location.reload(true);
     }
 
+    openFormCustomUser = () => {
+        
+        if(this.refs.dropdownmenu.style.display == 'none') {
+            this.refs.dropdownmenu.style.display = 'block';
+        }else {
+            this.refs.dropdownmenu.style.display = 'none';
+        }
+    }
     render() {
         return (
-            <nav className="navbar navbar-default" style={{ background: 'darkred', position: 'fixed', top: '0', width: '100%', zIndex: '1000' }}>
+            <nav className="navbar navbar-default" style={{ background: '#e5101d', position: 'fixed', top: '0', width: '100%', zIndex: '1000',borderColor: '#e5101d', borderRadius: '0' }}>
                 <div className="container-fluid">
-                    <div className="navbar-header">
+                    {/* <div className="navbar-header">
                         <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
                             <span className="sr-only">Toggle navigation</span>
                             <span className="icon-bar"></span>
                             <span className="icon-bar"></span>
                             <span className="icon-bar"></span>
                         </button>
-                        <a className="navbar-brand" href="/" style={{ color: "white" }}>Gun</a>
-                    </div>
+                        <a className="navbar-brand" href="/" style={{ color: "white", paddingTop: '15px' }}>Gun</a>
+                    </div> */}
 
                     <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul className="nav navbar-nav">
-                            <li className="active"><a href="#" style={{ color: "white" }}>Kiểm tra đơn hàng <span className="sr-only">(current)</span></a></li>
-                            <li><a href="#" style={{ color: "white" }}>Khuyến mãi</a></li>
-                            <li><a href="#" style={{ color: "white" }}>Đặt hàng</a></li>
+                            <li><Link to="/" style={{ color: "white" }}>GUN</Link></li>
+                            <li><a href="/transfer" style={{ color: "white" }}>Kiểm tra đơn hàng <span className="sr-only">(current)</span></a></li>
+                            <li><Link to="/sale" style={{ color: "white" }}>Khuyến mãi</Link></li>
                         </ul>
-                        <form className="navbar-form navbar-left">
-                            <div className="form-group">
-                                <input type="text" className="form-control" placeholder="Search" />
-                            </div>
-                            <button type="submit" className="btn btn-default">Submit</button>
-                        </form>
+                        <div className="search-container">
+                            <form action="/action_page.php">
+                            <input type="text" placeholder="Search.." name="search"/>
+                            <button type="submit"><i className="fa fa-search"></i></button>
+                            </form>
+                        </div>
                         <ul className="nav navbar-nav navbar-right">
                             <li><Link to="#" style={{ color: "white" }}>Sản phẩm vừa xem</Link></li>
                             {
-                                this.props.isAuthenticated.token == null ? 
-                                <li><Link to="/login" style={{ color: "white" }}>Đăng nhập | đăng ký</Link></li>
-                                
+                                this.state.token == null ?
+                                <li style={{display: 'flex'}}>
+                                    <Link to="/login" style={{ color: "white", paddingRight: '0px' }}>Đăng nhập&nbsp;|&nbsp;</Link>
+                                    <Link to="/register" style={{ color: "white", paddingLeft: '0px' }}> Đăng ký</Link>
+                                </li>
                                 :
                                 <li><Link to="/" style={{ color: "white" }} onClick={this.onLogout}>Đăng xuất</Link></li>
                             }
-                            {/* <li className="dropdown">
-                                <a style={{ color: "white" }} href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Giúp đỡ <span className="caret"></span></a>
-                                <ul className="dropdown-menu">
-                                    <li><Link to="#" style={{ color: "white" }}>Chế độ bảo hành</Link></li>
-                                    <li><Link to="#" style={{ color: "white" }}>Liên lạc</Link></li>
+                            <div className="dropdown" style={{float:'right', marginTop: '15px'}}>
+                                <li>
+                                    <Link to="/"
+                                     id="my-dropdown" 
+                                     className="dropdown-toggle"
+                                     data-toggle="dropdown" 
+                                     style={{ color: "white", textDecoration: 'none' }}
+                                     onClick={this.openFormCustomUser}>{this.state.username}</Link>
+                                </li>
+                            
+                                <ul className="dropdown-menu" ref="dropdownmenu">
+                                <li><Link to="/transfer">Hiệu chỉnh</Link></li>
                                 </ul>
-                            </li> */}
+                            
+                            </div>
                         </ul>
                     </div>
                 </div>
@@ -72,21 +114,4 @@ class Header extends Component {
     }
 }
 
-const mapStateToProps = state => {
-    return {
-        isAuthenticated: state.auth,
-    };
-};
-
-const mapDispatchToProps = (dispatch, props) => {
-    return {
-        onTryAutoSignup:() => {
-            dispatch(actions.authCheckState());
-        },
-        onLogout: () => {
-            dispatch(actions.logout());
-        }
-    };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default Header;

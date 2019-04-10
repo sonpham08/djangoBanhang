@@ -3,9 +3,13 @@ import './App.css';
 import Body from './components/Body';
 import NotFound from './components/NotFound.jsx';
 import Login from './components/Login';
+import Register from './components/Register';
+import Sale from './components/sale/Sale';
+import CheckTransfer from './components/product/CheckTransfer';
 import {Route, Switch, BrowserRouter,HashRouter} from 'react-router-dom';
-import * as actions from './actions/index';
+import * as authActions from './actions/authActions';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 class App extends Component {
 
@@ -16,8 +20,11 @@ class App extends Component {
       <Switch>
       
       <Route exact path="/" component={Body} />
-      <Route path="/login" component={Login} />
-      <Route component={NotFound} />
+      <Route exact path="/login" component={Login} />
+      <Route exact path="/register" component={Register} />
+      <Route exact path="/sale" component={Sale} />
+      <Route exact path="/transfer" component={CheckTransfer} />
+      <Route path="**" component={NotFound} />
       
       </Switch>
     </BrowserRouter>
@@ -33,9 +40,10 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = (dispatch, props) => {
   return {
-      authLogin: (username, password) => {
-          dispatch(actions.authLogin(username,password));
-      }
+      // authLogin: (username, password) => {
+      //     dispatch(actions.authLogin(username,password));
+      // }
+      authActions: bindActionCreators(authActions, dispatch)
   };
 };
 

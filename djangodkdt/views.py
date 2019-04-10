@@ -35,7 +35,6 @@ from django.contrib.auth.decorators import login_required
 
 @login_required(login_url = 'login')
 def login(request):
-    print('tui la son')
     return render(request, 'index.html')
 
 def change_password(request):

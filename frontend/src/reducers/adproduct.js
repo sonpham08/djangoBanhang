@@ -1,0 +1,61 @@
+import * as types from '../constants/AdminConstants';
+
+// var initialState = {
+//     name: "",
+// 	price: 0,
+// 	quantity: 0,
+// 	size: 0,
+// 	weight: "",
+// 	color: "",
+// 	sound: "",
+// 	memory: "",
+// 	camera: "",
+// 	pin: "",
+// 	gurantee: "",
+// 	promotion: 0,
+// 	start_promo: "",
+// 	end_promo: "",
+// 	category: 0
+// }
+var initialState = [];
+
+var myReducer = (state=initialState, action) => {
+	var newState = Object.assign([], state);
+	var index = "";
+    switch(action.type){
+		case types.GET_LIST_PRODUCT:
+			newState = action.adproduct;
+			return [...newState];
+        case types.ADD_PRODUCT:
+			return [...newState, action.adproduct];
+		case types.EDIT_PRODUCT:
+			index = newState.findIndex((obj => obj.product_id == action.adproduct.product_id));
+			newState[index].name = action.adproduct.name;
+			newState[index].price = action.adproduct.price;
+			newState[index].quantity = action.adproduct.quantity;
+			newState[index].size = action.adproduct.size;
+			newState[index].weight = action.adproduct.weight;
+			newState[index].color = action.adproduct.color;
+			newState[index].sound = action.adproduct.sound;
+			newState[index].memory = action.adproduct.memory;
+			newState[index].camera = action.adproduct.camera;
+			newState[index].pin = action.adproduct.pin;
+			newState[index].gurantee = action.adproduct.gurantee;
+			newState[index].promotion = action.adproduct.promotion;
+			newState[index].start_promo = action.adproduct.start_promo;
+			newState[index].end_promo = action.adproduct.end_promo;
+			newState[index].category = action.adproduct.category;
+			return [...newState];
+		case types.DELETE_PRODUCT:
+			let status = action.adproduct.status;
+			if(status == 'success') {
+				index = newState.findIndex((obj => obj.product_id == action.adproduct.product_id));
+				newState.splice(index, 1);
+			}
+			return [...newState];
+        default:
+            return state;
+    }
+} 
+
+export default myReducer;

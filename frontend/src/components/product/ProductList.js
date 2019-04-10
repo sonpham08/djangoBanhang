@@ -14,8 +14,8 @@ class ProductList extends Component {
         return (
             <div className="product-list">
 
-                <div className="panel panel-default">
-                    <div className="panel-body" style={{ background: 'silver' }}>
+                <div className="panel panel-default" style={{border: 'none'}}>
+                    <div className="panel-body" style={{ background: 'gainsboro' , padding: '0'}}>
 
                         <div className="row">
                             <div className="col-xs-3 col-sm-3 col-md-3 col-lg-3 product-list-panel">
@@ -78,14 +78,4 @@ class ProductList extends Component {
     }
 }
 
-const mapStateToProps = state => {
-    return {
-    };
-};
-
-const mapDispatchToProps = (dispatch, props) => {
-    return {
-    };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(ProductList);
+export default ProductList;

@@ -17,17 +17,20 @@ class MeViewSet(viewsets.ModelViewSet):
 
     @action(detail=False)
     def me(self, request):
-        # req_user = request.user
+        req_user = request.user
         try:
-            res = []
-            users = User.objects.all()
-            for user in users:
-                res.append({
-                    "id": user.id,
-                    "fullname": user.fullname,
-                    "username": user.username,
-                    "password": user.password
-                })
+            res = {
+                "username": req_user.username,
+                "id": req_user.id,
+                "is_staff": req_user.is_staff,
+                "is_user": req_user.is_user,
+                "is_superuser":req_user.is_superuser,
+                "fullname": req_user.fullname,
+                "email": req_user.email,
+                "phone": req_user.phone,
+                "address": req_user.address,
+                "cmnd": req_user.cmnd
+            }
             return Response(res, 200)
         except Exception as e:
             res = {
@@ -38,7 +41,6 @@ class MeViewSet(viewsets.ModelViewSet):
 class RegistrationAPI(generics.GenericAPIView):
     permission_classes = [permissions.AllowAny, ]
     serializer_class = CreateUserSerializer
-    print('da vao')
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)

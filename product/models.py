@@ -14,7 +14,7 @@ class Category(models.Model):
 class Product(models.Model):
     product_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255)
-    image = models.CharField(max_length=50)
+    # image = models.CharField(max_length=50)
     price = models.IntegerField()
     quantity = models.IntegerField()
     size = models.CharField(max_length=255)

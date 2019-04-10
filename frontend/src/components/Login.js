@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Home from './Home';
-import * as actions from '../actions/index';
+import * as authActions from '../actions/authActions';
 import { browserHistory } from 'react-router';
 import Header from './Header';
+import Register from './Register';
+import { bindActionCreators } from 'redux';
 
 var $ = require("jquery");
 
@@ -18,57 +20,46 @@ class Login extends Component {
         this.state = {
             username: "",
             password: "",
-            s_username:"",
-            s_password: "",
-            s_email: "",
+            flag_for_msg: false,
         }
     }
 
     onLogin = (e) => {
-        e.preventDefault();        
-        this.props.authLogin(this.state.username, this.state.password); 
-    }
-
-    onSignup = (e) => {
         e.preventDefault();
-        this.props.authSignup(this.state.s_username, this.state.s_email, this.state.s_password1, this.state.s_password2);
+        this.setState({
+            flag_for_msg: true
+        });       
+        this.props.authActions.authLogin(this.state.username, this.state.password); 
     }
 
     onChange = (event) => {
         var target = event.target;
-        var name = target.name;
+        var name = target.name;  
         var value = target.value;
         this.setState({
             [name]:value
         });
+        this.setState({
+            flag_for_msg: false,
+        });
     }
 
     render() {
-        var {username, password, s_email, s_password,s_username} = this.state;
+        var {username, password, flag_for_msg} = this.state;
         var {isAuthenticated} = this.props;
         return (
             <div>
-                <Header/>
+                {/* <Header/> */}
             <div className="login-page">
             <div className="form">
-              <form className="register-form">
-                <input type="text" placeholder="name" name="s_username"onChange={this.onChange} value={s_username}/>
-                <span style={{color: 'red'}}>Please input username</span>
-                
-                <input type="text" placeholder="email address" name="s_email" onChange={this.onChange} value={s_email} style={{marginTop: '20px'}}/>
-                <span style={{color: 'red'}}>Please input email</span>
-                <input type="password" placeholder="password" name="s_password" onChange={this.onChange} value={s_password} style={{marginTop: '20px'}}/>
-                <span style={{color: 'red'}}>Please input password</span>
-                <button onClick={this.onSignup} style={{marginTop: '20px'}}>create</button>
-                <p className="message">Already registered? <a href="#">Sign In</a></p>
-              </form>
               <form className="login-form">
                 <input type="text" name="username" placeholder="username" onChange={this.onChange} value={username}/>
-                {isAuthenticated.error != null && username == "" ? <span style={{color: 'red'}}>Please input username</span> : ''}
+                {username == '' && isAuthenticated.error != null ? <span style={{color: 'red'}}>Please input username</span> : ''}
                 <input type="password" name="password" placeholder="password" onChange={this.onChange} value={password} style={{marginTop: '20px'}}/>
-                {isAuthenticated.error != null && password == "" ? <span style={{color: 'red'}}>Please input password</span> : ''}
+                {password == '' && isAuthenticated.error != null ? <span style={{color: 'red'}}>Please input password</span> : ''}
+                {username != '' && password !='' && flag_for_msg == true && isAuthenticated.error != null ? <span style={{color: 'red'}}>Username or password wrong!</span> : ''}
                 <button onClick={this.onLogin} style={{marginTop: '20px'}}>login</button>
-                <p className="message">Not registered? <a href="#">Create an account</a></p>
+                <p className="message">Not registered? <a href="/register">Create an account</a></p>
               </form>
             </div>
           </div>
@@ -84,12 +75,10 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = (dispatch, props) => {
     return {
-        authLogin: (username, password) => {
-            dispatch(actions.authLogin(username,password));
-        },
-        authSignup: (username, email, password) => {
-            dispatch(actions.authSignup(username, email, password));
-        }
+        // authLogin: (username, password) => {
+        //     dispatch(actions.authLogin(username,password));
+        // },
+        authActions: bindActionCreators(authActions, dispatch)
     };
 };
 

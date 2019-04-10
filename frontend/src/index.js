@@ -8,13 +8,13 @@ import {createStore,applyMiddleware, compose} from 'redux';
 import thunk from "redux-thunk";
 import myReducer from './reducers/index';
 import {Provider} from 'react-redux';
-
+import { HashRouter } from 'react-router-dom';
 
 
 const composeEnhances = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 const store=createStore(myReducer,composeEnhances(applyMiddleware(thunk)));
 ReactDOM.render(
-    <Provider store={store}>
+    <Provider store={store}> 
         <App />
     </Provider>
     , document.getElementById('root'));

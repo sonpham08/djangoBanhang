@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Home from './Home';
-import * as actions from '../actions/index';
+import { bindActionCreators } from 'redux';
+import * as authActions from '../actions/authActions';
+import AdminHome from './admin/AdminHome';
 var $ = require("jquery");
 
 const usersInitial = {
@@ -15,25 +17,25 @@ class Body extends Component {
     }
 
     componentWillMount() {
-        this.props.onTryAutoSignup();
+        this.props.authActions.authCheckState();
     }
 
-
     render() {
-        return <Home/> 
+        if(this.props.user.is_superuser == true) return <AdminHome/>
+            return <Home/>
     }
 }
 
 const mapStateToProps = state => {
     return {
+        user: state.user
     };
 };
 
 const mapDispatchToProps = (dispatch, props) => {
     return {
-        onTryAutoSignup:() => {
-            dispatch(actions.authCheckState());
-        }
+        authActions: bindActionCreators(authActions, dispatch),
+        
     };
 };
 

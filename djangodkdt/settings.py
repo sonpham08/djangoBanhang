@@ -53,7 +53,7 @@ INSTALLED_APPS = (
     'product',
     'knox',
 )
-
+SITE_ID = 1
 
 MIDDLEWARE = (
     'django.contrib.sessions.middleware.SessionMiddleware',
