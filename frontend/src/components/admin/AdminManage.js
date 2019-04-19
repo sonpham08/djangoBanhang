@@ -6,6 +6,8 @@ import AddCategory from './AddCategory';
 import ManageCategory from './ManageCategory';
 import { BrowserRouter, Link, Route, Router, NavLink } from 'react-router-dom';
 import ManageProduct from './ManageProduct';
+import ManageStaff from './MangeStaff';
+import ManageCustomer from './MangeCustomer';
 var $ = require("jquery");
 
 class AdminManage extends Component {
@@ -17,7 +19,8 @@ class AdminManage extends Component {
             openAddForm: false,
             tab: 0,
             category: {},
-            product: {}
+            product: {},
+            staff: {}
         };
     }
 
@@ -31,34 +34,18 @@ class AdminManage extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        // data category with pagination
-        this.dataCategory = nextProps.adcategories.map(
-            (a, i) => a
-        );
-        this.pageSizeCategory = 2;
-        this.pagesCountCategory=Math.ceil(this.dataCategory.length / this.pageSizeCategory);
-
-        //data product with pagination
-        this.dataProduct = nextProps.adproduct.map(
-            (a, i) => a
-        );
-        this.pageSizeProduct = 1;
-        this.pagesCountProduct = Math.ceil(this.dataProduct.length / this.pageSizeProduct);
-    }
-
-    handleSwitchPagination(e, index) {
-        e.preventDefault();
-        this.setState({
-            currentPage: index
-        });
     }
 
     toggleAddForm = () => {
-        this.setState({ openAddForm: !this.state.openAddForm , category: {}, product: {}});
+        this.setState({ openAddForm: !this.state.openAddForm, category: {}, product: {}, staff: {} });
     }
 
     openFormEditCategory = (category) => {
-        this.setState({openAddForm: true, category: category});
+        this.setState({ openAddForm: true, category: category });
+    }
+
+    openFormEditStaff = (staff) => {
+        this.setState({ openAddForm: true, staff: staff });
     }
 
     closeAddForm = () => {
@@ -66,29 +53,30 @@ class AdminManage extends Component {
     }
 
     openAddFormProduct = (product) => {
-        this.setState({openAddForm: true, product: product});
+        this.setState({ openAddForm: true, product: product });
     }
 
     deleteProduct = (product_id) => {
-        if(window.confirm("Are you sure to delete this product ? ")) {
+        if (window.confirm("Are you sure to delete this product ? ")) {
             this.props.deleteProduct(product_id);
         }
     }
-    
+
     addProduct = (name, price, quantity, size, weight, color, sound, memory,
-        camera, pin, gurantee, promotion, start_promo, end_promo, category) => {
+        camera, pin, gurantee, promotion, start_promo, end_promo, category, image_name) => {
+        console.log(image_name);
+        
         this.props.addProduct(name, price, quantity, size, weight, color, sound, memory,
-            camera, pin, gurantee, promotion, start_promo, end_promo, category);
-        this.setState({openAddForm: false});
+            camera, pin, gurantee, promotion, start_promo, end_promo, category, image_name);
+        this.setState({ openAddForm: false });
     }
 
     editProduct = (data) => {
         this.props.editProduct(data);
-        this.setState({openAddForm: false});
+        this.setState({ openAddForm: false });
     }
 
     render() {
-        const { currentPage } = this.state;
         var { tab } = this.props;
         if (tab == 0) {
             if (localStorage.getItem('tabAd') == null) {
@@ -97,39 +85,23 @@ class AdminManage extends Component {
                 tab = localStorage.getItem('tabAd');
             }
         }
-        if (this.props.adcategories.length > 0) {
-            
-            // elmCategory = this.props.adcategories.map((category, idx) => {
-            //     return (
-            //         <ManageCategory
-            //             key={category.category_id}
-            //             category={category}
-            //             addCategory={this.props.addCategory}
-            //             toggleAddForm={this.toggleAddForm}
-            //             openFormEditCategory={this.openFormEditCategory} 
-            //             deleteCategory={this.props.deleteCategory}/>
-            //     );
-            // });
-        }
-
-        if (tab == 1) {
-            return (
+        return (
+            <div>
                 <ManageProduct
-                product={this.state.product}
-                category={this.state.category}
-                adproduct={this.props.adproduct}
-                adcategories={this.props.adcategories}
-                toggleAddForm={this.toggleAddForm}
-                openAddForm={this.state.openAddForm}
-                closeAddForm={this.closeAddForm}
-                addProduct={this.addProduct}
-                editProduct={this.editProduct}
-                openAddFormProduct={this.openAddFormProduct}/>
-            );
-        } else {
-            if (tab == 4) {
-                return (
-                    <ManageCategory
+                    tab={tab}
+                    product={this.state.product}
+                    category={this.state.category}
+                    adproduct={this.props.adproduct}
+                    adcategories={this.props.adcategories}
+                    toggleAddForm={this.toggleAddForm}
+                    openAddForm={this.state.openAddForm}
+                    closeAddForm={this.closeAddForm}
+                    addProduct={this.addProduct}
+                    editProduct={this.editProduct}
+                    openAddFormProduct={this.openAddFormProduct}
+                    deleteProduct={this.deleteProduct} />
+                <ManageCategory
+                    tab={tab}
                     adcategories={this.props.adcategories}
                     category={this.state.category}
                     openAddForm={this.state.openAddForm}
@@ -137,71 +109,24 @@ class AdminManage extends Component {
                     deleteCategory={this.deleteCategory}
                     toggleAddForm={this.toggleAddForm}
                     closeAddForm={this.closeAddForm}
-                    />
-                )
-            } else {
-                if(tab == 2) {
-                    return (
-                        <div className="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                            <div className="panel panel-danger">
-                                <div className="panel-heading">
-                                    <h3 className="panel-title">Quản lý nhân viên</h3>
-                                </div>
-                                <div className="panel-body">
-                                    <div className="form_handle_manage_ad">
-
-                                        <button type="button" className="btn btn-success">
-                                        <Link to="/register"><i className="fas fa-plus"></i> Thêm danh mục </Link></button>
-                                       
-                                    </div>
-                                    <table className="table table-striped table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th style={{ textAlign: 'center' }}>ID</th>
-                                                <th style={{ textAlign: 'center' }}>Tên danh mục</th>
-                                                <th style={{ textAlign: 'right' }}>Hiệu chỉnh</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr></tr>
-                                        </tbody>
-                                    </table>
-    
-                                </div>
-                                <React.Fragment>
-                                    <div className="pagination-wrapper">
-                                        <Pagination aria-label="Page navigation example">
-                                            <PaginationItem disabled={currentPage <= 0}>
-                                                <PaginationLink
-                                                    onClick={e => this.handleSwitchPagination(e, currentPage - 1)}
-                                                    previous
-                                                    href="#"
-                                                />
-                                            </PaginationItem>
-                                            {[...Array(this.pagesCountCategory)].map((page, i) =>
-                                                <PaginationItem active={i === currentPage} key={i}>
-                                                    <PaginationLink onClick={e => this.handleSwitchPagination(e, i)} href="#">
-                                                        {i + 1}
-                                                    </PaginationLink>
-                                                </PaginationItem>
-                                            )}
-                                            <PaginationItem disabled={currentPage >= this.pagesCountCategory - 1}>
-                                                <PaginationLink
-                                                    onClick={e => this.handleSwitchPagination(e, currentPage + 1)}
-                                                    next
-                                                    href="#"
-                                                />
-                                            </PaginationItem>
-                                        </Pagination>
-                                    </div>
-                                </React.Fragment>
-                            </div>
-                        </div>
-                    )
-                }
-            }
-        }
-        return null;
+                />
+                <ManageStaff
+                    tab={tab}
+                    adstaff={this.props.adstaff}
+                    staff={this.state.staff}
+                    toggleAddForm={this.toggleAddForm}
+                    openAddForm={this.state.openAddForm}
+                    closeAddForm={this.closeAddForm}
+                    deleteStaff={this.props.deleteStaff}
+                    onSaveChangeStaff={this.props.onSaveChangeStaff}
+                    openFormEditStaff={this.openFormEditStaff}
+                    addStaff={this.props.addStaff}
+                />
+                <ManageCustomer
+                tab={tab}
+                adcustomer={this.props.adcustomer}/>
+            </div>
+        )
     }
 }
 

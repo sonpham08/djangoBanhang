@@ -16,7 +16,8 @@ from rest_framework.authtoken import views
 from user.views import SignUpView
 from user import endpoints
 from product import endpointsv1
-
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -48,3 +49,7 @@ urlpatterns = [
     # path('accounts/signup/student/', students.StudentSignUpView.as_view(), name='student_signup'),
     # path('accounts/signup/teacher/', teachers.TeacherSignUpView.as_view(), name='teacher_signup'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

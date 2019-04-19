@@ -18,6 +18,43 @@ class ProductViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.AllowAny, ]
     serializer_class = ProductSerializer
 
+    @action(detail=False)
+    def get_product(self, request):
+        res=[]
+        try:
+            products = Product.objects.all()
+            categories = Category.objects.all()
+            for product in products:
+                for category in categories:
+                    if product.category.category_id  == category.category_id:
+                        result = {
+                            "product_id": product.product_id,
+                            "name": product.name,
+                            "price": product.price,
+                            "quantity": product.quantity,
+                            "size":product.size,
+                            "weight": product.weight,
+                            "color": product.color,
+                            "sound": product.sound,
+                            "memory": product.memory,
+                            "camera": product.camera,
+                            "pin": product.pin,
+                            "gurantee": product.gurantee,
+                            "promotion": product.promotion,
+                            "start_promo": product.start_promo,
+                            "end_promo": product.end_promo,
+                            "category": {
+                                "category_id": category.category_id,
+                                "name": category.name
+                            }
+                        }
+                        res.append(result)
+            return Response(res, 200)
+        except Exception as e:
+            return Response({
+                "Error": repr(e)
+            }, 400)
+
 class DealedProductViewSet(viewsets.ModelViewSet):
     queryset = DealedProduct.objects.all()
     permission_classes = [permissions.AllowAny, ]

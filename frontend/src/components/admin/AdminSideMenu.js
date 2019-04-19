@@ -43,7 +43,17 @@ class AdminSideMenu extends Component {
             localStorage.setItem('tabAd', 4);
             this.setState({tabAd: 4});
             this.props.selectFormToOpen(4);
-        }   
+        } 
+        if(tabAd == 5 && $("#manage_customer").hasClass('active') == false) {
+            localStorage.setItem('tabAd', 5);
+            this.setState({tabAd: 5});
+            this.props.selectFormToOpen(5);
+        }
+        if(tabAd == 6 && $("#manage_ship").hasClass('active') == false) {
+            localStorage.setItem('tabAd', 6);
+            this.setState({tabAd: 6});
+            this.props.selectFormToOpen(6);
+        }
     }
 
     render() {
@@ -87,6 +97,22 @@ class AdminSideMenu extends Component {
                             style={{ color: "white" }}
                             onClick={(e) => this.open(e, 4)}
                             >Quản lý loại sản phẩm</Link>
+                        </li>
+                        <li id="manage_customer">
+                            <Link 
+                            className={this.state.tabAd == 5 ? "active" : ""}
+                            to="#" 
+                            style={{ color: "white" }}
+                            onClick={(e) => this.open(e, 5)}
+                            >Quản lý thông tin khách hàng</Link>
+                        </li>
+                        <li id="manage_ship">
+                            <Link 
+                            className={this.state.tabAd == 6 ? "active" : ""}
+                            to="#" 
+                            style={{ color: "white" }}
+                            onClick={(e) => this.open(e, 6)}
+                            >Các đơn hàng đang vận chuyển</Link>
                         </li>
                     </ul>
                 </div>

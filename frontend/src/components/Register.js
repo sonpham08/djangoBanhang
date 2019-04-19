@@ -24,7 +24,6 @@ class Register extends Component {
             phone: "",
             address: "",
             cmnd: "",
-            staff_or_user: ""
         }
     }
 
@@ -33,8 +32,7 @@ class Register extends Component {
         let css_for_alert_register = "display: block; color: red";
         let is_staff = false;
         let is_user = false;
-        var {username, password, email, fullname, phone, address, cmnd, staff_or_user} = this.state;
-        console.log(staff_or_user);
+        var {username, password, email, fullname, phone, address, cmnd} = this.state;
         
         switch (true) {
             case username == '':
@@ -54,15 +52,8 @@ class Register extends Component {
             default:
                 break;
         }
-        if(staff_or_user == 'is_staff') {
-            is_staff = true;
-            is_user = false;
-        } else {
-            if(staff_or_user == 'is_user') {
-                is_staff = false;
-                is_user = true;
-            }
-        }
+        is_staff = false;
+        is_user = true;
         if(username != '' && password != '' && email != '' && fullname != '' && phone != ''
         && address != '' && cmnd != '') {
             this.props.authActions.authSignup(username, email, password, fullname, is_staff, is_user,phone, address, cmnd);
@@ -122,10 +113,10 @@ class Register extends Component {
 
                 <input type="text" placeholder="fullname" name="fullname" onChange={this.onChange} value={fullname} style={{marginTop: '20px'}}/>
                 <span style={{display: 'none'}} ref="idAlertFullname">Please input fullname</span>
-                <label>Is staff: </label>
+                {/* <label>Is staff: </label>
                 <input type="radio" name="staff_or_user" onChange={this.onChange} value={'is_staff'} />
                 <label>Is user: </label>
-                <input type="radio" name="staff_or_user" onChange={this.onChange} value={'is_user'} />
+                <input type="radio" name="staff_or_user" onChange={this.onChange} value={'is_user'} /> */}
 
                 <input type="text" placeholder="phone" name="phone" onChange={this.onChange} value={phone} style={{marginTop: '20px'}}/>
                 <span style={{display: 'none'}} ref="idAlertPhone">Please input phone</span>

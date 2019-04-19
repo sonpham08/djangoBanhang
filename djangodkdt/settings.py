@@ -74,6 +74,7 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.IsAdminUser'
     ]
 }
 
@@ -145,6 +146,10 @@ STATIC_DIRL = [
     ("js", os.path.join(BASE_DIR,'static','js')),
     ("img", os.path.join(BASE_DIR,'static','img')),
 ]
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static/dataset')
+
+MEDIA_URL = '/static/dataset/'
 
 # Custom Django auth settings
 

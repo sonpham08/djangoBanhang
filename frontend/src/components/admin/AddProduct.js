@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-
+import axios , {post} from 'axios';
+import FileBase64 from 'react-file-base64';
 var $ = require("jquery");
 
 class AddProduct extends Component {
@@ -21,7 +22,9 @@ class AddProduct extends Component {
             product_promotion: "",
             product_start_promo: "",
             product_end_promo: "",
-            product_category: ""
+            product_category: "",
+            selectedFile: "",
+            files: []
         }
     }
 
@@ -101,9 +104,12 @@ class AddProduct extends Component {
         let start_promo = this.state.product_start_promo;
         let end_promo = this.state.product_end_promo;
         let category = this.state.product_category;
+        let image_name = this.state.selectedFile;
+        console.log(image_name);
+        
         if(this.props.product.product_id == undefined) {
             this.props.addProduct(name, price, quantity, size, weight, color, sound, memory,
-                camera, pin, gurantee, promotion, start_promo, end_promo, category);
+                camera, pin, gurantee, promotion, start_promo, end_promo, category, image_name);
         } else {
             let data = {
                 product_id: this.props.product.product_id,
@@ -127,8 +133,28 @@ class AddProduct extends Component {
         });
     }
 
+    getFiles(files){
+        this.setState({ files: files })
+    }
+
+    fileSelectedHandler = e => {
+        this.setState({
+            selectedFile: e.target.files
+        });
+        
+    }
+
+    fileUpload = (e) => {
+        const fd = new FormData();
+        console.log(this.state.selectedFile);
+        
+        // fd.append('image', this.state.selectedFile, this.state.selectedFile.name);
+    }
+
     render() {
         if(this.props.openAddForm == false) return null;
+        console.log(this.state.product_category);
+        
             return (
                 <div>            
                     <div className="panel panel-danger">
@@ -138,6 +164,30 @@ class AddProduct extends Component {
                         <div className="panel-body">
                                 
                                 <form onSubmit={this.addProduct} method="POST" className="form-horizontal" role="form">
+                                    <div className="form-group">
+                                        <div className="col-md-1">
+                                            <label>Loại sản phẩm: </label>
+                                        </div>
+                                        <div className="col-md-11">
+                                            
+                                            <select name="" id="input" className="form-control" ref="product_category"
+                                            name="product_category" onChange={this.onChange} value={this.state.product_category}>
+                                                {
+                                                    this.state.product_category == "" ?
+                                                    <option value={-1}>All</option>
+                                                    :
+                                                    <option value={this.state.product_category.category_id}>{this.state.product_category.name}</option>
+                                                }
+                                                
+                                                {
+                                                    this.props.adcategories.map((category, idx) => 
+                                                        <option key={idx} value={category.category_id}>{category.name}</option>
+                                                    )
+                                                }
+                                            </select>
+                                            
+                                        </div>
+                                    </div>
                                     <div className="form-group">
                                         <div className="col-md-1">
                                             <label>Tên sản phẩm: </label>
@@ -339,20 +389,17 @@ class AddProduct extends Component {
                                     </div>
                                     <div className="form-group">
                                         <div className="col-md-1">
-                                            <label>Loại sản phẩm: </label>
+                                            <label>Nhập ảnh: </label>
                                         </div>
-                                        <div className="col-md-11">
-                                            
-                                            <select name="" id="input" className="form-control" ref="product_category"
-                                            name="product_category" onChange={this.onChange} value={this.state.product_category}>
-                                                <option value={1}>All</option>
-                                                {
-                                                    this.props.adcategories.map((category, idx) => 
-                                                        <option key={idx} value={category.category_id}>{category.name}</option>
-                                                    )
-                                                }
-                                            </select>
-                                            
+                                        <div className="col-md-3">
+                                            <input 
+                                            type="file" 
+                                            className="form-control" 
+                                            accept=".jpg,.jpeg,.png"
+                                            onChange={this.fileSelectedHandler}/>
+                                            {/* <FileBase64
+                                            multiple={ false }
+                                            onDone={ this.getFiles.bind(this) } /> */}
                                         </div>
                                     </div>
                                     <div className="form-group">

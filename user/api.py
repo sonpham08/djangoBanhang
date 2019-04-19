@@ -9,10 +9,11 @@ from rest_framework.decorators import action
 from knox.models import AuthToken
 from .serializers import UserSerializer, CreateUserSerializer
 User = get_user_model()
+# from .models import User
 
 class MeViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
-    permission_classes = [permissions.IsAuthenticated, ]
+    permission_classes = [permissions.IsAdminUser, ]
     serializer_class = UserSerializer
 
     @action(detail=False)
@@ -22,7 +23,7 @@ class MeViewSet(viewsets.ModelViewSet):
             res = {
                 "username": req_user.username,
                 "id": req_user.id,
-                "is_staff": req_user.is_staff,
+                "is_staff_gun": req_user.is_staff_gun,
                 "is_user": req_user.is_user,
                 "is_superuser":req_user.is_superuser,
                 "fullname": req_user.fullname,
@@ -37,6 +38,58 @@ class MeViewSet(viewsets.ModelViewSet):
                 "Error": repr(e)
             }
             return Response(res, 400)
+
+    @action(detail=False)
+    def get_staff(self, request):
+        res=[]
+        try:
+            users = User.objects.all()
+            for user in users:
+                if user.is_superuser == False and user.is_staff_gun == True:
+                    result = {
+                        "username": user.username,
+                        "id": user.id,
+                        "is_staff_gun": user.is_staff_gun,
+                        "is_user": user.is_user,
+                        "is_superuser":user.is_superuser,
+                        "fullname": user.fullname,
+                        "email": user.email,
+                        "phone": user.phone,
+                        "address": user.address,
+                        "cmnd": user.cmnd
+                    }
+                    res.append(result)
+            return Response(res, 200)
+        except Exception as e:
+            return Response({
+                "Error": repr(e)
+            }, 400)
+
+    @action(detail=False)
+    def get_customer(self, request):
+        res=[]
+        try:
+            users = User.objects.all()
+            for user in users:
+                if user.is_superuser == False and user.is_user == True:
+                    result = {
+                        "username": user.username,
+                        "id": user.id,
+                        "is_staff_gun": user.is_staff_gun,
+                        "is_user": user.is_user,
+                        "is_superuser":user.is_superuser,
+                        "fullname": user.fullname,
+                        "email": user.email,
+                        "phone": user.phone,
+                        "address": user.address,
+                        "cmnd": user.cmnd
+                    }
+                    res.append(result)
+            return Response(res, 200)
+        except Exception as e:
+            return Response({
+                "Error": repr(e)
+            }, 400)
 
 class RegistrationAPI(generics.GenericAPIView):
     permission_classes = [permissions.AllowAny, ]

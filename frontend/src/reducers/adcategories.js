@@ -22,6 +22,10 @@ var myReducer = (state=initialState, action) => {
                 newState.splice(index, 1);
             }
             return [...newState];
+        case types.GET_CATEGORY_BY_ID:
+            console.log(action.adcategories);
+            
+            return action.adcategories;
         default:
             return state;
     }

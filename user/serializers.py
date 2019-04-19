@@ -7,7 +7,7 @@ User = get_user_model()
 class CreateUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'username','email', 'password', 'fullname', 'is_staff', 'is_user','phone',
+        fields = ('id', 'username','email', 'password', 'fullname', 'is_staff_gun', 'is_user','phone',
         'address', 'cmnd')
         extra_kwargs = {'password': {'write_only': True}}
 
@@ -19,7 +19,7 @@ class CreateUserSerializer(serializers.ModelSerializer):
                                         validated_data['email'],
                                         validated_data['password'],
                                         validated_data['fullname'],
-                                        validated_data['is_staff'],
+                                        validated_data['is_staff_gun'],
                                         validated_data['is_user'],
                                         validated_data['phone'],
                                         validated_data['address'],
@@ -29,4 +29,4 @@ class CreateUserSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = '__all__'
+        fields = ('id','fullname', 'email', 'is_staff_gun','is_user','phone', 'address', 'cmnd')

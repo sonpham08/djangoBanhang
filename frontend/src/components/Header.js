@@ -22,20 +22,20 @@ class Header extends Component {
 
     componentWillMount() {
         let token = localStorage.getItem('token');
-        if(token) {
+        if(token != undefined) {
             this.props.getUserInfo();
             this.setState({
                 username: this.props.user.username,
-                token: this.props.isAuthenticated
+                token: this.props.isAuthenticated.token
             });
         }
     }
 
     componentWillReceiveProps(nextProps) {
-        if(nextProps.user) {
+        if(nextProps.user != undefined) {
             this.setState({
                 username: nextProps.user.username,
-                token: nextProps.isAuthenticated
+                token: nextProps.isAuthenticated.token
             });
         }
         

@@ -6,6 +6,7 @@ import MenuCategory from './MenuCategory';
 import ProductList from './product/ProductList';
 import ProductListPC from './product/ProductListPC';
 import * as authActions from '../actions/authActions';
+import * as userActions from '../actions/userActions';
 
 var $ = require("jquery");
 
@@ -17,6 +18,10 @@ class Home extends Component {
             tab: 0, // 0: Waiting for accept list, 1: createfield, 2: approval history
             resetAccepted: false
         }
+    }
+
+    async componentDidMount() {
+        await new Promise(resolve => resolve(this.props.userActions.getListProductUser()));
     }
 
     getUserInfo = () => {
@@ -41,7 +46,8 @@ class Home extends Component {
                 <div className="body" style={{ marginTop: '150px', padding: '5px 40px' }}>
                    
                     <div className="row">
-                        <ProductList/>
+                        <ProductList
+                        usproduct={this.props.usproduct}/>
                     </div>
 
                     <div className="row">
@@ -56,13 +62,15 @@ class Home extends Component {
 const mapStateToProps = state => {
     return {
         isAuthenticated: state.auth,
-        user: state.user
+        user: state.user,
+        usproduct: state.usproduct
     };
 };
 
 const mapDispatchToProps = (dispatch, props) => {
     return {
         authActions: bindActionCreators(authActions, dispatch),
+        userActions: bindActionCreators(userActions, dispatch),
     };
 };
 

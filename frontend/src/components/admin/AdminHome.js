@@ -20,9 +20,11 @@ class AdminHome extends Component {
         }
     }
 
-    componentWillMount() {
+    async componentWillMount() {
         this.props.adminActions.getListCategory();
-        this.props.adminActions.getListProduct();
+        await new Promise(resolve => resolve(this.props.adminActions.getListProduct()));
+        this.props.adminActions.getListStaff();
+        this.props.adminActions.getListCustomer();
     }
 
     getUserInfo = () => {
@@ -38,9 +40,9 @@ class AdminHome extends Component {
     }
 
     addProduct = (name, price, quantity, size, weight, color, sound, memory,
-    camera, pin, gurantee, promotion, start_promo, end_promo, category) => {
+    camera, pin, gurantee, promotion, start_promo, end_promo, category, image_name) => {
         this.props.adminActions.addProduct(name, price, quantity, size, weight, color, sound, memory,
-            camera, pin, gurantee, promotion, start_promo, end_promo, category);
+            camera, pin, gurantee, promotion, start_promo, end_promo, category, image_name);
     }
 
     editProduct = (data) => {
@@ -63,8 +65,25 @@ class AdminHome extends Component {
         this.props.adminActions.deleteCategory(category_id);
     }
 
+    onSaveChangeStaff = (staff) => {
+        // edit
+        this.props.adminActions.editStaffInfo(staff);
+    }
+
+    deleteStaff = (id) => {
+        this.props.adminActions.deleteStaff(id);
+    }
+
+    addStaff = (staff) => {
+        this.props.authActions.authSignup(
+            staff.username, staff.email, staff.password, staff.fullname, true, false,
+            staff.phone, staff.address, staff.cmnd
+        );
+    }
+
     render() {
-        var {isAuthenticated,user,adcategories, adproduct} = this.props;
+        var {isAuthenticated,user,adcategories, adproduct, adstaff, adcustomer} = this.props;
+
         return (
             <div style={{background:'gainsboro'}} style={{paddingTop: '63px'}}>
                 <AdminHeader
@@ -76,15 +95,21 @@ class AdminHome extends Component {
                 selectFormToOpen={this.selectFormToOpen}
                 />
                 <AdminManage
+                adstaff={adstaff}
                 adproduct={adproduct}
                 adcategories={adcategories}
+                adcustomer={adcustomer}
                 tab={this.state.tab}
                 addProduct={this.addProduct}
                 editProduct={this.editProduct}
                 deleteProduct={this.deleteProduct}
                 addCategory={this.addCategory}
                 onSaveCategory={this.onSaveCategory}
-                deleteCategory={this.deleteCategory}/>
+                deleteCategory={this.deleteCategory}
+                deleteStaff={this.deleteStaff}
+                onSaveChangeStaff={this.onSaveChangeStaff}
+                addStaff={this.addStaff}
+                />
             </div>
         );
     }
@@ -95,7 +120,9 @@ const mapStateToProps = state => {
         isAuthenticated: state.auth,
         user: state.user,
         adcategories: state.adcategories,
-        adproduct: state.adproduct
+        adproduct: state.adproduct,
+        adstaff: state.adstaff,
+        adcustomer: state.adcustomer
     };
 };
 
