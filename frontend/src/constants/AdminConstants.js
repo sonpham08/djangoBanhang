@@ -18,3 +18,6 @@ export const DELETE_STAFF = 'DELETE_STAFF';
 
 // customer
 export const GET_LIST_CUSTOMER = 'GET_LIST_CUSTOMER';
+
+// staff ship
+export const GET_LIST_STAFF_SHIP = 'GET_LIST_STAFF_SHIP';

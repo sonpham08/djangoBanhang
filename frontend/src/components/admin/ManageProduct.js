@@ -21,10 +21,12 @@ class ManageProduct extends Component {
 
     componentWillReceiveProps(nextProps) {
         //data product with pagination
+        console.log(nextProps);
+        
         this.dataProduct = nextProps.adproduct.map(
             (a, i) => a
         );
-        this.pageSizeProduct = 1;
+        this.pageSizeProduct = 5;
         this.pagesCountProduct = Math.ceil(this.dataProduct.length / this.pageSizeProduct);
     }
 
@@ -75,8 +77,8 @@ class ManageProduct extends Component {
                                     <tr>
                                         <th>Tên sản phẩm</th>
                                         <th>Giá</th>
-                                        <th>Số lượng nhập</th>
                                         <th>Kích cỡ</th>
+                                        <th>Số lượng nhập</th>
                                         <th>Cân nặng</th>
                                         <th>Màu sắc</th>
                                         <th>Âm thanh</th>
@@ -101,8 +103,8 @@ class ManageProduct extends Component {
                                                     <tr key={idx}>
                                                         <td>{product.name}</td>
                                                         <td>{product.price}</td>
-                                                        <td>{product.quantity}</td>
                                                         <td>{product.size}</td>
+                                                        <td>{product.quantity}</td>
                                                         <td>{product.weight}</td>
                                                         <td>{product.color}</td>
                                                         <td>{product.sound}</td>

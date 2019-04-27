@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import axios , {post} from 'axios';
-import FileBase64 from 'react-file-base64';
+import DateTime from 'react-datetime';
+import moment from 'moment';
+import 'moment-timezone';
 var $ = require("jquery");
 
 class AddProduct extends Component {
@@ -10,8 +12,8 @@ class AddProduct extends Component {
         this.state = {
             product_name: "",
             product_price: "",
-            product_quantity: "",
             product_size: "",
+            product_quantity: "",
             product_weight: "",
             product_color: "",
             product_sound: "",
@@ -33,8 +35,8 @@ class AddProduct extends Component {
             this.setState({
                 product_name: nextProps.product.name, 
                 product_price: nextProps.product.price, 
-                product_quantity: nextProps.product.quantity,
                 product_size: nextProps.product.size, 
+                product_quantity: nextProps.product.quantity, 
                 product_weight: nextProps.product.weight, 
                 product_color: nextProps.product.color,
                 product_sound: nextProps.product.sound, 
@@ -72,27 +74,23 @@ class AddProduct extends Component {
         });
     }
 
+    onChangeDateStart = (date) => {
+        let newDate = moment.tz(date._d, 'YYYY-MM-DD HH:mm:ss', 'UTC').format();
+        this.setState({ product_start_promo:newDate });
+        
+    }
+
+    onChangeDateEnd = (date) => {
+        let newDate = moment.tz(date._d, 'YYYY-MM-DD HH:mm:ss', 'UTC').format();
+        this.setState({ product_end_promo:newDate });
+    }
+
     addProduct = (e) => {
         e.preventDefault();
-        // let name = this.refs.product_name.value;
-        // let price = this.refs.product_price.value;
-        // let quantity = this.refs.product_quantity.value;
-        // let size = this.refs.product_size.value;
-        // let weight = this.refs.product_weight.value;
-        // let color = this.refs.product_color.value;
-        // let sound = this.refs.product_sound.value;
-        // let memory = this.refs.product_memory.value;
-        // let camera = this.refs.product_camera.value;
-        // let pin = this.refs.product_pin.value;
-        // let gurantee = this.refs.product_gurantee.value;
-        // let promotion = this.refs.product_promotion.value;
-        // let start_promo = this.refs.product_start_promo.value;
-        // let end_promo = this.refs.product_end_promo.value;
-        // let category = this.refs.product_category.value;
         let name = this.state.product_name;
         let price = this.state.product_price;
-        let quantity = this.state.product_quantity;
         let size = this.state.product_size;
+        let quantity = this.state.product_quantity;
         let weight = this.state.product_weight;
         let color = this.state.product_color;
         let sound = this.state.product_sound;
@@ -105,10 +103,9 @@ class AddProduct extends Component {
         let end_promo = this.state.product_end_promo;
         let category = this.state.product_category;
         let image_name = this.state.selectedFile;
-        console.log(image_name);
-        
+
         if(this.props.product.product_id == undefined) {
-            this.props.addProduct(name, price, quantity, size, weight, color, sound, memory,
+            this.props.addProduct(name, price, size,quantity, weight, color, sound, memory,
                 camera, pin, gurantee, promotion, start_promo, end_promo, category, image_name);
         } else {
             let data = {
@@ -133,28 +130,15 @@ class AddProduct extends Component {
         });
     }
 
-    getFiles(files){
-        this.setState({ files: files })
-    }
-
     fileSelectedHandler = e => {
         this.setState({
-            selectedFile: e.target.files
+            selectedFile: e.target.files[0]
         });
         
     }
 
-    fileUpload = (e) => {
-        const fd = new FormData();
-        console.log(this.state.selectedFile);
-        
-        // fd.append('image', this.state.selectedFile, this.state.selectedFile.name);
-    }
-
     render() {
         if(this.props.openAddForm == false) return null;
-        console.log(this.state.product_category);
-        
             return (
                 <div>            
                     <div className="panel panel-danger">
@@ -163,7 +147,7 @@ class AddProduct extends Component {
                         </div>
                         <div className="panel-body">
                                 
-                                <form onSubmit={this.addProduct} method="POST" className="form-horizontal" role="form">
+                                <form onSubmit={this.addProduct} encType="multipart/form-data" method="POST" className="form-horizontal" role="form">
                                     <div className="form-group">
                                         <div className="col-md-1">
                                             <label>Loại sản phẩm: </label>
@@ -218,17 +202,16 @@ class AddProduct extends Component {
                                     </div>
                                     <div className="form-group">
                                         <div className="col-md-1">
-                                            <label>Số lượng: </label>
+                                            <label>Số lượng nhập: </label>
                                         </div>
                                         <div className="col-md-11">
                                             <input 
                                             type="number" 
-                                            className="form-control"
+                                            className="form-control" 
                                             ref="product_quantity"
                                             name="product_quantity"
                                             onChange={this.onChange}
-                                            value={this.state.product_quantity}
-                                            />
+                                            value={this.state.product_quantity}/>
                                         </div>
                                     </div>
                                     <div className="form-group">
@@ -364,13 +347,19 @@ class AddProduct extends Component {
                                             <label>Ngày bắt đầu: </label>
                                         </div>
                                         <div className="col-md-3">
-                                            <input 
+                                            {/* <input 
                                             type="datetime-local" 
                                             className="form-control" 
                                             ref="product_start_promo"
                                             name="product_start_promo"
                                             onChange={this.onChange}
-                                            value={this.state.product_start_promo}/>
+                                            value={this.state.product_start_promo}/> */}
+                                            <DateTime
+                                            ref="product_start_promo"
+                                            name="product_start_promo"
+                                            onChange={this.onChangeDateStart}
+                                            value={this.state.product_start_promo}
+                                            />
                                         </div>
                                     </div>
                                     <div className="form-group">
@@ -378,12 +367,17 @@ class AddProduct extends Component {
                                             <label>Ngày kết thúc: </label>
                                         </div>
                                         <div className="col-md-3">
-                                            <input 
+                                            {/* <input 
                                             type="datetime-local" 
                                             className="form-control" 
                                             ref="product_end_promo"
                                             name="product_end_promo"
                                             onChange={this.onChange}
+                                            value={this.state.product_end_promo}/> */}
+                                            <DateTime
+                                            ref="product_end_promo"
+                                            name="product_end_promo"
+                                            onChange={this.onChangeDateEnd}
                                             value={this.state.product_end_promo}/>
                                         </div>
                                     </div>
@@ -397,9 +391,6 @@ class AddProduct extends Component {
                                             className="form-control" 
                                             accept=".jpg,.jpeg,.png"
                                             onChange={this.fileSelectedHandler}/>
-                                            {/* <FileBase64
-                                            multiple={ false }
-                                            onDone={ this.getFiles.bind(this) } /> */}
                                         </div>
                                     </div>
                                     <div className="form-group">

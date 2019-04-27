@@ -54,6 +54,11 @@ class AdminSideMenu extends Component {
             this.setState({tabAd: 6});
             this.props.selectFormToOpen(6);
         }
+        if(tabAd == 7 && $("#manage_staff_ship").hasClass('active') == false) {
+            localStorage.setItem('tabAd', 7);
+            this.setState({tabAd: 7});
+            this.props.selectFormToOpen(7);
+        }
     }
 
     render() {
@@ -113,6 +118,14 @@ class AdminSideMenu extends Component {
                             style={{ color: "white" }}
                             onClick={(e) => this.open(e, 6)}
                             >Các đơn hàng đang vận chuyển</Link>
+                        </li>
+                        <li id="manage_staff_ship">
+                            <Link 
+                            className={this.state.tabAd == 7 ? "active" : ""}
+                            to="#" 
+                            style={{ color: "white" }}
+                            onClick={(e) => this.open(e, 7)}
+                            >Quản lý nhân viên giao hàng</Link>
                         </li>
                     </ul>
                 </div>

@@ -7,6 +7,7 @@ import Header from '../Header';
 import MenuCategory from '../MenuCategory';
 import AllSale from './AllSale';
 import SpecialDaySale from './SpecialDaySale';
+import Footer from '../Footer';
 import { bindActionCreators } from 'redux';
 
 var $ = require("jquery");
@@ -70,6 +71,7 @@ class Sale extends Component {
                         </div>
                     </div>
                 </div>
+                <Footer/>
             </div>
 
         )

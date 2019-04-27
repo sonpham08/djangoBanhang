@@ -149,17 +149,17 @@ class MenuProduct extends Component {
                 <div className="menu-product" onMouseLeave={this.hideAllSubMenu}>
                     <ul className="ul-menu-product">
                         <li onMouseOver={() => this.showSubMenuItem('sub-tivi')}>
-                        <i className="fas fa-tv"></i>&nbsp;<a href="#">Tivi</a></li>
+                        <i className="fas fa-tv"></i>&nbsp;<a href="#">Oppo</a></li>
                         <li onMouseOver={() => this.showSubMenuItem('sub-phone')}>
-                        <i className="fas fa-phone"></i>&nbsp;<a href="#">Dien thoai</a></li>
+                        <i className="fas fa-phone"></i>&nbsp;<a href="#">Samsung</a></li>
                         <li onMouseOver={() => this.showSubMenuItem('sub-laptop')}>
-                        <i className="fas fa-laptop"></i>&nbsp;<a href="#">Laptop</a></li>
+                        <i className="fas fa-laptop"></i>&nbsp;<a href="#">Huawuei</a></li>
                         <li onMouseOver={() => this.showSubMenuItem('sub-refrigerator')}>
-                        <i className="fas fa-tablet"></i>&nbsp;<a href="#">Tu lanh</a></li>
+                        <i className="fas fa-tablet"></i>&nbsp;<a href="#">Iphone</a></li>
                         <li onMouseOver={() => this.showSubMenuItem('sub-software')}>
-                        <i className="fab fa-adn"></i>&nbsp;<a href="#">Phan mem va phu kien</a></li>
+                        <i className="fab fa-adn"></i>&nbsp;<a href="#">Honor</a></li>
                         <li onMouseOver={() => this.showSubMenuItem('sub-device')}>
-                        <i className="fas fa-wrench"></i>&nbsp;<a href="#">Thiet bi ngoai vi</a></li>
+                        <i className="fas fa-wrench"></i>&nbsp;<a href="#">Xiaomi</a></li>
                     </ul>
                     {/* sub menu for tivi */}
                     <div className="menu-product-tivi">

@@ -6,6 +6,8 @@ import adcategories from './adcategories';
 import adstaff from './adstaff';
 import adcustomer from './adcustomer';
 import usproduct from './usproduct';
+import cart from './cart';
+import adstaffship from './adstaffship';
 
 const myReducer = combineReducers({
     auth,
@@ -14,7 +16,9 @@ const myReducer = combineReducers({
     adcategories,
     adstaff,
     adcustomer,
-    usproduct
+    usproduct,
+    cart,
+    adstaffship
 });
 
 export default myReducer;

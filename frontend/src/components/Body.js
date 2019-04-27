@@ -4,6 +4,7 @@ import Home from './Home';
 import { bindActionCreators } from 'redux';
 import * as authActions from '../actions/authActions';
 import AdminHome from './admin/AdminHome';
+import Footer from './Footer';
 var $ = require("jquery");
 
 const usersInitial = {
@@ -21,8 +22,18 @@ class Body extends Component {
     }
 
     render() {
-        if(this.props.user.is_superuser == true) return <AdminHome/>
-            return <Home/>
+        if(this.props.user.is_superuser == true) {
+            return (
+                <AdminHome/>
+            )
+        } else {
+            return (
+                <div>
+                <Home/>
+                <Footer/>
+                </div>
+            )
+        }
     }
 }
 

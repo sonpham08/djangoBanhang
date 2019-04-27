@@ -8,6 +8,7 @@ import { BrowserRouter, Link, Route, Router, NavLink } from 'react-router-dom';
 import ManageProduct from './ManageProduct';
 import ManageStaff from './MangeStaff';
 import ManageCustomer from './MangeCustomer';
+import ManageStaffShip from './ManageStaffShip';
 var $ = require("jquery");
 
 class AdminManage extends Component {
@@ -62,11 +63,9 @@ class AdminManage extends Component {
         }
     }
 
-    addProduct = (name, price, quantity, size, weight, color, sound, memory,
+    addProduct = (name, price, size,quantity, weight, color, sound, memory,
         camera, pin, gurantee, promotion, start_promo, end_promo, category, image_name) => {
-        console.log(image_name);
-        
-        this.props.addProduct(name, price, quantity, size, weight, color, sound, memory,
+        this.props.addProduct(name, price, size, quantity, weight, color, sound, memory,
             camera, pin, gurantee, promotion, start_promo, end_promo, category, image_name);
         this.setState({ openAddForm: false });
     }
@@ -109,6 +108,8 @@ class AdminManage extends Component {
                     deleteCategory={this.deleteCategory}
                     toggleAddForm={this.toggleAddForm}
                     closeAddForm={this.closeAddForm}
+                    addCategory={this.props.addCategory}
+                    onSaveCategory={this.props.onSaveCategory}
                 />
                 <ManageStaff
                     tab={tab}
@@ -125,6 +126,9 @@ class AdminManage extends Component {
                 <ManageCustomer
                 tab={tab}
                 adcustomer={this.props.adcustomer}/>
+                <ManageStaffShip
+                tab={tab}
+                adstaffship={this.props.adstaffship}/>
             </div>
         )
     }

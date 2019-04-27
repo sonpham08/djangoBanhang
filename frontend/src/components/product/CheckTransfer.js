@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { BrowserRouter, Link, Route, Router, NavLink } from 'react-router-dom';
 import * as authActions from '../../actions/authActions';
+import * as userActions from '../../actions/userActions';
 // import { Button, Modal, ModalBody, ModalFooter, ModalTitle } from 'react-bootstrap';
 import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
 import SubHeader from '../SubHeader';
+import InfoBox from './InfoBox';
 var $ = require("jquery");
 
 
@@ -13,7 +16,14 @@ class CheckTransfer extends Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
-            tab: 0
+            tab: 0,
+        }
+    }
+
+    componentWillMount() {
+        let token = localStorage.getItem('token');
+        if(token != undefined) {
+            this.props.authActions.getUserInfo();
         }
     }
 
@@ -36,6 +46,11 @@ class CheckTransfer extends Component {
             this.setState({tab: 2});
         }
             
+    }
+
+    changeInfo = (user_info) => {
+        console.log(user_info);
+        this.props.userActions.changeInfo(user_info);
     }
 
     render() {
@@ -64,64 +79,13 @@ class CheckTransfer extends Component {
                 </div>
                 
                 {/* Personal */}
-                {this.state.tab == 1 ?
-                <div className="col-xs-10 col-sm-10 col-md-10 col-lg-10" style={{marginTop: '63px'}}>
-                    <div className="pn-right">
-                        
-                        <div className="panel panel-danger">
-                            <div className="panel-heading">
-                                    <h3 className="panel-title">Thông tin cá nhân</h3>
-                            </div>
-                            <div className="panel-body">
-                            <Form>
-                                    <FormGroup>
-                                        <Label for="fullname">Họ và tên:</Label>
-                                        <Input type="fullname" name="fullname" id="fullname" placeholder="Nhập họ và tên" />
-                                    </FormGroup>
-                                    <FormGroup>
-                                        <Label for="phone">Số điện thoại:</Label>
-                                        <Input readOnly type="phone" name="phone" id="phone" placeholder="Nhập số điện thoại" />
-                                    </FormGroup>
-                                    <FormGroup>
-                                        <Label for="email">Email:</Label>
-                                        <Input type="email" name="email" id="email" placeholder="Nhập email" />
-                                    </FormGroup>
-                                    <Button className="btn btn-danger">Hoàn tất</Button>
-                                </Form>
-                            </div>
-                        </div>
-                        
-                    </div>
-
-                    <div className="pn-right">
-                        
-                        <div className="panel panel-danger">
-                            <div className="panel-heading">
-                                    <h3 className="panel-title">Đổi mật khẩu</h3>
-                            </div>
-                            <div className="panel-body">
-                            <Form>
-                                    <FormGroup>
-                                        <Label for="password">Mật khẩu cũ:</Label>
-                                        <Input type="password" name="password" id="password" placeholder="Nhập mật khẩu cũ" />
-                                    </FormGroup>
-                                    <FormGroup>
-                                        <Label for="newPassword">Mật khẩu mới:</Label>
-                                        <Input type="newPassword" name="newPassword" id="newPassword" placeholder="Nhập mật khẩu mới" />
-                                    </FormGroup>
-                                    <FormGroup>
-                                        <Label for="performPassword">Nhập lại mật khẩu:</Label>
-                                        <Input type="performPassword" name="performPassword" id="performPassword" placeholder="Nhập lại mật khẩu" />
-                                    </FormGroup>
-                                    <Button className="btn btn-danger">Hoàn tất</Button>
-                                </Form>
-                            </div>
-                        </div>
-                        
-                    </div>
-                </div> 
-                :
+                {this.state.tab == 1 &&
+                    <InfoBox
+                    user={this.props.user}
+                    changeInfo={this.changeInfo}/> 
+                }
                 
+                {this.state.tab == 2 &&
                 <div className="col-xs-10 col-sm-10 col-md-10 col-lg-10" style={{marginTop: '63px'}}>
                     <div className="pn-right">
                         
@@ -154,11 +118,14 @@ class CheckTransfer extends Component {
 
 const mapStateToProps = state => {
     return {
+        user: state.user,
     };
 };
 
 const mapDispatchToProps = (dispatch, props) => {
     return {
+        authActions: bindActionCreators(authActions, dispatch),
+        userActions: bindActionCreators(userActions, dispatch),
     };
 };
 

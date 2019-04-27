@@ -1,6 +1,7 @@
 import * as types from '../constants/UserConstants';
 import axios from 'axios';
 import { browserHistory } from 'react-router';
+import toastr from 'toastr';
 
 var csrftoken = getCookie('csrftoken');
 function getCookie(name) {
@@ -25,9 +26,134 @@ export const getListProductUser = () => {
         axios({
             url, headers, method: 'get'
         }).then(function(res){
+            console.log(res);
+            
             dispatch({
                 type: types.USER_GET_LIST_PRODUCT,
                 usproduct: res.data
+            })
+        })
+    }
+}
+
+export const getCategoryById = (category_id) => {
+    return dispatch => {
+        let headers = { "Content-Type": "application/json",'X-CSRFToken': csrftoken };
+        let url = `/api/v1/category/${category_id}/`;
+        axios({
+            url, headers, method: 'get'
+        }).then(function(res){
+            dispatch({
+                type: types.USER_GET_CATEGORY_BY_ID,
+                uscategories: res.data
+            })
+        })
+    }
+}
+
+export const getListCart = () => {
+    let token = localStorage.getItem('token');
+    return dispatch => {
+        let headers = { "Content-Type": "application/json",'X-CSRFToken': csrftoken,
+        'Authorization': `Token ${token}` };
+        let url = '/api/v1/cart/get_my_cart/';
+        axios({
+            url, headers, method: 'get',
+        }).then(function(res){
+            console.log(res);
+            
+            dispatch({
+                type: types.GET_LIST_CART,
+                cart: res.data
+            })
+        })
+    }
+}
+
+export const addToCart = (product_id, user_id) => {
+    return dispatch => {
+        let headers = { "Content-Type": "application/json",'X-CSRFToken': csrftoken };
+        let url = '/api/v1/cart/';
+        let data = JSON.stringify({
+            user: user_id,
+            product: product_id
+        });
+        axios({
+            url, headers, method: 'post',data
+        }).then(function(response){
+            // console.log(resonse);
+            let token = localStorage.getItem('token');
+            let headers = { "Content-Type": "application/json",'X-CSRFToken': csrftoken,
+            'Authorization': `Token ${token}` };
+            let url = '/api/v1/cart/get_my_cart/';
+            axios({
+                url, headers, method: 'get',
+            }).then(function(res){
+                console.log(res);
+                dispatch({
+                    type: types.ADD_CART,
+                    cart: res.data
+                })
+            })
+            
+        })
+    }
+}
+
+export const deleteFromCart = (cart_id) => {
+    return dispatch => {
+        let headers = { "Content-Type": "application/json",'X-CSRFToken': csrftoken };
+        let url = `/api/v1/cart/${cart_id}/`;
+        axios({
+            url, headers, method: 'delete'
+        }).then(function(res){
+            dispatch({
+                type: types.DELETE_CART,
+                cart_id: cart_id
+            })
+        })
+    }
+}
+
+export const buyProduct = (product_id) => {
+    return dispatch => {
+        let headers = { "Content-Type": "application/json",'X-CSRFToken': csrftoken };
+        let url = '/api/v1/dealedproduct/';
+        let data = JSON.stringify({
+            // dealed: product.how_many_buy,
+            product: product_id
+        });
+        axios({
+            url, headers, method: 'post',data
+        }).then(function(res){
+            console.log(res);
+            
+            dispatch({
+                type: types.BUY_PRODUCT,
+                product: res.data
+            })
+        })
+    }
+}
+
+export const changeInfo = (user) => {
+    return dispatch => {
+        let headers = { "Content-Type": "application/json",'X-CSRFToken': csrftoken };
+        let url = `/api/users/${user.id}/`;
+        let data = JSON.stringify({
+            fullname: user.fullname,
+            email: user.email,
+            phone: user.phone,
+            address: user.address,
+        });
+        axios({
+            url, headers, method: 'patch',data
+        }).then(function(res){
+            console.log(res);
+            toastr.success('Thay đổi thông tin thành công');
+            dispatch({
+                type: types.CHANGE_INFO,
+                user: res.data
             })
         })
     }

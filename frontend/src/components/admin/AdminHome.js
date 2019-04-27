@@ -25,6 +25,7 @@ class AdminHome extends Component {
         await new Promise(resolve => resolve(this.props.adminActions.getListProduct()));
         this.props.adminActions.getListStaff();
         this.props.adminActions.getListCustomer();
+        this.props.adminActions.getListStaffShip();
     }
 
     getUserInfo = () => {
@@ -39,9 +40,9 @@ class AdminHome extends Component {
         this.setState({tab: tab});
     }
 
-    addProduct = (name, price, quantity, size, weight, color, sound, memory,
+    addProduct = (name, price, size,quantity ,weight, color, sound, memory,
     camera, pin, gurantee, promotion, start_promo, end_promo, category, image_name) => {
-        this.props.adminActions.addProduct(name, price, quantity, size, weight, color, sound, memory,
+        this.props.adminActions.addProduct(name, price, size,quantity ,weight, color, sound, memory,
             camera, pin, gurantee, promotion, start_promo, end_promo, category, image_name);
     }
 
@@ -82,7 +83,7 @@ class AdminHome extends Component {
     }
 
     render() {
-        var {isAuthenticated,user,adcategories, adproduct, adstaff, adcustomer} = this.props;
+        var {isAuthenticated,user,adcategories, adproduct, adstaff, adcustomer,adstaffship} = this.props;
 
         return (
             <div style={{background:'gainsboro'}} style={{paddingTop: '63px'}}>
@@ -95,6 +96,7 @@ class AdminHome extends Component {
                 selectFormToOpen={this.selectFormToOpen}
                 />
                 <AdminManage
+                adstaffship={adstaffship}
                 adstaff={adstaff}
                 adproduct={adproduct}
                 adcategories={adcategories}
@@ -122,7 +124,8 @@ const mapStateToProps = state => {
         adcategories: state.adcategories,
         adproduct: state.adproduct,
         adstaff: state.adstaff,
-        adcustomer: state.adcustomer
+        adcustomer: state.adcustomer,
+        adstaffship: state.adstaffship
     };
 };
 

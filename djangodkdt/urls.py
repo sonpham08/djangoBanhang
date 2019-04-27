@@ -43,6 +43,7 @@ urlpatterns = [
     path('login/', include('user.urls')),
     path('register/', include('user.urls')),
     path('sale/', include('user.urls')),
+    # path('product_detail/', include('user.urls')),
     path('transfer/', include('user.urls')),
     path('accounts/password', change_password, name='change_password'),
     path('accounts/signup/', SignUpView.as_view(), name='signup'),

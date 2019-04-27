@@ -9,7 +9,7 @@ import thunk from "redux-thunk";
 import myReducer from './reducers/index';
 import {Provider} from 'react-redux';
 import { HashRouter } from 'react-router-dom';
-
+// import 'bootstrap/dist/css/bootstrap.min.css';
 
 const composeEnhances = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 const store=createStore(myReducer,composeEnhances(applyMiddleware(thunk)));

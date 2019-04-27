@@ -14,8 +14,8 @@ class ProductListPC extends Component {
         return (
             <div className="product-list-pc">
                 <div className="panel panel-danger">
-                    <div className="panel-heading">
-                        <h3 className="panel-title">Laptop khủng</h3>
+                    <div className="panel-heading  tit_gradient">
+                        <h3 className="panel-title">Các sản phẩm đang khuyến mãi</h3>
                     </div>
                     <div className="panel-body">
 

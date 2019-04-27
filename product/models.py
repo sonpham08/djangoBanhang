@@ -16,7 +16,8 @@ class Product(models.Model):
     name = models.CharField(max_length=255)
     image = models.ImageField(upload_to="images/")
     price = models.IntegerField()
-    quantity = models.IntegerField()
+    quantity = models.IntegerField(default=0)
+    rating = models.IntegerField(default=0)
     size = models.CharField(max_length=255)
     weight = models.CharField(max_length=255)
     color = models.CharField(max_length=255)
@@ -30,13 +31,13 @@ class Product(models.Model):
     end_promo = models.DateTimeField()
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
-class DealedProduct(models.Model):
-    dealed_id = models.AutoField(primary_key=True)
-    dealed = models.IntegerField()
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    def __unicode__(self):
+        return u"%s..." % self.myfield
 
-    def __str__(self):
-        return self.dealed
+class Cart(models.Model):
+    cart_id = models.AutoField(primary_key=True)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=0)
 
 class StatusProduct(models.Model):
     status_id = models.AutoField(primary_key=True)
@@ -48,8 +49,7 @@ class StatusProduct(models.Model):
 class Staff(models.Model):
     staff_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255)
-    phone = models.CharField(max_length=11)
-    user = models.OneToOneField(User, on_delete=models.CASCADE, default=0)
+    phone = models.CharField(max_length=12)
 
     def __str__(self):
         return self.name
@@ -57,13 +57,22 @@ class Staff(models.Model):
 
 class Bill(models.Model):
     bill_id = models.AutoField(primary_key=True)
-    create_date = models.DateTimeField()
+    create_date = models.DateTimeField(auto_now_add=True, blank=True)
     total_price = models.IntegerField()
     address = models.CharField(max_length=255)
     status = models.CharField(max_length=255)
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=0)
     status_product = models.ForeignKey(StatusProduct, on_delete=models.CASCADE)
     staff = models.ForeignKey(Staff, on_delete=models.CASCADE)
+
+class DealedProduct(models.Model): # chi tiết đơn đặt hàng
+    dealed_id = models.AutoField(primary_key=True)
+    dealed = models.IntegerField() ## so luong mỗi sản phẩm trong hóa đơn
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    bill = models.ForeignKey(Bill, on_delete=models.CASCADE, default=0)
+
+    def __str__(self):
+        return self.dealed
 
 class DetailOrder(models.Model):
     detail_id = models.AutoField(primary_key=True)

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-
+import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
+import { BrowserRouter, Link, Route, Router, NavLink } from 'react-router-dom';
 var $ = require("jquery");
 
 
@@ -8,37 +8,109 @@ class ProductList extends Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            currentPage: 0,
+        };
+    }
+
+    componentWillReceiveProps(nextProps) {
+        //data product list with pagination
+        
+        this.dataProduct = nextProps.usproduct.map(
+            (a, i) => a
+        );
+        this.pageSizeProduct = 4;
+        this.pagesCountProduct = Math.ceil(this.dataProduct.length / this.pageSizeProduct);
+    }
+
+    handleSwitchPagination(e, index) {
+        e.preventDefault();
+        this.setState({
+            currentPage: index
+        });
+    }
+
+    showProductDetail = (product) => {
+        this.props.showProductDetail(product);
     }
 
     render() {
-        console.log(this.props.usproduct);
-        
+        const { currentPage } = this.state;
         return (
             <div className="product-list">
 
-                <div className="panel panel-default" style={{border: 'none'}}>
-                    <div className="panel-body" style={{ background: 'gainsboro' , padding: '0'}}>
+                <div className="panel panel-default" style={{ border: 'none', marginBottom: '0' }}>
+                    <div className="panel-heading" style={{ background: 'gainsboro', padding: '0' }}>
+                        <h3 style={{ marginTop: '0' }}>Sản phẩm nổi bật</h3>
+                    </div>
+                    <div className="panel-body" style={{ background: 'gainsboro', padding: '0' }}>
 
-                        <div className="row">
-                            {this.props.usproduct != undefined ?
-                                this.props.usproduct.map((product, idx) => 
-                                    <div className="col-xs-3 col-sm-3 col-md-3 col-lg-3 product-list-panel" key={idx}>
+                        <div className="row" style={{ marginRight: '0', marginLeft: '0' }}>
+                            <PaginationItem disabled={currentPage <= 0} className="prev_car_product">
+                                <PaginationLink
+                                    onClick={e => this.handleSwitchPagination(e, currentPage - 1)}
+                                    previous
+                                    href="#"
+                                    disabled={currentPage <= 0}
+                                />
+                            </PaginationItem>
+                            {this.dataProduct != undefined ?
+                                this.dataProduct
+                                .slice(
+                                    currentPage * this.pageSizeProduct,
+                                    (currentPage + 1) * this.pageSizeProduct
+                                )
+                                .map((product, idx) =>
+                                    <div className="col-xs-3 col-sm-3 col-md-3 col-lg-3 product-list-panel" key={idx} onClick={() => this.showProductDetail(product)}>
                                         <img src={product.image} className="img-responsive" alt="Image" />
-                                        <p>{product.name}</p>
-                                        <h3>{product.price}vnd</h3>
+                                        <h5 style={{textAlign:'center'}}><strong>{product.name}</strong></h5>
+                                        <p style={{color: 'red', float: 'left'}}>{product.price - product.promotion}Đ</p>
+                                        &nbsp;<small><i><strike>{product.price}Đ</strike></i></small>
+                                        <button type="button" className="btn btn-primary" style={{float: 'right', height: '30px'}}>
+                                        Còn lại <span className="badge badge-light">{product.quantity}</span>
+                                        <span className="sr-only">unread messages</span>
+                                        </button>
                                     </div>
                                 )
-                                 : <h2>No Product Found</h2>}
-                            {/* <div className="col-xs-3 col-sm-3 col-md-3 col-lg-3 product-list-panel">
-                                <img src="https://images.ctfassets.net/wcfotm6rrl7u/5zMaxqvVlu26yymcmiae4E/935bacff5bf8687866045426e393d011/Nokia_105-Hero.png?fm=png" className="img-responsive" alt="Image" />
-                                <p>Dien thoai nokia 3435 chinh hang gia soc</p>
-                                <h3>17.420.400vnd</h3>
-                            </div> */}
+                                : <h2>No Product Found</h2>}
+                            <PaginationItem disabled={currentPage >= this.pagesCountProduct - 1} className="next_car_product">
+                                <PaginationLink
+                                    onClick={e => this.handleSwitchPagination(e, currentPage + 1)}
+                                    next
+                                    href="#"
+                                />
+                            </PaginationItem>
                         </div>
 
                     </div>
                 </div>
-
+                <React.Fragment>
+                    <div className="pagination-wrapper">
+                        <Pagination aria-label="Page navigation example">
+                            {/* <PaginationItem disabled={currentPage <= 0}>
+                                <PaginationLink
+                                    onClick={e => this.handleSwitchPagination(e, currentPage - 1)}
+                                    previous
+                                    href="#"
+                                />
+                            </PaginationItem> */}
+                            {[...Array(this.pagesCountProduct)].map((page, i) =>
+                                <PaginationItem active={i === currentPage} key={i}>
+                                    <PaginationLink onClick={e => this.handleSwitchPagination(e, i)} href="#">
+                                        {i + 1}
+                                    </PaginationLink>
+                                </PaginationItem>
+                            )}
+                            {/* <PaginationItem disabled={currentPage >= this.pagesCountProduct - 1}>
+                                <PaginationLink
+                                    onClick={e => this.handleSwitchPagination(e, currentPage + 1)}
+                                    next
+                                    href="#"
+                                />
+                            </PaginationItem> */}
+                        </Pagination>
+                    </div>
+                </React.Fragment>
             </div>
         )
     }

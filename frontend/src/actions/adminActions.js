@@ -18,60 +18,52 @@ function getCookie(name) {
     return cookieValue;
 }
 
-function getBase64 (file, cb) {
-    let reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = function () {
-        cb(reader.result)
-    };
-    reader.onerror = function (error) {
-        console.log('Error: ', error);
-    };
-}
-
-export const addProduct = (name, price, quantity, size, weight, color, sound, 
+export const addProduct = (name, price, size,quantity, weight, color, sound, 
     memory, camera, pin, gurantee, promotion, start_promo, end_promo, category, image_name) => {
     return dispatch => {
-        // const formData = new FormData();
-        // formData.append('image', image_name);
-        // console.log(formData);
-        var formData = "";
-        let reader = new FileReader();
-        reader.readAsDataURL(image_name[0]);
-        reader.onload = e => {
-            formData = e.target.result;
-            console.log(formData);
-            let url = '/api/v1/product/';
-            let headers = { 'X-CSRFToken': csrftoken };
-            let data = {
-                "name": name,
-                "price": price,
-                "quantity": quantity,
-                "size": size,
-                "weight": weight,
-                "color": color,
-                "sound": sound,
-                "memory": memory,
-                "camera": camera,
-                "pin": pin,
-                "gurantee": gurantee,
-                "promotion": promotion,
-                "start_promo": start_promo,
-                "end_promo": end_promo,
-                "category": category,
-                "image": formData
-            };
-            console.log(data);
-
-            axios({
-                url, headers,method:'post',data:data
-            }).then(function(res){
-                console.log(res);
-            }).catch(error => {
-
-            })
-        }
+        const formData = new FormData();
+        formData.append('image', image_name);
+        formData.append('name', name);
+        formData.append('price', price);
+        formData.append('quantity', quantity);
+        formData.append('size', size);
+        formData.append('weight', weight);
+        formData.append('color', color);
+        formData.append('sound', sound);
+        formData.append('memory', memory);
+        formData.append('camera', camera);
+        formData.append('pin', pin);
+        formData.append('gurantee', gurantee);
+        formData.append('promotion', promotion);
+        formData.append('start_promo', start_promo);
+        formData.append('end_promo', end_promo);
+        formData.append('category', category);
         
+        let url = '/api/v1/product/';
+        let headers = { 'X-CSRFToken': csrftoken, "Content-Type": "multipart/form-data; boundary=something" };
+        // axios({
+        //     url, headers,method:'post',data: formData
+        // }).then(function(res){
+        //     dispatch({
+        //         type: types.ADD_PRODUCT,
+        //         adproduct: res.data
+        //     })
+        // }).catch(error => {
+
+        // })
+        const add_product = axios({
+            url, headers,method:'post',data: formData
+        });
+        const get_list = axios({
+            url: `/api/v1/category/${category}/`, headers, method: 'get',
+        });
+        Promise.all([add_product, get_list]).then(function(res) {
+            res[0].data.category = res[1].data;
+            dispatch({
+                type: types.ADD_PRODUCT,
+                adproduct: res[0].data
+            })
+        });
     }
 }
 
@@ -79,11 +71,13 @@ export const editProduct = (product) => {
     return dispatch => {
         let headers = { "Content-Type": "application/json",'X-CSRFToken': csrftoken };
         let url = `/api/v1/product/${product.product_id}/`;
+        console.log(product);
+        
         let data = JSON.stringify({
             name: product.name,
             price: product.price,
-            quantity: product.quantity,
             size: product.size,
+            quantity: product.quantity,
             weight: product.weight,
             color: product.color,
             sound: product.sound,
@@ -94,16 +88,29 @@ export const editProduct = (product) => {
             promotion: product.promotion,
             start_promo: product.start_promo,
             end_promo: product.end_promo,
-            category: product.category
+            category: parseInt(product.category.category_id)
         });
-        axios({
-            url, headers, method: 'put', data
-        }).then(function(res) {
+        const edit_product = axios({
+            url, headers, method: 'patch', data
+        });
+        const get_list = axios({
+            url: `/api/v1/category/${product.category.category_id}/`, headers, method: 'get',
+        });
+        // axios({
+        //     url, headers, method: 'patch', data
+        // }).then(function(res) {
+        //     dispatch({
+        //         type: types.EDIT_PRODUCT,
+        //         adproduct: res.data
+        //     })
+        // })
+        Promise.all([edit_product, get_list]).then(function(res) {
+            res[0].data.category = res[1].data;
             dispatch({
                 type: types.EDIT_PRODUCT,
-                adproduct: res.data
+                adproduct: res[0].data
             })
-        })
+        });
     }
 }
 
@@ -336,6 +343,22 @@ export const deleteCategory = (category_id) => {
             dispatch({
                 type: types.DELETE_CATEGORY,
                 adcategories: result
+            })
+        })
+    }
+}
+
+export const getListStaffShip = () => {
+    return dispatch => {
+        let headers = { "Content-Type": "application/json",'X-CSRFToken': csrftoken };
+        let url = `/api/v1/staff/`;
+        axios({
+            url, headers, method: 'get'
+        }).then(function(res){
+            console.log(res);
+            dispatch({
+                type: types.GET_LIST_STAFF_SHIP,
+                adstaffship: res.data
             })
         })
     }

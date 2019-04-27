@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from .models import (Category,Product,DealedProduct,StatusProduct,
-Staff, Bill, DetailOrder, Comment)
+Staff, Bill, DetailOrder, Comment,Cart)
 
 from django.core.files.base import ContentFile
 import base64
@@ -50,11 +50,17 @@ class CategorySerializer(serializers.ModelSerializer):
         model=Category
         fields="__all__"
 
-class ProductSerializer(serializers.HyperlinkedModelSerializer):
+class ProductSerializer(serializers.ModelSerializer):
     image = Base64ImageField(max_length=None, use_url=True)
     class Meta:
         model=Product
-        fields=('pk','image')
+        fields=('product_id',"camera","quantity", "color","end_promo","gurantee","memory","name","pin","price","promotion"
+        ,"size","sound","start_promo","weight", "image","category", "rating")
+
+class CartSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Cart
+        fields="__all__"
 
 class DealedProductSerializer(serializers.ModelSerializer):
     class Meta:
