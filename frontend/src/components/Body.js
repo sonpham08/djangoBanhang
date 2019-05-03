@@ -4,6 +4,7 @@ import Home from './Home';
 import { bindActionCreators } from 'redux';
 import * as authActions from '../actions/authActions';
 import AdminHome from './admin/AdminHome';
+import StaffHome from './staff/StaffHome';
 import Footer from './Footer';
 var $ = require("jquery");
 
@@ -22,17 +23,26 @@ class Body extends Component {
     }
 
     render() {
+        console.log(this.props.user);
+        
         if(this.props.user.is_superuser == true) {
             return (
                 <AdminHome/>
             )
+                
         } else {
-            return (
-                <div>
-                <Home/>
-                <Footer/>
-                </div>
-            )
+            if(this.props.user.is_staff_gun == true) {
+                return (
+                    <StaffHome/>
+                )
+            } else {
+                return (
+                    <div>
+                        <Home/>
+                        <Footer/>
+                    </div>
+                )
+            }
         }
     }
 }

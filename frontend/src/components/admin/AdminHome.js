@@ -82,6 +82,18 @@ class AdminHome extends Component {
         );
     }
 
+    deleteStaffShip = (id) => {
+        this.props.adminActions.deleteStaffship(id);
+    }
+
+    addStaffship = (name, phone) => {
+        this.props.adminActions.addStaffship(name,phone);
+    }
+
+    editStaffship = (staffship) => {
+        this.props.adminActions.editStaffship(staffship);
+    }
+
     render() {
         var {isAuthenticated,user,adcategories, adproduct, adstaff, adcustomer,adstaffship} = this.props;
 
@@ -107,10 +119,13 @@ class AdminHome extends Component {
                 deleteProduct={this.deleteProduct}
                 addCategory={this.addCategory}
                 onSaveCategory={this.onSaveCategory}
-                deleteCategory={this.deleteCategory}
+                deleteCategory={this.props.deleteCategory}
                 deleteStaff={this.deleteStaff}
                 onSaveChangeStaff={this.onSaveChangeStaff}
                 addStaff={this.addStaff}
+                deleteStaffShip={this.deleteStaffShip}
+                addStaffship={this.addStaffship}
+                editStaffship={this.editStaffship}
                 />
             </div>
         );

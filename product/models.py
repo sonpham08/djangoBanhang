@@ -60,26 +60,21 @@ class Bill(models.Model):
     create_date = models.DateTimeField(auto_now_add=True, blank=True)
     total_price = models.IntegerField()
     address = models.CharField(max_length=255)
-    status = models.CharField(max_length=255)
+    status = models.CharField(max_length=255) # ghi chú
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=0)
-    status_product = models.ForeignKey(StatusProduct, on_delete=models.CASCADE)
+    status_product = models.ForeignKey(StatusProduct, on_delete=models.CASCADE, default=1)
     staff = models.ForeignKey(Staff, on_delete=models.CASCADE)
 
 class DealedProduct(models.Model): # chi tiết đơn đặt hàng
     dealed_id = models.AutoField(primary_key=True)
-    dealed = models.IntegerField() ## so luong mỗi sản phẩm trong hóa đơn
+    number_product_dealed = models.IntegerField() # so luong san pham da ban cho 1 san pham
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    bill = models.ForeignKey(Bill, on_delete=models.CASCADE, default=0)
-
-    def __str__(self):
-        return self.dealed
 
 class DetailOrder(models.Model):
     detail_id = models.AutoField(primary_key=True)
-    number_product_order = models.IntegerField()
-    price_order = models.IntegerField()
+    number_product_order = models.IntegerField() ## so luong mỗi sản phẩm trong hóa đơn
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    bill = models.ForeignKey(Bill, on_delete=models.CASCADE)
+    bill = models.ForeignKey(Bill, on_delete=models.CASCADE, default=0)
 
 class Comment(models.Model):
     comment_id = models.AutoField(primary_key=True)

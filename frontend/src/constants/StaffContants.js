@@ -1,0 +1,1 @@
+export const DETAIL_BILL = 'DETAIL_BILL';

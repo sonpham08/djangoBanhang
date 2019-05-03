@@ -36,6 +36,18 @@ export const getListProductUser = () => {
     }
 }
 
+// export const getProductById = (product_id) => {
+//     return dispatch => {
+//         let headers = { "Content-Type": "application/json",'X-CSRFToken': csrftoken };
+//         let url = `/api/v1/product/${product_id}/`;
+//         axios({
+//             url, headers, method: 'get'
+//         }).then(function(res){
+//             console.log(res);
+//         })
+//     }
+// }
+
 export const getCategoryById = (category_id) => {
     return dispatch => {
         let headers = { "Content-Type": "application/json",'X-CSRFToken': csrftoken };
@@ -65,6 +77,21 @@ export const getListCart = () => {
             dispatch({
                 type: types.GET_LIST_CART,
                 cart: res.data
+            })
+        })
+    }
+}
+
+export const getCartByProductId = (product_id) => {
+    return dispatch => {
+        let headers = { "Content-Type": "application/json",'X-CSRFToken': csrftoken };
+        let url = '/api/v1/cart/';
+        axios({
+            url, headers, method: 'get',
+        }).then(function(res){     
+            dispatch({
+                type: types.GET_LIST_STAFFSHIP,
+                staff: res.data
             })
         })
     }
@@ -154,6 +181,59 @@ export const changeInfo = (user) => {
             dispatch({
                 type: types.CHANGE_INFO,
                 user: res.data
+            })
+        })
+    }
+}
+
+export const getListStaffship = () => {
+    let token = localStorage.getItem('token');
+    return dispatch => {
+        let headers = { "Content-Type": "application/json",'X-CSRFToken': csrftoken };
+        let url = '/api/v1/staff/';
+        axios({
+            url, headers, method: 'get',
+        }).then(function(res){     
+            dispatch({
+                type: types.GET_LIST_STAFFSHIP,
+                staff: res.data
+            })
+        })
+    }
+}
+
+export const createBill = (bill) => {
+    return dispatch => {
+        var headers = { "Content-Type": "application/json",'X-CSRFToken': csrftoken };
+        let url = '/api/v1/bill/';
+        let data = JSON.stringify({
+            total_price: bill.total_price,
+            address: bill.address,
+            status: bill.status,
+            user: bill.user,
+            status_product: 1,
+            staff: bill.staff
+        });
+        
+        axios({
+            url, headers, method: 'post',data
+        }).then(function(res){
+            toastr.success('Đặt hàng thành công. Bạn sẽ nhận được cuộc gọi từ cửa hàng để xác nhận');
+            dispatch({
+                type: types.CREATE_BILL,
+                bill: res.data
+            })
+            let url = '/api/v1/detail/';
+            let data = JSON.stringify({
+                number_product_order: bill.number_product_order,
+                product: bill.product_id,
+                bill: res.data.bill_id
+            });
+            axios({
+                url, headers, method: 'post', data
+            }).then(function(response) {
+                console.log(response);
+                
             })
         })
     }

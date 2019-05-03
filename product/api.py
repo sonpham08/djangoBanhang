@@ -116,6 +116,7 @@ class CartViewSet(viewsets.ModelViewSet):
                 "Error": repr(e)
             }, 400)
 
+            
 class StatusProductViewSet(viewsets.ModelViewSet):
     queryset = StatusProduct.objects.all()
     permission_classes = [permissions.AllowAny, ]
@@ -130,6 +131,41 @@ class BillViewSet(viewsets.ModelViewSet):
     queryset = Bill.objects.all()
     permission_classes = [permissions.AllowAny, ]
     serializer_class = BillSerializer
+
+    @action(detail=False)
+    def get_bill_with_product(self, request):
+        # req_user = request.user
+        res = {}
+        get_user = ""
+        bill_list = []
+        res2 = []
+        try:
+            bills = Bill.objects.all()
+            details = DetailOrder.objects.all()
+            users = User.objects.all()
+            products = Product.objects.all()
+            for user in users:
+                get_user = user.id
+                for bill in bills:
+                    if bill.user.id == get_user:
+                        for detail in details:
+                            if detail.bill.bill_id == bill.bill_id:
+                                response = {
+                                    "bill_id": detail.bill.bill_id,
+                                    "product_id": detail.product.product_id
+                                }
+                                bill_list.append(response)
+                                
+                                res = {
+                                    "user": bill.user.id,
+                                    "bill": bill_list
+                                }
+                                res2.append(res)
+            return Response(res2,200)
+        except Exception as e:
+            return Response({
+                "Error": repr(e)
+            }, 400)
 
 class DetailOrderViewSet(viewsets.ModelViewSet):
     queryset = DetailOrder.objects.all()

@@ -20,8 +20,6 @@ class ManageShip extends Component {
 
     componentWillReceiveProps(nextProps) {
         //data staff ship with pagination
-        console.log(nextProps);
-
         this.dataStaffShip = nextProps.adstaffship.map(
             (a, i) => a
         );
@@ -41,7 +39,9 @@ class ManageShip extends Component {
     }
 
     deleteStaffShip = (staff_id) => {
-        this.props.deleteStaffShip(staff_id);
+        if (window.confirm("Are you sure to delete this category ? ")) {
+            this.props.deleteStaffShip(staff_id);
+        } 
     }
 
     render() {
@@ -79,7 +79,7 @@ class ManageShip extends Component {
                                                     <tr key={idx}>
                                                         <td>{staff.name}</td>
                                                         <td>{staff.phone}</td>
-                                                        <td align="right">
+                                                        <td>
                                                             <button type="button" className="btn btn-default mg-left" onClick={() => this.openAddFormStaffShip(staff)}>
                                                                 <i className="fas fa-edit"></i> Sửa</button>
                                                             <button type="button" className="btn btn-danger mg-left" onClick={() => this.deleteStaffShip(staff.staff_id)}>
@@ -124,10 +124,11 @@ class ManageShip extends Component {
 
                     <AddStaffShip
                         openAddForm={this.props.openAddForm}
-                        category={this.props.category}
+                        staffship={this.props.staffship}
                         closeAddForm={this.props.closeAddForm}
-                        addCategory={this.props.addCategory}
-                        onSaveCategory={this.props.onSaveCategory} />
+                        addStaffship={this.props.addStaffship}
+                        onSaveCategory={this.props.onSaveCategory}
+                        editStaffship={this.props.editStaffship} />
                 </div>
 
             )

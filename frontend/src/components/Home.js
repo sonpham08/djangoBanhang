@@ -33,6 +33,7 @@ class Home extends Component {
 
     async componentDidMount() {
         await new Promise(resolve => resolve(this.props.userActions.getListProductUser()));
+        await new Promise(resolve => resolve(this.props.userActions.getListStaffship()));
     }
 
     getUserInfo = () => {
@@ -59,9 +60,14 @@ class Home extends Component {
         this.props.userActions.deleteFromCart(cart_id);
     }
 
+    createBill = (bill) => {
+        this.props.userActions.createBill(bill);
+    }
+
     render() {
         var {showDetail,showCart}=this.state;
-        var {isAuthenticated,user, uscategories,cart} = this.props;
+        var {isAuthenticated,user, uscategories,cart, staff} = this.props;
+        
         return (
             <div style={{background:'gainsboro'}}>
                 <Header
@@ -117,6 +123,8 @@ class Home extends Component {
                     <Cart
                     {...this.props}
                     deleteFromCart={this.deleteFromCart}
+                    createBill={this.createBill}
+                    staff={staff}
                     />
                 </div>
                 }
@@ -132,7 +140,8 @@ const mapStateToProps = state => {
         user: state.user,
         usproduct: state.usproduct,
         uscategories: state.uscategories,
-        cart: state.cart
+        cart: state.cart,
+        staff: state.staff
     };
 };
 

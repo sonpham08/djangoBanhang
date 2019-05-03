@@ -21,7 +21,8 @@ class AdminManage extends Component {
             tab: 0,
             category: {},
             product: {},
-            staff: {}
+            staff: {},
+            staffship: {}
         };
     }
 
@@ -38,7 +39,8 @@ class AdminManage extends Component {
     }
 
     toggleAddForm = () => {
-        this.setState({ openAddForm: !this.state.openAddForm, category: {}, product: {}, staff: {} });
+        this.setState({ openAddForm: !this.state.openAddForm, category: {}, product: {}, staff: {}
+        , staffship: {} });
     }
 
     openFormEditCategory = (category) => {
@@ -73,6 +75,10 @@ class AdminManage extends Component {
     editProduct = (data) => {
         this.props.editProduct(data);
         this.setState({ openAddForm: false });
+    }
+
+    openAddFormStaffShip = (staffship) => {
+        this.setState({ openAddForm: true, staffship: staffship });
     }
 
     render() {
@@ -128,7 +134,15 @@ class AdminManage extends Component {
                 adcustomer={this.props.adcustomer}/>
                 <ManageStaffShip
                 tab={tab}
-                adstaffship={this.props.adstaffship}/>
+                openAddForm={this.state.openAddForm}
+                adstaffship={this.props.adstaffship}
+                staffship={this.state.staffship}
+                toggleAddForm={this.toggleAddForm}
+                closeAddForm={this.closeAddForm}
+                openAddFormStaffShip={this.openAddFormStaffShip}
+                deleteStaffShip={this.props.deleteStaffShip}
+                addStaffship={this.props.addStaffship}
+                editStaffship={this.props.editStaffship}/>
             </div>
         )
     }

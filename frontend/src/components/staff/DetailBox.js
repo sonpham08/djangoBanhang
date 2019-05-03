@@ -13,7 +13,7 @@ import { BrowserRouter, Link, Route, Router, NavLink } from 'react-router-dom';
 
 var $ = require("jquery");
 
-class BuyNowBox extends Component {
+class DetailBox extends Component {
     // eslint-disable-next-line
     constructor(props) {
         super(props);
@@ -46,9 +46,9 @@ class BuyNowBox extends Component {
     }
 
     render() {
-        var {product,user,staff}=this.props;
+        var {product}=this.props;
         return (
-            <div className="modal fade" id="buymodal" role="dialog">
+            <div className="modal fade" id="detailmodal" role="dialog">
                 <div className="modal-dialog">
                     <div className="modal-content">
                         <div className="modal-header">
@@ -62,14 +62,6 @@ class BuyNowBox extends Component {
                                 </div>                              
                                 <div className="col-xs-7 col-sm-7 col-md-7 col-lg-7">                                 
                                     <form className="form-horizontal" role="form" onClick={this.createBill}>
-                                        <div className="form-group">                                           
-                                            <div className="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-                                                <label>Người mua hàng: </label>
-                                            </div>                                        
-                                            <div className="col-xs-7 col-sm-7 col-md-7 col-lg-7">
-                                                <p>{user.fullname}</p>
-                                            </div>                                          
-                                        </div>
                                         <div className="form-group">                                           
                                             <div className="col-xs-5 col-sm-5 col-md-5 col-lg-5">
                                                 <label>Tên sản phẩm: </label>
@@ -92,22 +84,6 @@ class BuyNowBox extends Component {
                                             </div>                                        
                                             <div className="col-xs-7 col-sm-7 col-md-7 col-lg-7">
                                                 <p>{product.number_product_order}</p>
-                                            </div>                                          
-                                        </div>
-                                        <div className="form-group">                                           
-                                            <div className="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-                                                <label>Địa chỉ: </label>
-                                            </div>                                        
-                                            <div className="col-xs-7 col-sm-7 col-md-7 col-lg-7">
-                                                <p>{user.address}</p>
-                                            </div>                                          
-                                        </div>
-                                        <div className="form-group">                                           
-                                            <div className="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-                                                <label>Số điện thoại: </label>
-                                            </div>                                        
-                                            <div className="col-xs-7 col-sm-7 col-md-7 col-lg-7">
-                                                <p>{user.phone}</p>
                                             </div>                                          
                                         </div>
                                         <div className="form-group">                                           
@@ -144,4 +120,4 @@ class BuyNowBox extends Component {
     }
 }
 
-export default BuyNowBox;
+export default DetailBox;

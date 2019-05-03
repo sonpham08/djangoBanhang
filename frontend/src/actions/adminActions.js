@@ -363,3 +363,62 @@ export const getListStaffShip = () => {
         })
     }
 }
+
+export const addStaffship = (name,phone) => {
+    return dispatch => {
+        let headers = { "Content-Type": "application/json",'X-CSRFToken': csrftoken };
+        let data = JSON.stringify({
+            "name": name,
+            "phone": phone
+        });
+        let url = '/api/v1/staff/'; 
+        axios({
+            url, headers,method:'post',data:data
+        }).then(function(res){
+            dispatch({
+                type: types.ADD_STAFFSHIP,
+                adstaffship: res.data
+            })
+        }).catch(error => {
+
+        })
+    }
+}
+
+export const editStaffship = (staffship) => {
+    return dispatch => {
+        let headers = { "Content-Type": "application/json",'X-CSRFToken': csrftoken };
+        let url = `/api/v1/staff/${staffship.id}/`;
+        let data = JSON.stringify({
+            name: staffship.name,
+            phone: staffship.phone
+        });
+        axios({
+            url, headers, method: 'put', data
+        }).then(function(res) {
+            dispatch({
+                type: types.EDIT_STAFFSHIP,
+                adstaffship: res.data
+            })
+        })
+    }
+}
+
+export const deleteStaffship = (staff_id) => {
+    return dispatch => {
+        let headers = { "Content-Type": "application/json",'X-CSRFToken': csrftoken };
+        let url = `/api/v1/staff/${staff_id}/`;
+        axios({
+            url, headers, method: 'delete'
+        }).then(function(res) {
+            let result = {
+                staff_id: staff_id,
+                status: 'success'
+            };
+            dispatch({
+                type: types.DELETE_STAFFSHIP,
+                adstaffship: result
+            })
+        })
+    }
+}

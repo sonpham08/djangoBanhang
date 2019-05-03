@@ -7,24 +7,32 @@ class AddStaffShip extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            category_name: ""
+            staffship_name: "",
+            staffship_phone: ""
         }
     }
 
     componentWillReceiveProps(nextProps) {
+        if(nextProps.staffship.name != undefined) {
+            this.setState({staffship_name: nextProps.staffship.name,
+            staffship_phone: nextProps.staffship.phone});
+        } else{
+            this.setState({staffship_name: "", staffship_phone: ""});
+        }
     }
 
-    addCategory = (e) => {
+    addStaffship = (e) => {
         e.preventDefault();
-        if(this.props.category.category_id == undefined) {
-            this.props.addCategory(this.state.category_name);
+        if(this.props.staffship.name == undefined) {
+            this.props.addStaffship(this.state.staffship_name, this.state.staffship_phone);
             this.props.closeAddForm();
         } else {
-            let newCategory = {
-                category_id: this.props.category.category_id,
-                name: this.refs.category_name.value
+            let newStaffship = {
+                id: this.props.staffship.staff_id,
+                name: this.refs.staffship_name.value,
+                phone: this.refs.staffship_phone.value
             };
-            this.props.onSaveCategory(newCategory);
+            this.props.editStaffship(newStaffship);
             this.props.closeAddForm();
         }
         
@@ -37,14 +45,11 @@ class AddStaffShip extends Component {
         this.setState({
             [name]:value
         });
-        this.setState({
-            flag_for_msg: false,
-        });
     }
 
     closeAddForm = () => {
         this.props.closeAddForm();
-        this.setState({category_name: ""});
+        this.setState({staffship_name: "", staffship_phone: ""});
     }
 
     render() {
@@ -53,19 +58,29 @@ class AddStaffShip extends Component {
                 <div>            
                     <div className="panel panel-danger">
                         <div className="panel-heading">
-                                <h3 className="panel-title">{this.props.category.category_id == undefined ? "Thêm danh mục":"Chỉnh sửa danh mục"}</h3>
+                                <h3 className="panel-title">{this.props.staffship.name == undefined ? "Thêm nhân viên giao hàng":"Chỉnh sửa nhân viên giao hàng"}</h3>
                         </div>
                         <div className="panel-body">
                                 
-                                <form onSubmit={this.addCategory} method="POST" className="form-horizontal" role="form">
+                                <form onSubmit={this.addStaffship} method="POST" className="form-horizontal" role="form">
                                     <div className="form-group">
                                         <div className="col-md-1">
-                                            <label>Tên danh mục: </label>
+                                            <label>Tên nhân viên: </label>
                                         </div>
                                         <div className="col-md-11">
-                                            <input type="text" className="form-control" ref="category_name" onChange={this.onChange}
-                                            name="category_name"
-                                            value={this.state.category_name}/>
+                                            <input type="text" className="form-control" ref="staffship_name" onChange={this.onChange}
+                                            name="staffship_name"
+                                            value={this.state.staffship_name}/>
+                                        </div>
+                                    </div>
+                                    <div className="form-group">
+                                        <div className="col-md-1">
+                                            <label>Số điện thoại: </label>
+                                        </div>
+                                        <div className="col-md-11">
+                                            <input type="text" className="form-control" ref="staffship_phone" onChange={this.onChange}
+                                            name="staffship_phone"
+                                            value={this.state.staffship_phone}/>
                                         </div>
                                     </div>
                                     <div className="form-group">

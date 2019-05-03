@@ -10,6 +10,7 @@ import { Pagination,
 } from 'reactstrap';
 import { BrowserRouter, Link, Route, Router, NavLink } from 'react-router-dom';
 import BuyNowBox from './BuyNowBox';
+import toastr from 'toastr';
 var $ = require("jquery");
 
 class Cart extends Component {
@@ -25,7 +26,8 @@ class Cart extends Component {
                 quantity: "",
                 price: "",
                 promotion: ""
-            }
+            },
+            select_product_buy: ""
         };
     }
 
@@ -48,8 +50,14 @@ class Cart extends Component {
         if(this.props.user.username == "") {
             window.location.href="/login";
         } else {
-            console.log(product);
-            this.setState({ product: product });
+            let numbuy = parseInt(this.state.num_buy);
+            if(numbuy > product.quantity) {
+                toastr.warning(`Kho hàng chỉ còn ${product.quantity} sản phẩm!`);
+            }
+            else {
+                product.number_product_order = numbuy;
+                this.setState({ product: product });
+            }
         }
     }
 
@@ -58,10 +66,8 @@ class Cart extends Component {
     }
 
     render() {
-        const {cart,user}=this.props;
+        const {cart,user,staff}=this.props;
         const {num_buy, product}=this.state;
-        console.log(cart);
-        
         const listCart = cart.product
         .map((product_each,idx) => {
             return (
@@ -77,7 +83,7 @@ class Cart extends Component {
                              
                         <div className="col-xs-1 col-sm-1 col-md-1 col-lg-1"
                         style={{borderRight: '1px'}}>
-                            <input type="number" className="form-control"
+                            <input type="number" className="form-control" name="num_buy"
                             value={num_buy} onChange={this.onChange}/>
                         </div>
                              
@@ -103,6 +109,7 @@ class Cart extends Component {
                                     onClick={() => this.onBuyNowFromCart(product_each)}
                                     data-toggle="modal" data-target="#buymodal"
                                     >Mua ngay</button>
+                                        {/* <input type="checkbox" value={product_each.product_id} name="select_product_buy"/> */}
                                 </div>
                             </div>
                         </div>    
@@ -117,11 +124,16 @@ class Cart extends Component {
                     </div>
                     <div className="panel-body">              
                         <div className="row">                     
-                                {listCart}          
-                                <BuyNowBox
-                                    user={user}
-                                    product={product}
-                                />                          
+                                {listCart}     
+                                { num_buy <= product.quantity &&     
+                                    <BuyNowBox
+                                        user={user}
+                                        product={product}
+                                        staff={staff}
+                                        createBill={this.props.createBill}
+                                        deleteFromCart={this.deleteFromCart}
+                                    />
+                                }                   
                         </div>
                     </div>
                 </div>

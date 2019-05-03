@@ -8,6 +8,7 @@ from rest_framework import viewsets, permissions
 from rest_framework.decorators import action
 from knox.models import AuthToken
 from .serializers import UserSerializer, CreateUserSerializer
+# from product.models import Product, DetailOrder
 User = get_user_model()
 # from .models import User
 

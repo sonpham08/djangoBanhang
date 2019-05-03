@@ -147,6 +147,22 @@ export const getUserInfo = () => {
     }
 }
 
+export const getStaffInfo = () => {
+    let token = localStorage.getItem('token');
+    return dispatch => {
+        let headers = { "Content-Type": "application/json", 'Authorization': `Token ${token}` };
+        let url = '/api/users/get_staff/';
+        axios({
+                url, headers, method: "get"
+        }).then(function(user) {
+            dispatch({
+                type: types.USER_INFO,
+                user
+            })
+        })
+    }
+}
+
 export const checkTimeOut = expirationDate => {
     return dispatch => {
         setTimeout(() => {

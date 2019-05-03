@@ -7,7 +7,11 @@ import adstaff from './adstaff';
 import adcustomer from './adcustomer';
 import usproduct from './usproduct';
 import cart from './cart';
+import bill from './bill';
 import adstaffship from './adstaffship';
+import staff from './staff';
+import product from './product';
+import detail from './detail';
 
 const myReducer = combineReducers({
     auth,
@@ -18,7 +22,11 @@ const myReducer = combineReducers({
     adcustomer,
     usproduct,
     cart,
-    adstaffship
+    adstaffship,
+    bill,
+    staff,
+    product,
+    detail,
 });
 
 export default myReducer;

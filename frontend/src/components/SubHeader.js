@@ -31,8 +31,7 @@ class SubHeader extends Component {
     }
 
     onLogout = () => {
-        this.props.authActions.onLogout();
-        window.location.reload(true);
+        this.props.onLogout();
     }
 
     render() {
