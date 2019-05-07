@@ -9,6 +9,7 @@ import ProductDetail from './product/ProductDetail';
 import Cart from './product/Cart';
 import * as authActions from '../actions/authActions';
 import * as userActions from '../actions/userActions';
+import * as adminActions from '../actions/adminActions';
 
 var $ = require("jquery");
 
@@ -33,7 +34,13 @@ class Home extends Component {
 
     async componentDidMount() {
         await new Promise(resolve => resolve(this.props.userActions.getListProductUser()));
+        await new Promise(resolve => resolve(this.props.userActions.getListProductPromotion()));
         await new Promise(resolve => resolve(this.props.userActions.getListStaffship()));
+        await new Promise(resolve => resolve(this.props.adminActions.getListCategory()));
+    }
+
+    componentWillUnmount() {
+        localStorage.removeItem("listPro");
     }
 
     getUserInfo = () => {
@@ -66,7 +73,7 @@ class Home extends Component {
 
     render() {
         var {showDetail,showCart}=this.state;
-        var {isAuthenticated,user, uscategories,cart, staff} = this.props;
+        var {isAuthenticated,user, uscategories,cart, staff,promotion} = this.props;
         
         return (
             <div style={{background:'gainsboro'}}>
@@ -77,13 +84,15 @@ class Home extends Component {
                 getUserInfo={this.getUserInfo}
                 logout={this.logout}
                 showCart={this.showCart}
+                showProductDetail={this.showProductDetail}
                 />
                 {showDetail == false && showCart == false &&
                 <div className="row">     
                     <div className="col-xs-1 col-sm-1 col-md-1 col-lg-1">   
                     </div>
                     <div className="col-xs-10 col-sm-10 col-md-10 col-lg-10">
-                        <MenuCategory />
+                        <MenuCategory 
+                        adcategories={this.props.adcategories}/>
                     </div>            
                     <div className="col-xs-1 col-sm-1 col-md-1 col-lg-1">                      
                     </div> 
@@ -101,7 +110,7 @@ class Home extends Component {
 
                         <div className="row">
                             <ProductListPC
-                            product={this.state.product}/>
+                            promotion={promotion}/>
                         </div>
                 </div>
                 }
@@ -139,9 +148,10 @@ const mapStateToProps = state => {
         isAuthenticated: state.auth,
         user: state.user,
         usproduct: state.usproduct,
-        uscategories: state.uscategories,
+        adcategories: state.adcategories,
         cart: state.cart,
-        staff: state.staff
+        staff: state.staff,
+        promotion: state.promotion
     };
 };
 
@@ -149,6 +159,7 @@ const mapDispatchToProps = (dispatch, props) => {
     return {
         authActions: bindActionCreators(authActions, dispatch),
         userActions: bindActionCreators(userActions, dispatch),
+        adminActions: bindActionCreators(adminActions, dispatch),
     };
 };
 

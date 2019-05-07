@@ -18,7 +18,7 @@ function getCookie(name) {
     return cookieValue;
 }
 
-export const addProduct = (name, price, size,quantity, weight, color, sound, 
+export const addProduct = (name, price, size,quantity, hdh, color, CPU, 
     memory, camera, pin, gurantee, promotion, start_promo, end_promo, category, image_name) => {
     return dispatch => {
         const formData = new FormData();
@@ -27,9 +27,9 @@ export const addProduct = (name, price, size,quantity, weight, color, sound,
         formData.append('price', price);
         formData.append('quantity', quantity);
         formData.append('size', size);
-        formData.append('weight', weight);
+        formData.append('hdh', hdh);
         formData.append('color', color);
-        formData.append('sound', sound);
+        formData.append('CPU', CPU);
         formData.append('memory', memory);
         formData.append('camera', camera);
         formData.append('pin', pin);
@@ -78,9 +78,9 @@ export const editProduct = (product) => {
             price: product.price,
             size: product.size,
             quantity: product.quantity,
-            weight: product.weight,
+            hdh: product.hdh,
             color: product.color,
-            sound: product.sound,
+            CPU: product.CPU,
             memory: product.memory,
             camera: product.camera,
             pin: product.pin,
@@ -147,44 +147,6 @@ export const getListProduct = () => {
         })
     }
 }
-
-// export const getListProduct = () => {
-//     return dispatch => {
-//         let headers = { "Content-Type": "application/json",'X-CSRFToken': csrftoken };
-//         let url = "/api/v1/product/";
-//         axios({
-//             url, headers, method: 'get'
-//         }).then(async function(res){
-//             dispatch({
-//                 type: types.GET_LIST_PRODUCT,
-//                 adproduct: res.data
-//             })
-//             var result = [];
-//             let newRes = Object.assign([], res.data);
-//             for(var i=0; i< newRes.length; i++) {
-//                 await new Promise(resolve => {
-                    
-//                     let headers = { "Content-Type": "application/json",'X-CSRFToken': csrftoken };
-                    
-//                         let url = `/api/v1/category/${newRes[i].category}/`;
-//                         console.log(url);
-//                         axios({
-//                             url, headers, method: 'get'
-//                         }).then(function(res){
-//                             resolve(res);
-//                         })
-                    
-//                 }).then(res => {
-                    
-//                     result.push(res.data);
-//                     console.log(res.data);
-//                 })
-//             }
-//             console.log(result);
-            
-//         })
-//     }
-// }
 
 export const addCategory = (name) => {
     return dispatch => {
@@ -298,7 +260,9 @@ export const deleteStaff = (id) => {
 
 export const getListCustomer = () => {
     return dispatch => {
-        let headers = { "Content-Type": "application/json",'X-CSRFToken': csrftoken };
+        let token = localStorage.getItem('token');
+        let headers = { "Content-Type": "application/json",'X-CSRFToken': csrftoken,
+        'Authorization': `Token ${token}` };
         let url = '/api/users/get_customer/';
         axios({
             url, headers, method: 'get'

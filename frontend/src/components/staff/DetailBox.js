@@ -22,38 +22,26 @@ class DetailBox extends Component {
         };
     }
 
-    createBill = (e) => {
+    informBill = (e) => {
         e.preventDefault();
-        let {product, user}=this.props;
-        let bill = {
-            total_price: product.price - product.promotion,
-            address: user.address,
-            status: "Nothing",
-            user: user.id,
-            status_product: 1,
-            staff: 1,
-            number_product_order: product.number_product_order,
-            product_id: product.product_id
-        };
-        console.log(bill);
-        
-        this.props.createBill(bill);
-        //get cart_id by product_id in cart
-
-        //delete product out of cart
-        this.props.deleteFromCart(product.cart_id);
-        // $("#buymodal").modal('hide');
+        let staff = this.refs.choose_staff.value;
+        let quantity = this.props.product.number_product_order;
+        let rest = this.props.product.rest_product;
+        let product_id = this.props.product.product_id;
+        let bill_id = this.props.bill.bill_id;
+        this.props.confirmBill(staff, bill_id, rest, quantity, product_id);
     }
 
     render() {
-        var {product}=this.props;
+        var {product,staff}=this.props;
+        let checkout = (parseInt(product.price) - parseInt(product.promotion)) || 0;
         return (
             <div className="modal fade" id="detailmodal" role="dialog">
                 <div className="modal-dialog">
                     <div className="modal-content">
                         <div className="modal-header">
                             <button type="button" className="close" data-dismiss="modal">&times;</button>
-                            <h4 className="modal-title">Đặt hàng</h4>
+                            <h4 className="modal-title">Đơn hàng đang chờ xét duyệt</h4>
                         </div>
                         <div className="modal-body">
                             <div className="row">
@@ -61,7 +49,7 @@ class DetailBox extends Component {
                                     <img src={"static/dataset/"+product.image} style={{width: '100%'}}/>
                                 </div>                              
                                 <div className="col-xs-7 col-sm-7 col-md-7 col-lg-7">                                 
-                                    <form className="form-horizontal" role="form" onClick={this.createBill}>
+                                    <form className="form-horizontal" role="form" onSubmit={this.informBill}>
                                         <div className="form-group">                                           
                                             <div className="col-xs-5 col-sm-5 col-md-5 col-lg-5">
                                                 <label>Tên sản phẩm: </label>
@@ -91,13 +79,23 @@ class DetailBox extends Component {
                                                 <label>Thanh toán: </label>
                                             </div>                                        
                                             <div className="col-xs-7 col-sm-7 col-md-7 col-lg-7">
-                                                <p>{product.price - product.promotion}</p>
+                                                <p>{checkout}</p>
                                             </div>                                          
                                         </div>
                                         <div className="form-group">                                           
-                                            <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                                <p style={{color: 'red'}}>Bạn vui lòng kiểm tra thông tin. Nhấn mua hàng nếu hoàn tất</p>
-                                            </div>                                                                           
+                                            <div className="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+                                                <label>Chọn nhân viên giao hàng: </label>
+                                            </div>                                        
+                                            <div className="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+                                                <select name="" id="input" className="form-control" required="required" ref="choose_staff">
+                                                    <option value={-1}>All</option>
+                                                    {
+                                                        staff.map((sta, idx) =>
+                                                            <option key={idx} value={sta.staff_id}>{sta.name}</option>
+                                                        )
+                                                    }
+                                                </select>
+                                            </div>                                          
                                         </div>
                                         <div className="form-group">
                                             <div className="col-sm-10 col-sm-offset-2">
@@ -105,7 +103,7 @@ class DetailBox extends Component {
                                                 type="submit" 
                                                 className="btn btn-primary"
                                                 style={{float: 'right', marginTop: '23px'}}
-                                                >Gửi</button>
+                                                >Xác nhận</button>
                                             </div>
                                         </div>
                                     </form>                                 

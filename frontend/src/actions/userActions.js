@@ -21,7 +21,7 @@ function getCookie(name) {
 
 export const getListProductUser = () => {
     return dispatch => {
-        let headers = { "Content-Type": "application/json",'X-CSRFToken': csrftoken };
+        let headers = { "Content-Type": "application/json",'X-CSRFToken': csrftoken};
         let url = "/api/v1/product/";
         axios({
             url, headers, method: 'get'
@@ -31,6 +31,23 @@ export const getListProductUser = () => {
             dispatch({
                 type: types.USER_GET_LIST_PRODUCT,
                 usproduct: res.data
+            })
+        })
+    }
+}
+
+export const getListProductPromotion = () => {
+    return dispatch => {
+        let headers = { "Content-Type": "application/json",'X-CSRFToken': csrftoken };
+        let url = "/api/v1/product/get_product_promotion/";
+        axios({
+            url, headers, method: 'get'
+        }).then(function(res){
+            console.log(res);
+            
+            dispatch({
+                type: types.USER_GET_LIST_PRODUCT_PROMOTION,
+                promotion: res.data
             })
         })
     }

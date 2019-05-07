@@ -23,8 +23,6 @@ class Body extends Component {
     }
 
     render() {
-        console.log(this.props.user);
-        
         if(this.props.user.is_superuser == true) {
             return (
                 <AdminHome/>

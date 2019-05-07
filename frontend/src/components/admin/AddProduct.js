@@ -14,9 +14,9 @@ class AddProduct extends Component {
             product_price: "",
             product_size: "",
             product_quantity: "",
-            product_weight: "",
+            product_hdh: "",
             product_color: "",
-            product_sound: "",
+            product_CPU: "",
             product_memory: "",
             product_camera: "",
             product_pin: "",
@@ -37,9 +37,9 @@ class AddProduct extends Component {
                 product_price: nextProps.product.price, 
                 product_size: nextProps.product.size, 
                 product_quantity: nextProps.product.quantity, 
-                product_weight: nextProps.product.weight, 
+                product_hdh: nextProps.product.hdh, 
                 product_color: nextProps.product.color,
-                product_sound: nextProps.product.sound, 
+                product_CPU: nextProps.product.CPU, 
                 product_memory: nextProps.product.memory, 
                 product_camera: nextProps.product.camera,
                 product_pin: nextProps.product.pin, 
@@ -53,8 +53,8 @@ class AddProduct extends Component {
         if(nextProps.openAddForm == false) {
             this.setState({
                 product_name: "", product_price: "", product_quantity: "",
-                product_size: "", product_weight: "", product_color: "",
-                product_sound: "", product_memory: "", product_camera: "",
+                product_size: "", product_hdh: "", product_color: "",
+                product_CPU: "", product_memory: "", product_camera: "",
                 product_pin: "", product_gurantee: "", product_promotion: "",
                 product_start_promo: "", product_end_promo: "", product_category: ""
                 
@@ -91,9 +91,9 @@ class AddProduct extends Component {
         let price = this.state.product_price;
         let size = this.state.product_size;
         let quantity = this.state.product_quantity;
-        let weight = this.state.product_weight;
+        let hdh = this.state.product_hdh;
         let color = this.state.product_color;
-        let sound = this.state.product_sound;
+        let CPU = this.state.product_CPU;
         let memory = this.state.product_memory;
         let camera = this.state.product_camera;
         let pin = this.state.product_pin;
@@ -105,7 +105,7 @@ class AddProduct extends Component {
         let image_name = this.state.selectedFile;
 
         if(this.props.product.product_id == undefined) {
-            this.props.addProduct(name, price, size,quantity, weight, color, sound, memory,
+            this.props.addProduct(name, price, size,quantity, hdh, color, CPU, memory,
                 camera, pin, gurantee, promotion, start_promo, end_promo, category, image_name);
         } else {
             let data = {
@@ -113,7 +113,7 @@ class AddProduct extends Component {
                 name: name,
                 price: price,
                 quantity: quantity,
-                size: size, weight: weight, color: color, sound: sound, memory: memory,
+                size: size, hdh: hdh, color: color, CPU: CPU, memory: memory,
                 camera: camera, pin: pin, gurantee: gurantee, promotion: promotion,
                 start_promo: start_promo, end_promo: end_promo, category: category
             };
@@ -122,8 +122,8 @@ class AddProduct extends Component {
         
         this.setState({
             product_name: "", product_price: "", product_quantity: "",
-            product_size: "", product_weight: "", product_color: "",
-            product_sound: "", product_memory: "", product_camera: "",
+            product_size: "", product_hdh: "", product_color: "",
+            product_CPU: "", product_memory: "", product_camera: "",
             product_pin: "", product_gurantee: "", product_promotion: "",
             product_start_promo: "", product_end_promo: "", product_category: ""
             
@@ -220,7 +220,7 @@ class AddProduct extends Component {
                                         </div>
                                         <div className="col-md-11">
                                             <input 
-                                            type="number" 
+                                            type="text" 
                                             className="form-control" 
                                             ref="product_size"
                                             name="product_size"
@@ -230,16 +230,16 @@ class AddProduct extends Component {
                                     </div>
                                     <div className="form-group">
                                         <div className="col-md-1">
-                                            <label>Cân nặng: </label>
+                                            <label>Hệ điều hành: </label>
                                         </div>
                                         <div className="col-md-11">
                                             <input 
                                             type="text" 
                                             className="form-control" 
-                                            ref="product_weight"
-                                            name="product_weight"
+                                            ref="product_hdh"
+                                            name="product_hdh"
                                             onChange={this.onChange}
-                                            value={this.state.product_weight}/>
+                                            value={this.state.product_hdh}/>
                                         </div>
                                     </div>
                                     <div className="form-group">
@@ -258,16 +258,16 @@ class AddProduct extends Component {
                                     </div>
                                     <div className="form-group">
                                         <div className="col-md-1">
-                                            <label>Âm thanh: </label>
+                                            <label>CPU: </label>
                                         </div>
                                         <div className="col-md-11">
                                             <input 
                                             type="text" 
                                             className="form-control" 
-                                            ref="product_sound"
-                                            name="product_sound"
+                                            ref="product_CPU"
+                                            name="product_CPU"
                                             onChange={this.onChange}
-                                            value={this.state.product_sound}
+                                            value={this.state.product_CPU}
                                             />
                                         </div>
                                     </div>

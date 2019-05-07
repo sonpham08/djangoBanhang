@@ -65,9 +65,12 @@ class AdminSideMenu extends Component {
         return (
             <div className="col-xs-2 col-sm-2 col-md-2 col-lg-2">
                 <div className="collapse navbar-collapse navbar-ex1-collapse">
-                    <ul className="nav navbar-nav side-nav">
+                    <ul className="nav navbar-nav side-nav" style={{paddingLeft: '0'}}>
                         <li>
-                            <Link to="/">GUN</Link>
+                            <Link to="/" style={{ color: "white", padding: '0' }}>
+                                <img src="/static/img/lg.png"
+                                style={{height: '50px', width: '225px'}}/>
+                            </Link>
                         </li>
                         <li id="manage_product" >
                             <Link 

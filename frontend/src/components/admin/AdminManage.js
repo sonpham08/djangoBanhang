@@ -8,6 +8,7 @@ import { BrowserRouter, Link, Route, Router, NavLink } from 'react-router-dom';
 import ManageProduct from './ManageProduct';
 import ManageStaff from './MangeStaff';
 import ManageCustomer from './MangeCustomer';
+import ManageBill from './ManageBill';
 import ManageStaffShip from './ManageStaffShip';
 var $ = require("jquery");
 
@@ -22,7 +23,8 @@ class AdminManage extends Component {
             category: {},
             product: {},
             staff: {},
-            staffship: {}
+            staffship: {},
+            filter: -1
         };
     }
 
@@ -65,9 +67,9 @@ class AdminManage extends Component {
         }
     }
 
-    addProduct = (name, price, size,quantity, weight, color, sound, memory,
+    addProduct = (name, price, size,quantity, hdh, color, CPU, memory,
         camera, pin, gurantee, promotion, start_promo, end_promo, category, image_name) => {
-        this.props.addProduct(name, price, size, quantity, weight, color, sound, memory,
+        this.props.addProduct(name, price, size, quantity, hdh, color, CPU, memory,
             camera, pin, gurantee, promotion, start_promo, end_promo, category, image_name);
         this.setState({ openAddForm: false });
     }
@@ -79,6 +81,10 @@ class AdminManage extends Component {
 
     openAddFormStaffShip = (staffship) => {
         this.setState({ openAddForm: true, staffship: staffship });
+    }
+
+    onSetstateForFilterProduct = (category_id) => {
+        this.setState({filter: category_id});
     }
 
     render() {
@@ -94,6 +100,7 @@ class AdminManage extends Component {
             <div>
                 <ManageProduct
                     tab={tab}
+                    filter={this.state.filter}
                     product={this.state.product}
                     category={this.state.category}
                     adproduct={this.props.adproduct}
@@ -104,7 +111,8 @@ class AdminManage extends Component {
                     addProduct={this.addProduct}
                     editProduct={this.editProduct}
                     openAddFormProduct={this.openAddFormProduct}
-                    deleteProduct={this.deleteProduct} />
+                    deleteProduct={this.deleteProduct}
+                    onSetstateForFilterProduct={this.onSetstateForFilterProduct} />
                 <ManageCategory
                     tab={tab}
                     adcategories={this.props.adcategories}
@@ -132,6 +140,12 @@ class AdminManage extends Component {
                 <ManageCustomer
                 tab={tab}
                 adcustomer={this.props.adcustomer}/>
+                <ManageBill
+                tab={tab}
+                adcustomer={this.props.adcustomer}
+                adstaffship={this.props.adstaffship}
+                detail={this.props.detail}
+                />
                 <ManageStaffShip
                 tab={tab}
                 openAddForm={this.state.openAddForm}

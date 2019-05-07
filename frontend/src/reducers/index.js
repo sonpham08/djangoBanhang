@@ -12,6 +12,7 @@ import adstaffship from './adstaffship';
 import staff from './staff';
 import product from './product';
 import detail from './detail';
+import promotion from './promotion';
 
 const myReducer = combineReducers({
     auth,
@@ -27,6 +28,7 @@ const myReducer = combineReducers({
     staff,
     product,
     detail,
+    promotion,
 });
 
 export default myReducer;

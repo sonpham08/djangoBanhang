@@ -144,11 +144,34 @@ class MenuProduct extends Component {
     }
 
     render() {
+        var {adcategories}=this.props;
+        console.log(adcategories);
+        var listCategory = [];
+        if(adcategories.length > 0) {
+            listCategory = adcategories.map((category, idx) => {
+                let label = "";
+                switch(category.name) {
+                    case "Xiaomi": label = "sub-tivi"; break;
+                    case "Honor": label = "sub-phone"; break;
+                    case "Samsung": label = "sub-laptop"; break;
+                    case "Iphone": label = "sub-refrigerator"; break;
+                    case "Oppo": label = "sub-software"; break;
+                    case "Huawuei": label = "sub-device"; break;
+                    default: label = "";
+                }
+                return (
+                    <li key={idx} 
+                    onMouseOver={() => this.showSubMenuItem(label)}
+                    style={{cursor: 'pointer'}}
+                    >{category.name}</li>
+                );
+            });
+        }
         return (
             <div className="container">
                 <div className="menu-product" onMouseLeave={this.hideAllSubMenu}>
                     <ul className="ul-menu-product">
-                        <li onMouseOver={() => this.showSubMenuItem('sub-tivi')}>
+                        {/* <li onMouseOver={() => this.showSubMenuItem('sub-tivi')}>
                         <i className="fas fa-tv"></i>&nbsp;<a href="#">Oppo</a></li>
                         <li onMouseOver={() => this.showSubMenuItem('sub-phone')}>
                         <i className="fas fa-phone"></i>&nbsp;<a href="#">Samsung</a></li>
@@ -159,7 +182,8 @@ class MenuProduct extends Component {
                         <li onMouseOver={() => this.showSubMenuItem('sub-software')}>
                         <i className="fab fa-adn"></i>&nbsp;<a href="#">Honor</a></li>
                         <li onMouseOver={() => this.showSubMenuItem('sub-device')}>
-                        <i className="fas fa-wrench"></i>&nbsp;<a href="#">Xiaomi</a></li>
+                        <i className="fas fa-wrench"></i>&nbsp;<a href="#">Xiaomi</a></li> */}
+                        {listCategory}
                     </ul>
                     {/* sub menu for tivi */}
                     <div className="menu-product-tivi">

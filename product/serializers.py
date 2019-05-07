@@ -55,7 +55,7 @@ class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model=Product
         fields=('product_id',"camera","quantity", "color","end_promo","gurantee","memory","name","pin","price","promotion"
-        ,"size","sound","start_promo","weight", "image","category", "rating")
+        ,"size","hdh","start_promo","CPU", "image","category", "rating")
 
 class CartSerializer(serializers.ModelSerializer):
     class Meta:

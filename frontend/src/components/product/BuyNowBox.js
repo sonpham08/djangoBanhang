@@ -26,7 +26,7 @@ class BuyNowBox extends Component {
         e.preventDefault();
         let {product, user}=this.props;
         let bill = {
-            total_price: product.price - product.promotion,
+            total_price: product.price * (product.promotion/100),
             address: user.address,
             status: "Nothing",
             user: user.id,
@@ -61,7 +61,7 @@ class BuyNowBox extends Component {
                                     <img src={"static/dataset/"+product.image} style={{width: '100%'}}/>
                                 </div>                              
                                 <div className="col-xs-7 col-sm-7 col-md-7 col-lg-7">                                 
-                                    <form className="form-horizontal" role="form" onClick={this.createBill}>
+                                    <form className="form-horizontal" role="form" onSubmit={this.createBill}>
                                         <div className="form-group">                                           
                                             <div className="col-xs-5 col-sm-5 col-md-5 col-lg-5">
                                                 <label>Người mua hàng: </label>
@@ -115,7 +115,7 @@ class BuyNowBox extends Component {
                                                 <label>Thanh toán: </label>
                                             </div>                                        
                                             <div className="col-xs-7 col-sm-7 col-md-7 col-lg-7">
-                                                <p>{product.price - product.promotion}</p>
+                                                <p>{product.price - (product.price * product.promotion/100)}</p>
                                             </div>                                          
                                         </div>
                                         <div className="form-group">                                           

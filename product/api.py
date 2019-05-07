@@ -11,6 +11,10 @@ StatusProductSerializer,StaffSerializer,BillSerializer,DetailOrderSerializer,Com
 CartSerializer)
 import base64
 import os
+import time
+import moment
+import datetime
+
 User=get_user_model()
 
 class CategoryViewSet(viewsets.ModelViewSet):
@@ -40,9 +44,9 @@ class ProductViewSet(viewsets.ModelViewSet):
                             "size":product.size,
                             "quantity": product.quantity,
                             "rating": product.rating,
-                            "weight": product.weight,
+                            "hdh": product.hdh,
                             "color": product.color,
-                            "sound": product.sound,
+                            "CPU": product.CPU,
                             "memory": product.memory,
                             "camera": product.camera,
                             "pin": product.pin,
@@ -57,6 +61,48 @@ class ProductViewSet(viewsets.ModelViewSet):
                             "price_after_promotion": price_after_promotion
                         }
                         res.append(result)
+            return Response(res, 200)
+        except Exception as e:
+            return Response({
+                "Error": repr(e)
+            }, 400)
+
+    @action(detail=False)
+    def get_product_promotion(self, request):
+        res=[]
+        try:
+            products = Product.objects.all()
+            categories = Category.objects.all()
+            for product in products:
+                if product.promotion != 0 and str(datetime.datetime.now()) <= str(product.end_promo):
+                    for category in categories:
+                        if product.category.category_id  == category.category_id:
+                            price_after_promotion = product.price - product.promotion
+                            result = {
+                                "product_id": product.product_id,
+                                "name": product.name,
+                                "image": str(product.image),
+                                "price": product.price,
+                                "size":product.size,
+                                "quantity": product.quantity,
+                                "rating": product.rating,
+                                "hdh": product.hdh,
+                                "color": product.color,
+                                "CPU": product.CPU,
+                                "memory": product.memory,
+                                "camera": product.camera,
+                                "pin": product.pin,
+                                "gurantee": product.gurantee,
+                                "promotion": product.promotion,
+                                "start_promo": product.start_promo,
+                                "end_promo": product.end_promo,
+                                "category": {
+                                    "category_id": category.category_id,
+                                    "name": category.name
+                                },
+                                "price_after_promotion": price_after_promotion
+                            }
+                            res.append(result)
             return Response(res, 200)
         except Exception as e:
             return Response({
@@ -94,9 +140,9 @@ class CartViewSet(viewsets.ModelViewSet):
                                     "size":product.size,
                                     "quantity": product.quantity,
                                     "rating": product.rating,
-                                    "weight": product.weight,
+                                    "hdh": product.hdh,
                                     "color": product.color,
-                                    "sound": product.sound,
+                                    "CPU": product.CPU,
                                     "memory": product.memory,
                                     "camera": product.camera,
                                     "pin": product.pin,
@@ -132,36 +178,151 @@ class BillViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.AllowAny, ]
     serializer_class = BillSerializer
 
+    # get list bill with each product and bill in one user
+    # @action(detail=False)
+    # def get_bill_with_product(self, request):
+    #     res = []
+    #     json = {}
+    #     try:
+    #         bills = Bill.objects.all()
+    #         details = DetailOrder.objects.all()
+    #         users = User.objects.all()
+    #         for bill in bills:
+    #             json = {
+    #                 "user": bill.user.id,
+    #                 "bill": [{
+    #                     "bill_id": detail.bill.bill_id,
+    #                     "create_date": detail.bill.create_date,
+    #                     "total_price": detail.bill.total_price,
+    #                     "address": detail.bill.address,
+    #                     "status_product": detail.bill.status_product.status_id,
+    #                     "staff": detail.bill.staff.staff_id,
+    #                     "product": {
+    #                         "product_id": detail.product.product_id,
+    #                         "camera": detail.product.camera,
+    #                         "name": detail.product.name,
+    #                         "price": detail.product.price,
+    #                         "image": str(detail.product.image),
+    #                         "size":detail.product.size,
+    #                         "quantity": detail.product.quantity,
+    #                         "rating": detail.product.rating,
+    #                         "hdh": detail.product.hdh,
+    #                         "color": detail.product.color,
+    #                         "CPU": detail.product.CPU,
+    #                         "memory": detail.product.memory,
+    #                         "pin": detail.product.pin,
+    #                         "gurantee": detail.product.gurantee,
+    #                         "promotion": detail.product.promotion,
+    #                         "start_promo": detail.product.start_promo,
+    #                         "end_promo": detail.product.end_promo,
+    #                         }
+    #                 }for detail in details if detail.bill.user.id == bill.user.id]
+    #             }
+    #             if json not in res:
+    #                 res.append(json)
+    #         return Response(res,200)
+    #     except Exception as e:
+    #         return Response({
+    #             "Error": repr(e)
+    #         }, 400)
+
+
+    # get bill for user
     @action(detail=False)
-    def get_bill_with_product(self, request):
-        # req_user = request.user
-        res = {}
-        get_user = ""
-        bill_list = []
-        res2 = []
+    def get_bill_user(self, request):
+        req_user = request.user
+        res = []
+        js = {}
         try:
             bills = Bill.objects.all()
             details = DetailOrder.objects.all()
             users = User.objects.all()
-            products = Product.objects.all()
-            for user in users:
-                get_user = user.id
-                for bill in bills:
-                    if bill.user.id == get_user:
-                        for detail in details:
-                            if detail.bill.bill_id == bill.bill_id:
-                                response = {
-                                    "bill_id": detail.bill.bill_id,
-                                    "product_id": detail.product.product_id
-                                }
-                                bill_list.append(response)
-                                
-                                res = {
-                                    "user": bill.user.id,
-                                    "bill": bill_list
-                                }
-                                res2.append(res)
-            return Response(res2,200)
+            for detail in details:
+                if detail.bill.user.id == req_user.id:
+                    js = {
+                        "user": detail.bill.user.id,
+                        "product": {
+                            "product_id": detail.product.product_id,
+                            "camera": detail.product.camera,
+                            "name": detail.product.name,
+                            "price": detail.product.price,
+                            "image": str(detail.product.image),
+                            "size":detail.product.size,
+                            "quantity": detail.product.quantity,
+                            "rating": detail.product.rating,
+                            "hdh": detail.product.hdh,
+                            "color": detail.product.color,
+                            "CPU": detail.product.CPU,
+                            "memory": detail.product.memory,
+                            "pin": detail.product.pin,
+                            "gurantee": detail.product.gurantee,
+                            "promotion": detail.product.promotion,
+                            "start_promo": detail.product.start_promo,
+                            "end_promo": detail.product.end_promo,
+                            "address": detail.bill.user.address,
+                            "phone": detail.bill.user.phone,
+                            "number_product_order": detail.number_product_order,
+                            "rest_product": detail.product.quantity - detail.number_product_order
+                        },
+                        "bill": {
+                            "bill_id": detail.bill.bill_id,
+                            "create_date": detail.bill.create_date,
+                            "total_price": detail.bill.total_price,
+                            "status_product": detail.bill.status_product.status_id,
+                            "staff": detail.bill.staff.staff_id,
+                        }
+                    }
+                    res.append(js)
+            return Response(res,200)
+        except Exception as e:
+            return Response({
+                "Error": repr(e)
+            }, 400)
+    # get list bill with each user each object
+    @action(detail=False)
+    def get_bill_with_product(self, request):
+        res = []
+        js = {}
+        try:
+            bills = Bill.objects.all()
+            details = DetailOrder.objects.all()
+            users = User.objects.all()
+            for detail in details:
+                js = {
+                    "user": detail.bill.user.id,
+                    "product": {
+                        "product_id": detail.product.product_id,
+                        "camera": detail.product.camera,
+                        "name": detail.product.name,
+                        "price": detail.product.price,
+                        "image": str(detail.product.image),
+                        "size":detail.product.size,
+                        "quantity": detail.product.quantity,
+                        "rating": detail.product.rating,
+                        "hdh": detail.product.hdh,
+                        "color": detail.product.color,
+                        "CPU": detail.product.CPU,
+                        "memory": detail.product.memory,
+                        "pin": detail.product.pin,
+                        "gurantee": detail.product.gurantee,
+                        "promotion": detail.product.promotion,
+                        "start_promo": detail.product.start_promo,
+                        "end_promo": detail.product.end_promo,
+                        "address": detail.bill.user.address,
+                        "phone": detail.bill.user.phone,
+                        "number_product_order": detail.number_product_order,
+                        "rest_product": detail.product.quantity - detail.number_product_order
+                    },
+                    "bill": {
+                        "bill_id": detail.bill.bill_id,
+                        "create_date": detail.bill.create_date,
+                        "total_price": detail.bill.total_price,
+                        "status_product": detail.bill.status_product.status_id,
+                        "staff": detail.bill.staff.staff_id,
+                    }
+                }
+                res.append(js)
+            return Response(res,200)
         except Exception as e:
             return Response({
                 "Error": repr(e)

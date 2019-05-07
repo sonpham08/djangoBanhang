@@ -23,8 +23,6 @@ var myReducer = (state=initialState, action) => {
             }
             return [...newState];
         case types.GET_CATEGORY_BY_ID:
-            console.log(action.adcategories);
-            
             return action.adcategories;
         default:
             return state;

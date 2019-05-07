@@ -50,7 +50,10 @@ class ProductDetail extends Component {
         // localStorage.setItem('cart', JSON.stringify(cart));
         // this.props.updateNumOnCart();
         if(this.props.user.username == "") {
-            window.location.href="/login";
+            if(window.confirm('Bạn cần đăng nhập để thực hiện thao tác này!')) {
+                window.location.href="/login";
+            }
+            
         } else {
             this.props.addToCart(product.product_id, this.props.user.id);
         }
@@ -59,7 +62,10 @@ class ProductDetail extends Component {
 
     buyNow = () => {
         if(this.props.user.username == "") {
-            window.location.href="/login";
+            if(window.confirm('Bạn cần đăng nhập để thực hiện thao tác này!')) {
+                window.location.href="/login";
+            }
+            
         } 
     }
 
@@ -86,7 +92,7 @@ class ProductDetail extends Component {
                                                 <label>Giá: </label>
                                             </div>                                                            
                                             <div className="col-xs-10 col-sm-10 col-md-10 col-lg-10" style={{display: 'flex'}}>
-                                                <h3 style={{color: 'red', marginTop: '-3px', marginLeft: '10px'}}>{product.price - product.promotion} Đ</h3>
+                                                <h3 style={{color: 'red', marginTop: '-3px', marginLeft: '10px'}}>{product.price - (product.price * product.promotion/100)} Đ</h3>
                                                 <i><strike> {product.price} Đ</strike></i>
                                             </div>                                                                    
                                         </div>
@@ -160,9 +166,9 @@ class ProductDetail extends Component {
                                             <th>Giá</th>
                                             <th>Kích cỡ</th>
                                             <th>Số lượng nhập</th>
-                                            <th>Cân nặng</th>
+                                            <th>Hệ điều hành</th>
                                             <th>Màu sắc</th>
-                                            <th>Âm thanh</th>
+                                            <th>CPU</th>
                                             <th>Bộ nhớ</th>
                                             <th>Máy ảnh</th>
                                             <th>Pin</th>
@@ -177,9 +183,9 @@ class ProductDetail extends Component {
                                             <td>{product.price}</td>
                                             <td>{product.size}</td>
                                             <td>{product.quantity}</td>
-                                            <td>{product.weight}</td>
+                                            <td>{product.hdh}</td>
                                             <td>{product.color}</td>
-                                            <td>{product.sound}</td>
+                                            <td>{product.CPU}</td>
                                             <td>{product.memory}</td>
                                             <td>{product.camera}</td>
                                             <td>{product.pin}</td>

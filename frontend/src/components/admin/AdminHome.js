@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as authActions from '../../actions/authActions';
 import * as adminActions from '../../actions/adminActions';
+import * as staffActions from '../../actions/staffActions';
 import { BrowserRouter, Link, Route, Router, NavLink } from 'react-router-dom';
 import AdminHeader from './AdminHeader';
 import AdminManage from './AdminManage';
@@ -23,9 +24,10 @@ class AdminHome extends Component {
     async componentWillMount() {
         this.props.adminActions.getListCategory();
         await new Promise(resolve => resolve(this.props.adminActions.getListProduct()));
-        this.props.adminActions.getListStaff();
-        this.props.adminActions.getListCustomer();
-        this.props.adminActions.getListStaffShip();
+        await new Promise(resolve => resolve(this.props.adminActions.getListCustomer()));
+        await new Promise(resolve => resolve(this.props.adminActions.getListStaff()));
+        await new Promise(resolve => resolve(this.props.adminActions.getListStaffShip()));
+        await new Promise(resolve => resolve(this.props.staffActions.getBill()));
     }
 
     getUserInfo = () => {
@@ -40,9 +42,9 @@ class AdminHome extends Component {
         this.setState({tab: tab});
     }
 
-    addProduct = (name, price, size,quantity ,weight, color, sound, memory,
+    addProduct = (name, price, size,quantity ,hdh, color, CPU, memory,
     camera, pin, gurantee, promotion, start_promo, end_promo, category, image_name) => {
-        this.props.adminActions.addProduct(name, price, size,quantity ,weight, color, sound, memory,
+        this.props.adminActions.addProduct(name, price, size,quantity ,hdh, color, CPU, memory,
             camera, pin, gurantee, promotion, start_promo, end_promo, category, image_name);
     }
 
@@ -95,7 +97,15 @@ class AdminHome extends Component {
     }
 
     render() {
-        var {isAuthenticated,user,adcategories, adproduct, adstaff, adcustomer,adstaffship} = this.props;
+        var {isAuthenticated,
+            user,
+            adcategories, 
+            adproduct, 
+            adstaff, 
+            adcustomer,
+            adstaffship,
+            detail,
+        } = this.props;
 
         return (
             <div style={{background:'gainsboro'}} style={{paddingTop: '63px'}}>
@@ -113,6 +123,7 @@ class AdminHome extends Component {
                 adproduct={adproduct}
                 adcategories={adcategories}
                 adcustomer={adcustomer}
+                detail={detail}
                 tab={this.state.tab}
                 addProduct={this.addProduct}
                 editProduct={this.editProduct}
@@ -140,7 +151,8 @@ const mapStateToProps = state => {
         adproduct: state.adproduct,
         adstaff: state.adstaff,
         adcustomer: state.adcustomer,
-        adstaffship: state.adstaffship
+        adstaffship: state.adstaffship,
+        detail: state.detail
     };
 };
 
@@ -148,6 +160,7 @@ const mapDispatchToProps = (dispatch, props) => {
     return {
         authActions: bindActionCreators(authActions, dispatch),
         adminActions: bindActionCreators(adminActions, dispatch),
+        staffActions: bindActionCreators(staffActions, dispatch),
     };
 };
 

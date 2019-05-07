@@ -21,9 +21,13 @@ class ManageProduct extends Component {
 
     componentWillReceiveProps(nextProps) {
         //data product with pagination
-        console.log(nextProps);
-        
-        this.dataProduct = nextProps.adproduct.map(
+        let product_filter = nextProps.adproduct;
+        if(nextProps.filter != -1) {
+            product_filter = product_filter.filter((product) => {
+                return product.category.category_id == nextProps.filter;
+            });
+        }
+        this.dataProduct = product_filter.map(
             (a, i) => a
         );
         this.pageSizeProduct = 5;
@@ -45,6 +49,12 @@ class ManageProduct extends Component {
         this.props.deleteProduct(product_id);
     }
 
+    onFilterProduct = () => {
+        let category_id = this.refs.filter_product.value;
+        console.log(category_id);
+        this.props.onSetstateForFilterProduct(category_id);
+    }
+
     render() {
         const { currentPage } = this.state;
         if(this.props.tab == 1) {
@@ -56,8 +66,8 @@ class ManageProduct extends Component {
                             <h3 className="panel-title">Quản lý sản phẩm</h3>
                             <div className="form_cate_ad">
                                 <label>Loại sản phẩm: </label>
-                                <select name="" id="input" className="form-control" required="required">
-                                    <option value={1}>All</option>
+                                <select name="" id="input" className="form-control" ref="filter_product" required="required" onChange={this.onFilterProduct}>
+                                    <option value={-1}>All</option>
                                     {
                                         this.props.adcategories.map((category, idx) =>
                                             <option key={idx} value={category.category_id}>{category.name}</option>
@@ -79,12 +89,12 @@ class ManageProduct extends Component {
                                         <th>Giá</th>
                                         <th>Kích cỡ</th>
                                         <th>Số lượng nhập</th>
-                                        <th>Cân nặng</th>
+                                        <th>Hệ điều hành</th>
                                         <th>Màu sắc</th>
-                                        <th>Âm thanh</th>
+                                        <th>CPU</th>
                                         <th>Bộ nhớ</th>
-                                        <th>Máy ảnh</th>
-                                        <th>Pin</th>
+                                        <th>Máy ảnh(MP)</th>
+                                        <th>Pin(mAh)</th>
                                         <th>Bảo hành</th>
                                         <th>Khuyến mãi</th>
                                         <th>Loại máy</th>
@@ -105,14 +115,14 @@ class ManageProduct extends Component {
                                                         <td>{product.price}</td>
                                                         <td>{product.size}</td>
                                                         <td>{product.quantity}</td>
-                                                        <td>{product.weight}</td>
+                                                        <td>{product.hdh}</td>
                                                         <td>{product.color}</td>
-                                                        <td>{product.sound}</td>
+                                                        <td>{product.CPU}</td>
                                                         <td>{product.memory}</td>
                                                         <td>{product.camera}</td>
                                                         <td>{product.pin}</td>
                                                         <td>{product.gurantee}</td>
-                                                        <td>{product.promotion}</td>
+                                                        <td>{product.promotion}%</td>
                                                         <td>{product.category.name}</td>
     
                                                         <td style={{ cursor: 'pointer' }}>

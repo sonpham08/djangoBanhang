@@ -5,9 +5,9 @@ import * as types from '../constants/AdminConstants';
 // 	price: 0,
 // 	quantity: 0,
 // 	size: 0,
-// 	weight: "",
+// 	hdh: "",
 // 	color: "",
-// 	sound: "",
+// 	CPU: "",
 // 	memory: "",
 // 	camera: "",
 // 	pin: "",
@@ -38,9 +38,9 @@ var myReducer = (state=initialState, action) => {
 			newState[index].price = action.adproduct.price;
 			newState[index].quantity = action.adproduct.quantity;
 			newState[index].size = action.adproduct.size;
-			newState[index].weight = action.adproduct.weight;
+			newState[index].hdh = action.adproduct.hdh;
 			newState[index].color = action.adproduct.color;
-			newState[index].sound = action.adproduct.sound;
+			newState[index].CPU = action.adproduct.CPU;
 			newState[index].memory = action.adproduct.memory;
 			newState[index].camera = action.adproduct.camera;
 			newState[index].pin = action.adproduct.pin;

@@ -9,11 +9,13 @@ class Header extends Component {
         this.state = {
             username: "",
             token: null,
+            listJustSee: []
         }
     }
 
     componentWillMount() {
         let token = localStorage.getItem('token');
+        let listJustSee = JSON.parse(localStorage.getItem("listPro")) || [];
         if(token != undefined) {
             this.props.getUserInfo();
             this.setState({
@@ -46,38 +48,69 @@ class Header extends Component {
         }
     }
 
+    openFormJustSee = () => {
+        let listJustSee = JSON.parse(localStorage.getItem("listPro")) || [];
+        if(this.refs.dropdownsee.style.display == 'none') {
+            this.refs.dropdownsee.style.display = 'block';
+            this.refs.dropdownsee.style.marginTop = '-45px';
+            this.refs.dropdownsee.style.marginRight = '230px';
+            this.refs.dropdownsee.style.height = '78%';
+            this.refs.dropdownsee.style.width = '30%';
+            this.refs.dropdownsee.style.background = "rgb(229, 16, 29)";
+            this.refs.dropdownsee.style.border = "none";
+            this.refs.dropdownsee.style.boxShadow = 'none';
+            this.setState({listJustSee:listJustSee});
+        }else {
+            this.refs.dropdownsee.style.display = 'none';
+        }
+    }
+
     navigateToHome = () => {
         window.location.href="/";
     }
 
     showCart = () => {
         if(this.props.user.username == "") {
-            window.location.href="/login";
+            if(window.confirm("Bạn cần đăng nhập để thực hiện chức năng này!")) {
+                window.location.href="/login";
+            }
         } else {
             this.props.showCart();
         }
     }
 
+    check = () => {
+        if(window.confirm("Bạn cần đăng nhập để thực hiện chức năng này!")) {
+            window.location.href="/login";
+        }else {
+            return "#";
+        }
+    }
+
+    setTabForTransfer = (tab) => {
+        localStorage.setItem('tabTransfer', tab);
+    }
+
+    showProductDetail = (product) => {
+        this.props.showProductDetail(product);
+    }
+
     render() {
-        console.log(this.props.cart);
+        var {user}=this.props;
+        var {listJustSee}=this.state;
+        console.log(listJustSee);
         
         return (
             <nav className="navbar navbar-default" style={{ background: '#e5101d', position: 'fixed', top: '0', width: '100%', zIndex: '1000',borderColor: '#e5101d', borderRadius: '0' }}>
-                <div className="container-fluid">
-                    {/* <div className="navbar-header">
-                        <button type="button" className="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                            <span className="sr-only">Toggle navigation</span>
-                            <span className="icon-bar"></span>
-                            <span className="icon-bar"></span>
-                            <span className="icon-bar"></span>
-                        </button>
-                        <a className="navbar-brand" href="/" style={{ color: "white", paddingTop: '15px' }}>Gun</a>
-                    </div> */}
+                <div className="container-fluid" style={{paddingLeft: '0'}}>
 
-                    <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style={{paddingLeft: '0'}}>
                         <ul className="nav navbar-nav">
-                            <li><Link to="/" style={{ color: "white" }} onClick={this.navigateToHome}>GUN</Link></li>
-                            <li><a href="/transfer" style={{ color: "white" }}>Kiểm tra đơn hàng <span className="sr-only">(current)</span></a></li>
+                            <li><Link to="/" style={{ color: "white", padding: '0' }} onClick={this.navigateToHome}>
+                            <img src="/static/img/lg.png"
+                            style={{height: '50px', width: '163px'}}/>
+                            </Link></li>
+                            {/* <li><a href={user.username == "" ? "#":"/transfer"} style={{ color: "white" }}>Kiểm tra đơn hàng</a></li> */}
                             <li><Link to="/sale" style={{ color: "white" }}>Khuyến mãi</Link></li>
                         </ul>
                         <div className="search-container">
@@ -87,6 +120,24 @@ class Header extends Component {
                             </form>
                         </div>
                         <ul className="nav navbar-nav navbar-right">
+                            <li><Link 
+                                to="#"
+                                style={{ color: "white", background: "rgb(229, 16, 29)" }}
+                                className="dropdown-toggle"
+                                data-toggle="dropdown"
+                                id="dropdown-see"
+                                onClick={this.openFormJustSee}
+                                >Sản phẩm vừa xem</Link></li>
+                            <ul className="dropdown-menu" ref="dropdownsee">
+                                {
+                                    listJustSee.map((justsee, idx) =>
+                                        <li key={idx} onClick={() => this.showProductDetail(justsee)}>
+                                        <img src={justsee.image} 
+                                        style={{marginLeft: '2px', maxHeight: '34px',maxWidth: '34px',cursor: 'pointer', float: 'right', border: '1px solid', background: "white"}} />
+                                        </li>
+                                    )
+                                }
+                            </ul>
                             <li style={{fontSize: '35px'}} className="li_icon_cart" onClick={this.showCart}>
                                 <span 
                                 className="glyphicon glyphicon-shopping-cart icon_cart" 
@@ -95,24 +146,23 @@ class Header extends Component {
                                 </span>
                                 <span className="num_on_cart">{this.props.cart.product.length }</span>
                             </li>
-                            <li><Link to="#" style={{ color: "white" }}>Sản phẩm vừa xem</Link></li>
                             {
-                                this.state.token == null ?
-                                <li style={{display: 'flex'}}>
+                                this.state.token == null &&
+                                <li style={{display: 'flex', marginLeft:'26px'}}>
                                     <Link to="/login" style={{ color: "white", paddingRight: '0px' }}>Đăng nhập&nbsp;|&nbsp;</Link>
                                     <Link to="/register" style={{ color: "white", paddingLeft: '0px' }}> Đăng ký</Link>
                                 </li>
-                                :
-                                <li><Link to="/" style={{ color: "white" }} onClick={this.onLogout}>Đăng xuất</Link></li>
+                                
                             }
                             {this.state.token != null ?
-                                <div className="dropdown" style={{float:'right', marginTop: '15px'}}>
+                                <div className="dropdown" style={{float:'right', marginTop: '10px'}}>
                                     <li>
                                         <Link
                                         to="/"
                                         id="my-dropdown" 
                                         className="dropdown-toggle"
-                                        data-toggle="dropdown" 
+                                        data-toggle="dropdown"
+                                        style={{background: "#e5101d"}}
                                         onClick={this.openFormCustomUser}>
                                             <Avatar 
                                             name={this.state.username} 
@@ -122,7 +172,9 @@ class Header extends Component {
                                     </li>
                                 
                                     <ul className="dropdown-menu" ref="dropdownmenu">
-                                    <li><Link to="/transfer">Hiệu chỉnh</Link></li>
+                                    <li className="p-d-10"><i className="fas fa-user"><Link to="/transfer" onClick={() => this.setTabForTransfer(1)}> Thông tin cá nhân</Link></i></li>
+                                    <li className="p-d-10"><i className="fas fa-exchange-alt"><Link to="/transfer" onClick={() => this.setTabForTransfer(2)}> Kiểm tra đơn hàng</Link></i></li>
+                                    <li className="p-d-10"><i className="fas fa-sign-out-alt"><Link to="/" onClick={this.onLogout}> Đăng xuất</Link></i></li>
                                     </ul>
                                 
                                 </div> : ""}

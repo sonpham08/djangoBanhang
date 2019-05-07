@@ -10,7 +10,7 @@
 .ul-menu-product {
     list-style: none;
     display: flex;
-    padding: 20px 10px;
+    padding: 20px 66px;
     margin: 5px 20px;
 }
 
@@ -618,6 +618,8 @@ li.next_car_product {
     font-size: 2em;
     color: grey;
     cursor: pointer;
+    padding-left: 25px;
+    margin-right: 20px;
 }
 
 .icon_cart {
@@ -717,4 +719,8 @@ section .section-title {
         padding-bottom: 0px;
         margin-bottom: 10px;
     }
+}
+
+.p-d-10 {
+    padding: 10px;
 }
