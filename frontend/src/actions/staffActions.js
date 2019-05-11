@@ -73,13 +73,38 @@ export const editBillWithStaffAndQuantity = (bill_id, staff_id,status_product) =
     }
 }
 
-export const deleteBill = (bill_id) => {
+// export const deleteBill = (bill_id) => {
+//     return dispatch => {
+//         var headers = { "Content-Type": "application/json",'X-CSRFToken': csrftoken };
+//         let url = `/api/v1/bill/${bill_id}/`;
+//         axios({
+//             url, headers, method: 'delete'
+//         }).then(function(res) {
+//             let response = {
+//                 status: "success",
+//                 bill_id: bill_id
+//             };
+//             dispatch({
+//                 type: typesStaff.DELETE_BILL,
+//                 detail: response
+//             });
+//         })
+//     }
+// }
+
+export const deleteBill = (product, bill_id) => {
     return dispatch => {
         var headers = { "Content-Type": "application/json",'X-CSRFToken': csrftoken };
-        let url = `/api/v1/bill/${bill_id}/`;
-        axios({
-            url, headers, method: 'delete'
-        }).then(function(res) {
+        let axBill = axios({
+            url: `/api/v1/bill/${bill_id}/`, headers, method: 'delete'
+        });
+        let data = JSON.stringify({
+            quantity: parseInt(product.quantity) + parseInt(product.number_product_order)
+        });
+        let axProduct = axios({
+            url: `/api/v1/product/${product.product_id}/`, headers, method: 'patch', data
+        });
+        Promise.all([axBill,axProduct]).then(function(values) {
             let response = {
                 status: "success",
                 bill_id: bill_id
@@ -88,7 +113,7 @@ export const deleteBill = (bill_id) => {
                 type: typesStaff.DELETE_BILL,
                 detail: response
             });
-        })
+        });
     }
 }
 

@@ -26,7 +26,43 @@ class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     permission_classes = [permissions.AllowAny, ]
     serializer_class = ProductSerializer
-
+    
+    @action(detail=False)
+    def get_product_hightlight(self, request):
+        res=[]
+        try:
+            products = Product.objects.all()
+            dealed = DealedProduct.objects.all()
+            categories = Category.objects.all()
+            for deal in dealed:
+                res.append({
+                    "product_id": deal.product.product_id,
+                    "name": deal.product.name,
+                    "price": deal.product.price,
+                    "image": str(deal.product.image),
+                    "size":deal.product.size,
+                    "quantity": deal.product.quantity,
+                    "rating": deal.product.rating,
+                    "hdh": deal.product.hdh,
+                    "color": deal.product.color,
+                    "CPU": deal.product.CPU,
+                    "memory": deal.product.memory,
+                    "camera": deal.product.camera,
+                    "pin": deal.product.pin,
+                    "gurantee": deal.product.gurantee,
+                    "promotion": deal.product.promotion,
+                    "start_promo": deal.product.start_promo,
+                    "end_promo": deal.product.end_promo,
+                    "category": [{
+                        "category_id": category.category_id,
+                        "name": category.name
+                    }for category in categories if category.category_id == deal.product.category.category_id]
+                })
+            return Response(res, 200)
+        except Exception as e:
+            return Response({
+                "Error": repr(e)
+            }, 400)
     @action(detail=False)
     def get_product(self, request):
         res=[]
@@ -75,6 +111,48 @@ class ProductViewSet(viewsets.ModelViewSet):
             categories = Category.objects.all()
             for product in products:
                 if product.promotion != 0 and str(datetime.datetime.now()) <= str(product.end_promo):
+                    for category in categories:
+                        if product.category.category_id  == category.category_id:
+                            price_after_promotion = product.price - product.promotion
+                            result = {
+                                "product_id": product.product_id,
+                                "name": product.name,
+                                "image": str(product.image),
+                                "price": product.price,
+                                "size":product.size,
+                                "quantity": product.quantity,
+                                "rating": product.rating,
+                                "hdh": product.hdh,
+                                "color": product.color,
+                                "CPU": product.CPU,
+                                "memory": product.memory,
+                                "camera": product.camera,
+                                "pin": product.pin,
+                                "gurantee": product.gurantee,
+                                "promotion": product.promotion,
+                                "start_promo": product.start_promo,
+                                "end_promo": product.end_promo,
+                                "category": {
+                                    "category_id": category.category_id,
+                                    "name": category.name
+                                },
+                                "price_after_promotion": price_after_promotion
+                            }
+                            res.append(result)
+            return Response(res, 200)
+        except Exception as e:
+            return Response({
+                "Error": repr(e)
+            }, 400)
+
+    @action(detail=False)
+    def get_product_new(self, request):
+        res=[]
+        try:
+            products = Product.objects.all()
+            categories = Category.objects.all()
+            for product in products:
+                if str(datetime.date.today() - datetime.timedelta(days=1)) == str(product.start_promo.strftime('%Y-%m-%d')):
                     for category in categories:
                         if product.category.category_id  == category.category_id:
                             price_after_promotion = product.price - product.promotion
@@ -337,3 +415,26 @@ class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     permission_classes = [permissions.AllowAny, ]
     serializer_class = CommentSerializer
+
+    @action(detail=False)
+    def get_comment(self, request):
+        comments = Comment.objects.all()
+        users = User.objects.all()
+        res = []
+        try:
+            for comment in comments:
+                res.append({
+                    "comment_id": comment.comment_id,
+                    "time_comment": str(comment.time_comment.strftime('%Y-%m-%d')),
+                    "content": comment.content,
+                    "product": comment.product.product_id,
+                    "user": [{
+                        "user_id": user.id,
+                        "fullname": user.fullname
+                    }for user in users if user.id == comment.user.id]
+                })
+            return Response(res, 200)
+        except Exception as e:
+            return Response({
+                "Error": repr(e)
+            }, 400)

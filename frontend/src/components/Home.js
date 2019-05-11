@@ -5,6 +5,7 @@ import Header from './Header';
 import MenuCategory from './MenuCategory';
 import ProductList from './product/ProductList';
 import ProductListPC from './product/ProductListPC';
+import ProductListNew from './product/ProductListNew';
 import ProductDetail from './product/ProductDetail';
 import Cart from './product/Cart';
 import * as authActions from '../actions/authActions';
@@ -34,9 +35,11 @@ class Home extends Component {
 
     async componentDidMount() {
         await new Promise(resolve => resolve(this.props.userActions.getListProductUser()));
+        await new Promise(resolve => resolve(this.props.userActions.getListProductNew()));
         await new Promise(resolve => resolve(this.props.userActions.getListProductPromotion()));
         await new Promise(resolve => resolve(this.props.userActions.getListStaffship()));
         await new Promise(resolve => resolve(this.props.adminActions.getListCategory()));
+        await new Promise(resolve => resolve(this.props.userActions.getComment()));
     }
 
     componentWillUnmount() {
@@ -73,8 +76,7 @@ class Home extends Component {
 
     render() {
         var {showDetail,showCart}=this.state;
-        var {isAuthenticated,user, uscategories,cart, staff,promotion} = this.props;
-        
+        var {isAuthenticated,user, uscategories,cart, staff,promotion, news, comment} = this.props;
         return (
             <div style={{background:'gainsboro'}}>
                 <Header
@@ -100,7 +102,13 @@ class Home extends Component {
                 }
                 {showDetail == false && showCart == false &&
                 <div className="body" style={{ marginTop: '150px', padding: '5px 40px' }}>
-                   
+                        <div className="row">
+                            <ProductListNew
+                            news={news}
+                            usproduct={this.props.usproduct}
+                            showProductDetail={this.showProductDetail}
+                            />
+                        </div>
                         <div className="row">
                             <ProductList
                             usproduct={this.props.usproduct}
@@ -110,7 +118,9 @@ class Home extends Component {
 
                         <div className="row">
                             <ProductListPC
-                            promotion={promotion}/>
+                            usproduct={this.props.usproduct}
+                            promotion={promotion}
+                            showProductDetail={this.showProductDetail}/>
                         </div>
                 </div>
                 }
@@ -120,8 +130,11 @@ class Home extends Component {
                     <div className="row">
                         <ProductDetail
                         {...this.props}
+                        comment={comment}
                         product={this.state.product}
                         addToCart={this.addToCart}
+                        createBill={this.createBill}
+                        deleteFromCart={this.deleteFromCart}
                         />
                     </div>
                 </div>
@@ -151,7 +164,9 @@ const mapStateToProps = state => {
         adcategories: state.adcategories,
         cart: state.cart,
         staff: state.staff,
-        promotion: state.promotion
+        promotion: state.promotion,
+        news: state.news,
+        comment: state.comment,
     };
 };
 

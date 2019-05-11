@@ -53,9 +53,9 @@ class Header extends Component {
         if(this.refs.dropdownsee.style.display == 'none') {
             this.refs.dropdownsee.style.display = 'block';
             this.refs.dropdownsee.style.marginTop = '-45px';
-            this.refs.dropdownsee.style.marginRight = '230px';
+            this.refs.dropdownsee.style.marginRight = this.state.token != null ? '230px':'335px';
             this.refs.dropdownsee.style.height = '78%';
-            this.refs.dropdownsee.style.width = '30%';
+            this.refs.dropdownsee.style.width = '26%';
             this.refs.dropdownsee.style.background = "rgb(229, 16, 29)";
             this.refs.dropdownsee.style.border = "none";
             this.refs.dropdownsee.style.boxShadow = 'none';
@@ -98,8 +98,6 @@ class Header extends Component {
     render() {
         var {user}=this.props;
         var {listJustSee}=this.state;
-        console.log(listJustSee);
-        
         return (
             <nav className="navbar navbar-default" style={{ background: '#e5101d', position: 'fixed', top: '0', width: '100%', zIndex: '1000',borderColor: '#e5101d', borderRadius: '0' }}>
                 <div className="container-fluid" style={{paddingLeft: '0'}}>
@@ -111,7 +109,7 @@ class Header extends Component {
                             style={{height: '50px', width: '163px'}}/>
                             </Link></li>
                             {/* <li><a href={user.username == "" ? "#":"/transfer"} style={{ color: "white" }}>Kiểm tra đơn hàng</a></li> */}
-                            <li><Link to="/sale" style={{ color: "white" }}>Khuyến mãi</Link></li>
+                            <li><Link to="/sale" style={{ color: "white" }}><strong>Khuyến mãi</strong></Link></li>
                         </ul>
                         <div className="search-container">
                             <form action="/action_page.php">
@@ -119,7 +117,7 @@ class Header extends Component {
                             <button type="submit"><i className="fa fa-search"></i></button>
                             </form>
                         </div>
-                        <ul className="nav navbar-nav navbar-right">
+                        <ul className="nav navbar-nav navbar-right" style={{marginRight: this.state.token != null ? '-25px': '-80px'}}>
                             <li><Link 
                                 to="#"
                                 style={{ color: "white", background: "rgb(229, 16, 29)" }}
@@ -127,12 +125,12 @@ class Header extends Component {
                                 data-toggle="dropdown"
                                 id="dropdown-see"
                                 onClick={this.openFormJustSee}
-                                >Sản phẩm vừa xem</Link></li>
+                                ><strong>Sản phẩm vừa xem</strong></Link></li>
                             <ul className="dropdown-menu" ref="dropdownsee">
                                 {
                                     listJustSee.map((justsee, idx) =>
                                         <li key={idx} onClick={() => this.showProductDetail(justsee)}>
-                                        <img src={justsee.image} 
+                                        <img src={"static/dataset/"+justsee.image} 
                                         style={{marginLeft: '2px', maxHeight: '34px',maxWidth: '34px',cursor: 'pointer', float: 'right', border: '1px solid', background: "white"}} />
                                         </li>
                                     )
@@ -149,8 +147,8 @@ class Header extends Component {
                             {
                                 this.state.token == null &&
                                 <li style={{display: 'flex', marginLeft:'26px'}}>
-                                    <Link to="/login" style={{ color: "white", paddingRight: '0px' }}>Đăng nhập&nbsp;|&nbsp;</Link>
-                                    <Link to="/register" style={{ color: "white", paddingLeft: '0px' }}> Đăng ký</Link>
+                                    <Link to="/login" style={{ color: "white", paddingRight: '0px' }}><strong>Đăng nhập</strong>&nbsp;|&nbsp;</Link>
+                                    <Link to="/register" style={{ color: "white", paddingLeft: '0px' }}> <strong>Đăng ký</strong></Link>
                                 </li>
                                 
                             }

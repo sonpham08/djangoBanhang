@@ -6,6 +6,7 @@ import * as authActions from '../actions/authActions';
 import { Button, Modal, ModalBody, ModalFooter , ModalTitle} from 'react-bootstrap';
 import ModalLogin from './commons/ModalLogin';
 import { bindActionCreators } from 'redux';
+import Avatar from 'react-avatar';
 var $ = require("jquery");
 
 
@@ -52,8 +53,15 @@ class SubHeader extends Component {
                             }
                             <li>
                                 <Link to="/"
-                                style={{ color: "white", textDecoration: 'none' }}
-                                >{this.state.username}</Link>
+                                style={{ color: "white", textDecoration: 'none', padding: '10px' }}
+                                >{this.state.username}
+                                <Avatar 
+                                    name={this.state.username} 
+                                    round="80px" size="30"
+                                    style={{marginLeft: '10px'}}
+                                />
+                                </Link>
+                                
                             </li>
                         </ul>
                     </div>

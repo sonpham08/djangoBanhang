@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
+import moment from 'moment';
+import 'moment-timezone';
 
 var $ = require("jquery");
 
@@ -31,10 +33,16 @@ class ProductListPC extends Component {
         });
     }
 
+    showProductDetail = (product) => {
+        this.props.showProductDetail(product);
+        let listProduct = JSON.parse(localStorage.getItem('listPro')) || [];
+        listProduct.push(product);
+        localStorage.setItem("listPro", JSON.stringify(listProduct));
+    }
+
     render() {
         var { promotion } = this.props;
         const { currentPage } = this.state;
-        console.log(promotion);
         var listPromotion = [];
         if(promotion != undefined) {
             listPromotion = promotion
@@ -43,12 +51,19 @@ class ProductListPC extends Component {
                 (currentPage + 1) * this.pageSizePromotion
             )
             .map((product_each, idx) => {
+                console.log(product_each.end_promo);
+                
+                let timestamp = moment(product_each.end_promo).unix();
+                console.log(timestamp);
+                
+                let date = moment.unix(timestamp).format("YYYY-MM-DD HH:mm");
                 return (
-                    <div className="col-xs-3 col-sm-3 col-md-3 col-lg-3 product-list-panel" key={idx}>
+                    <div className="col-xs-3 col-sm-3 col-md-3 col-lg-3 product-list-panel" key={idx} onClick={() => this.showProductDetail(product_each)}>
                         <img src={"static/dataset/"+product_each.image} className="img-responsive" alt="Image" />
                         <h5 style={{ textAlign: 'center' }}><strong>{product_each.name}</strong></h5>
                         <p style={{ color: 'red', float: 'left' }}>{product_each.price - (product_each.price*product_each.promotion/100)}Đ</p>
                         &nbsp;<small><i><strike>{product_each.price}Đ</strike></i></small>
+                        <br/><p className="rest_promotion">{date}</p>
                         <button type="button" className="btn btn-primary" style={{ float: 'right', height: '30px' }}>
                             Còn lại <span className="badge badge-light">{product_each.quantity}</span>
                             <span className="sr-only">unread messages</span>

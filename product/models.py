@@ -78,8 +78,7 @@ class DetailOrder(models.Model):
 
 class Comment(models.Model):
     comment_id = models.AutoField(primary_key=True)
-    customer_comment_name = models.CharField(max_length=25)
-    time_comment = models.DateTimeField()
+    time_comment = models.DateTimeField(auto_now_add=True, blank=True)
     content = models.CharField(max_length=255)
-    customer_comment_phone = models.CharField(max_length=25)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=0)

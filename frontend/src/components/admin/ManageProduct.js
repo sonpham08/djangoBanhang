@@ -51,7 +51,6 @@ class ManageProduct extends Component {
 
     onFilterProduct = () => {
         let category_id = this.refs.filter_product.value;
-        console.log(category_id);
         this.props.onSetstateForFilterProduct(category_id);
     }
 

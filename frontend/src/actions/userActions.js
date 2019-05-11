@@ -22,12 +22,10 @@ function getCookie(name) {
 export const getListProductUser = () => {
     return dispatch => {
         let headers = { "Content-Type": "application/json",'X-CSRFToken': csrftoken};
-        let url = "/api/v1/product/";
+        let url = "/api/v1/product/get_product_hightlight/";
         axios({
             url, headers, method: 'get'
         }).then(function(res){
-            console.log(res);
-            
             dispatch({
                 type: types.USER_GET_LIST_PRODUCT,
                 usproduct: res.data
@@ -43,11 +41,46 @@ export const getListProductPromotion = () => {
         axios({
             url, headers, method: 'get'
         }).then(function(res){
-            console.log(res);
-            
             dispatch({
                 type: types.USER_GET_LIST_PRODUCT_PROMOTION,
                 promotion: res.data
+            })
+        })
+    }
+}
+
+export const getListProductNew = () => {
+    return dispatch => {
+        let headers = { "Content-Type": "application/json",'X-CSRFToken': csrftoken };
+        let url = "/api/v1/product/get_product_new/";
+        axios({
+            url, headers, method: 'get'
+        }).then(function(res){
+            console.log(res);
+            
+            dispatch({
+                type: types.USER_GET_LIST_PRODUCT_NEW,
+                news: res.data
+            })
+        })
+    }
+}
+
+export const userRatingProduct = (product_id, rating) => {
+    return dispatch => {
+        let headers = { "Content-Type": "application/json",'X-CSRFToken': csrftoken };
+        let url = `/api/v1/product/${product_id}/`;
+        let data = JSON.stringify({
+            rating: rating
+        });
+        axios({
+            url, headers, method: 'patch', data
+        }).then(function(res){
+            console.log(res);
+            
+            dispatch({
+                type: types.USER_RATING_PRODUCT,
+                products: res.data
             })
         })
     }
@@ -251,6 +284,45 @@ export const createBill = (bill) => {
             }).then(function(response) {
                 console.log(response);
                 
+            })
+        })
+    }
+}
+
+export const userAddComment = (content, product_id, user_id) => {
+    let token = localStorage.getItem('token');
+    return dispatch => {
+        let headers = { "Content-Type": "application/json",'X-CSRFToken': csrftoken };
+        let url = '/api/v1/comment/';
+        let data = JSON.stringify({
+            content: content,
+            product: product_id,
+            user: user_id
+        });
+        axios({
+            url, headers, method: 'post', data
+        }).then(function(res){   
+            dispatch({
+                type: types.USER_COMMENT,
+                comment: res.data
+            })
+        })
+    }
+}
+
+export const getComment = () => {
+    let token = localStorage.getItem('token');
+    return dispatch => {
+        let headers = { "Content-Type": "application/json",'X-CSRFToken': csrftoken };
+        let url = '/api/v1/comment/get_comment/';
+        axios({
+            url, headers, method: 'get',
+        }).then(function(res){   
+            console.log(res);
+              
+            dispatch({
+                type: types.GET_COMMENT,
+                comment: res.data
             })
         })
     }

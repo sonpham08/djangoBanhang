@@ -27,13 +27,9 @@ var myReducer = (state=initialState, action) => {
 			newState = action.adproduct;
 			return [...newState];
 		case types.ADD_PRODUCT:
-			console.log(action.adproduct);
-			
 			return [...newState, action.adproduct];
 		case types.EDIT_PRODUCT:
 			index = newState.findIndex((obj => obj.product_id == action.adproduct.product_id));
-			console.log(action);
-			
 			newState[index].name = action.adproduct.name;
 			newState[index].price = action.adproduct.price;
 			newState[index].quantity = action.adproduct.quantity;

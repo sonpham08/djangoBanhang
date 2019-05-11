@@ -6,11 +6,13 @@ import * as authActions from '../../actions/authActions';
 import * as userActions from '../../actions/userActions';
 import * as staffActions from '../../actions/staffActions';
 // import { Button, Modal, ModalBody, ModalFooter, ModalTitle } from 'react-bootstrap';
-import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+import { Button, Form, FormGroup, Label, Input, FormText,Row, Col, Badge } from 'reactstrap';
 import SubHeader from '../SubHeader';
 import InfoBox from './InfoBox';
 import moment from 'moment';
 import 'moment-timezone';
+import toastr from 'toastr';
+import AddCommentBox from './AddCommentBox';
 var $ = require("jquery");
 
 
@@ -21,6 +23,10 @@ class CheckTransfer extends Component {
         this.state = {
             tab: 1,
             currentPage: 0,
+            content_cmt: "",
+            product_id: 0,
+            user_id: 0,
+            rating: 0
         }
     }
 
@@ -75,11 +81,22 @@ class CheckTransfer extends Component {
         this.props.userActions.changeInfo(user_info);
     }
     
+    sendDataToAddContent = (product_id, user_id, rating) => {
+        this.setState({user_id: user_id, product_id: product_id, rating: rating});
+    }
+
+    userAddComment = (content, product_id, user_id) => {
+        this.props.userActions.userAddComment(content, product_id, user_id);
+        toastr.success("Thêm đánh giá thành công. Cảm ơn quý khách đã sử dụng dịch vụ!");
+    }
+
+    userRatingProduct = (product_id, rating) => {
+        this.props.userActions.userRatingProduct(product_id, rating);
+    }
 
     render() {
-        var {detail}=this.props;
+        var {detail, user}=this.props;
         var { currentPage } = this.state;
-        console.log(detail);
         var listDetails = [];
         if (this.dataBill != undefined) {
             listDetails = this.dataBill
@@ -97,6 +114,20 @@ class CheckTransfer extends Component {
                             <td>{EachDetail.bill.status_product == 1 ? "Chưa thanh toán" : (EachDetail.bill.status_product == 2 ? "Đã giao hàng":"Đang giao hàng")}</td>
                             <td>{EachDetail.product.name}</td>
                             <td>{EachDetail.product.number_product_order}</td>
+                            <td>
+                                {EachDetail.bill.status_product == 2 && 
+                                <button 
+                                className="btn btn-default"
+                                data-toggle="modal" data-target="#addComment"
+                                onClick={() => this.sendDataToAddContent(EachDetail.product.product_id, user.id, EachDetail.product.rating)}
+                                >Thêm đánh giá</button>}
+                                <AddCommentBox
+                                user={this.state.user_id}
+                                product={this.state.product_id}
+                                rating={this.state.rating}
+                                userAddComment={this.userAddComment}
+                                userRatingProduct={this.userRatingProduct}/>
+                            </td>
                         </tr>
                     )
                 });
@@ -135,7 +166,8 @@ class CheckTransfer extends Component {
                 {this.state.tab == 1 &&
                     <InfoBox
                     user={this.props.user}
-                    changeInfo={this.changeInfo}/> 
+                    changeInfo={this.changeInfo}
+                    /> 
                 }
                 
                 {this.state.tab == 2 &&
@@ -151,6 +183,7 @@ class CheckTransfer extends Component {
                                         <th>Tình trạng</th>
                                         <th>Tên sản phẩm</th>
                                         <th>Số lượng</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>

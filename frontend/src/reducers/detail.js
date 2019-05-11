@@ -8,7 +8,8 @@ var myReducer = (state=initialState, action) => {
     let index = "";
     switch(action.type){
         case types.DETAIL_BILL:
-            return [...newState, ...action.detail];
+            // return [...newState, ...action.detail];
+            return [...action.detail];
         case types.EDIT_BILL_IN_DETAIL:
             index = newState.findIndex(obj => obj.bill.bill_id == action.detail.bill_id);       
             newState[index].bill.status_product = action.detail.status_product;

@@ -108,7 +108,7 @@ class Cart extends Component {
                                     style={{float: 'left'}}
                                     onClick={() => this.onBuyNowFromCart(product_each)}
                                     data-toggle="modal" data-target="#buymodal"
-                                    >Mua ngay</button>
+                                    >Thanh toán</button>
                                         {/* <input type="checkbox" value={product_each.product_id} name="select_product_buy"/> */}
                                 </div>
                             </div>

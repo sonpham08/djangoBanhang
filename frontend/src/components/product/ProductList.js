@@ -44,7 +44,7 @@ class ProductList extends Component {
 
                 <div className="panel panel-default" style={{ border: 'none', marginBottom: '0' }}>
                     <div className="panel-heading" style={{ background: 'gainsboro', padding: '0' }}>
-                        <h3 style={{ marginTop: '0' }}>Sản phẩm nổi bật</h3>
+                        <h3 style={{ marginTop: '0' }}>Gợi ý cho bạn</h3>
                     </div>
                     <div className="panel-body" style={{ background: 'gainsboro', padding: '0' }}>
 
@@ -70,7 +70,7 @@ class ProductList extends Component {
                                 )
                                 .map((product, idx) =>
                                     <div className="col-xs-3 col-sm-3 col-md-3 col-lg-3 product-list-panel" key={idx} onClick={() => this.showProductDetail(product)}>
-                                        <img src={product.image} className="img-responsive" alt="Image" />
+                                        <img src={"static/dataset/"+product.image} className="img-responsive" alt="Image" />
                                         <h5 style={{textAlign:'center'}}><strong>{product.name}</strong></h5>
                                         <p style={{color: 'red', float: 'left'}}>{product.price - (product.price * product.promotion/100)}Đ</p>
                                         &nbsp;

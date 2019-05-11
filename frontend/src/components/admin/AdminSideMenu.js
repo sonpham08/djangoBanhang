@@ -79,7 +79,7 @@ class AdminSideMenu extends Component {
                             style={{ color: "white" }}
                             
                             onClick={(e) => this.open(e, 1)}
-                            >Quản lý sản phẩm <span className="sr-only">(current)</span></Link>
+                            ><i className="fab fa-product-hunt"></i> Quản lý sản phẩm <span className="sr-only">(current)</span></Link>
                         </li>
                         <li id="manage_staff" >
                             <Link 
@@ -88,7 +88,7 @@ class AdminSideMenu extends Component {
                             style={{ color: "white" }}
                             
                             onClick={(e) => this.open(e, 2)}
-                            >Quản lý nhân viên</Link>
+                            ><i className="fas fa-pastafarianism"></i> Quản lý nhân viên</Link>
                         </li>
                         <li id="statistic" >
                             <Link 
@@ -96,7 +96,7 @@ class AdminSideMenu extends Component {
                             to="#" 
                             style={{ color: "white" }}
                             onClick={(e) => this.open(e, 3)}
-                            >Thống kê</Link>
+                            ><i className="fas fa-calculator"></i> Thống kê</Link>
                         </li>
                         <li id="manage_category">
                             <Link 
@@ -104,7 +104,7 @@ class AdminSideMenu extends Component {
                             to="#" 
                             style={{ color: "white" }}
                             onClick={(e) => this.open(e, 4)}
-                            >Quản lý loại sản phẩm</Link>
+                            ><i className="fas fa-i-cursor"></i> Quản lý loại sản phẩm</Link>
                         </li>
                         <li id="manage_customer">
                             <Link 
@@ -112,7 +112,7 @@ class AdminSideMenu extends Component {
                             to="#" 
                             style={{ color: "white" }}
                             onClick={(e) => this.open(e, 5)}
-                            >Quản lý thông tin khách hàng</Link>
+                            ><i className="fas fa-users"></i> Quản lý thông tin khách hàng</Link>
                         </li>
                         <li id="manage_ship">
                             <Link 
@@ -120,7 +120,7 @@ class AdminSideMenu extends Component {
                             to="#" 
                             style={{ color: "white" }}
                             onClick={(e) => this.open(e, 6)}
-                            >Các đơn hàng đang vận chuyển</Link>
+                            ><i className="fas fa-shuttle-van"></i> Các đơn hàng đang vận chuyển</Link>
                         </li>
                         <li id="manage_staff_ship">
                             <Link 
@@ -128,7 +128,7 @@ class AdminSideMenu extends Component {
                             to="#" 
                             style={{ color: "white" }}
                             onClick={(e) => this.open(e, 7)}
-                            >Quản lý nhân viên giao hàng</Link>
+                            ><i className="fab fa-hornbill"></i> Quản lý nhân viên giao hàng</Link>
                         </li>
                     </ul>
                 </div>
