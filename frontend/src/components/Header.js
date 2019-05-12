@@ -98,7 +98,9 @@ class Header extends Component {
     onSearchProduct = (e) => {
         e.preventDefault();
         let search_product = this.refs.search_product.value;
-        this.props.onSearchProduct(search_product);
+        if(search_product != "") {
+            this.props.onSearchProduct(search_product);
+        }
     }
 
     render() {
@@ -121,7 +123,7 @@ class Header extends Component {
                             <form className="form-horizontal" role="form" onSubmit={this.onSearchProduct}>
                             <input 
                             type="text" 
-                            placeholder="Search.." 
+                            placeholder="Search Product.." 
                             name="search_product"
                             ref="search_product"/>
                             <button type="submit"><i className="fa fa-search"></i></button>

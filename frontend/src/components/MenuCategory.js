@@ -14,7 +14,7 @@ class MenuProduct extends Component {
     }
 
     componentWillMount() {
-        $(document).ready(function(){
+        $(document).ready(function () {
             $(".menu-product-tivi").hide();
             $(".menu-product-mobiphone").hide();
             $(".menu-product-laptop").hide();
@@ -143,14 +143,24 @@ class MenuProduct extends Component {
         $(".menu-product-device").hide();
     }
 
+    filterProduct = (category_id) => {
+        this.props.onFilterProduct(category_id);
+    }
+
     render() {
-        var {adcategories}=this.props;
+        var { adcategories } = this.props;
         console.log(adcategories);
         var listCategory = [];
-        if(adcategories.length > 0) {
+        var filterXiao = [];
+        var filterHonor = [];
+        var filterSamsung = [];
+        var filterIphone = [];
+        var filterOppo = [];
+        var filterHuawuei = [];
+        if (adcategories.length > 0) {
             listCategory = adcategories.map((category, idx) => {
                 let label = "";
-                switch(category.name) {
+                switch (category.name) {
                     case "Xiaomi": label = "sub-tivi"; break;
                     case "Honor": label = "sub-phone"; break;
                     case "Samsung": label = "sub-laptop"; break;
@@ -160,195 +170,225 @@ class MenuProduct extends Component {
                     default: label = "";
                 }
                 return (
-                    <li key={idx} 
-                    onMouseOver={() => this.showSubMenuItem(label)}
-                    style={{cursor: 'pointer'}}
-                    >{category.name}</li>
+                    <li key={idx}
+                        onMouseOver={() => this.showSubMenuItem(label)}
+                        style={{ cursor: 'pointer' }}
+                        value={category.category_id}
+                        onClick={() => this.filterProduct(category.category_id)}
+                    >
+                        {category.name}</li>
                 );
             });
-        }
-        return (
-            <div className="container">
-                <div className="menu-product" onMouseLeave={this.hideAllSubMenu}>
-                    <ul className="ul-menu-product">
-                        {/* <li onMouseOver={() => this.showSubMenuItem('sub-tivi')}>
-                        <i className="fas fa-tv"></i>&nbsp;<a href="#">Oppo</a></li>
-                        <li onMouseOver={() => this.showSubMenuItem('sub-phone')}>
-                        <i className="fas fa-phone"></i>&nbsp;<a href="#">Samsung</a></li>
-                        <li onMouseOver={() => this.showSubMenuItem('sub-laptop')}>
-                        <i className="fas fa-laptop"></i>&nbsp;<a href="#">Huawuei</a></li>
-                        <li onMouseOver={() => this.showSubMenuItem('sub-refrigerator')}>
-                        <i className="fas fa-tablet"></i>&nbsp;<a href="#">Iphone</a></li>
-                        <li onMouseOver={() => this.showSubMenuItem('sub-software')}>
-                        <i className="fab fa-adn"></i>&nbsp;<a href="#">Honor</a></li>
-                        <li onMouseOver={() => this.showSubMenuItem('sub-device')}>
-                        <i className="fas fa-wrench"></i>&nbsp;<a href="#">Xiaomi</a></li> */}
-                        {listCategory}
-                    </ul>
-                    {/* sub menu for tivi */}
+
+            filterXiao = adcategories.map((xiao, idx) => {
+                return (
                     <div className="menu-product-tivi">
                         <ul className="ul-menu-product-tivi">
                             <li>
-                                <a href="#">Tivi ban chay > </a>
+                                <a href="#">Camera trước sau > </a>
                             </li>
-                            <li><a href="#">Duoi 49inch</a></li>
-                            <li><a href="#">Duoi 50inch</a></li>
-                            <li><a href="#">Duoi 49inch</a></li>
-                            <li><a href="#">Duoi 50inch</a></li>
+                            <li><a href="#">1 CAM</a></li>
+                            <li><a href="#">2 CAM</a></li>
+                            <li><a href="#">3 CAM</a></li>
                         </ul>
                         <ul className="ul-menu-product-tivi">
                             <li>
-                                <a href="#">Tivi ban chay > </a>
+                                <a href="#">Dung lượng bộ nhớ > </a>
                             </li>
-                            <li><a href="#">Duoi 49inch</a></li>
-                            <li><a href="#">Duoi 50inch</a></li>
-                            <li><a href="#">Duoi 49inch</a></li>
-                            <li><a href="#">Duoi 50inch</a></li>
+                            <li><a href="#">Dưới 12GB</a></li>
+                            <li><a href="#">Dưới 24GB </a></li>
+                            <li><a href="#">25GB trở lên</a></li>
                         </ul>
                         <ul className="ul-menu-product-tivi">
                             <li>
-                                <a href="#">Tivi ban chay > </a>
+                                <a href="#">Giá bán > </a>
                             </li>
-                            <li><a href="#">Duoi 49inch</a></li>
-                            <li><a href="#">Duoi 50inch</a></li>
-                            <li><a href="#">Duoi 49inch</a></li>
-                            <li><a href="#">Duoi 50inch</a></li>
+                            <li><a href="#">Dưới 2tr</a></li>
+                            <li><a href="#">Dưới 10tr </a></li>
+                            <li><a href="#">10 trở lên</a></li>
                         </ul>
-                        <ul className="ul-menu-product-tivi">
-                            <li>
-                                <a href="#">Tivi ban chay > </a>
-                            </li>
-                            <li><a href="#">Duoi 49inch</a></li>
-                            <li><a href="#">Duoi 50inch</a></li>
-                            <li><a href="#">Duoi 49inch</a></li>
-                            <li><a href="#">Duoi 50inch</a></li>
-                        </ul>
-                    </div>
-                    {/* sub menu for dien thoai */}
-                    <div className="menu-product-mobiphone">
-                        <ul className="ul-menu-product-mobiphone">
-                            <li>
-                                <a href="#">ASUS > </a>
-                            </li>
-                            <li><a href="#">Asus 49inch</a></li>
-                            <li><a href="#">Asus 50inch</a></li>
-                            <li><a href="#">Asus 49inch</a></li>
-                            <li><a href="#">Asus 50inch</a></li>
-                        </ul>
-                        <ul className="ul-menu-product-mobiphone">
-                            <li>
-                                <a href="#">Nokia > </a>
-                            </li>
-                            <li><a href="#">Nokia 49inch</a></li>
-                            <li><a href="#">Nokia 50inch</a></li>
-                            <li><a href="#">Nokia 49inch</a></li>
-                            <li><a href="#">Nokia 50inch</a></li>
-                        </ul>
-                        <ul className="ul-menu-product-mobiphone">
-                            <li>
-                                <a href="#">Samsung ban chay > </a>
-                            </li>
-                            <li><a href="#">Samsung 49inch</a></li>
-                            <li><a href="#">Samsung 50inch</a></li>
-                            <li><a href="#">Samsung 49inch</a></li>
-                            <li><a href="#">Samsung 50inch</a></li>
-                        </ul>
-                        <ul className="ul-menu-product-mobiphone">
-                            <li>
-                                <a href="#">Oppo ban chay > </a>
-                            </li>
-                            <li><a href="#">Oppo 49inch</a></li>
-                            <li><a href="#">Oppo 50inch</a></li>
-                            <li><a href="#">Oppo 49inch</a></li>
-                            <li><a href="#">Oppo 50inch</a></li>
-                        </ul>
-                    </div>
 
-                    {/* Sub menu for laptop */}
-                    <div className="menu-product-laptop">
-                        <ul className="ul-menu-product-laptop">
-                            <li>
-                                <a href="#">Dien thoai > </a>
-                            </li>
-                            <li><a href="#">Dien thoai </a></li>
-                            <li><a href="#">Asus 50inch</a></li>
-                            <li><a href="#">Asus 49inch</a></li>
-                            <li><a href="#">Asus 50inch</a></li>
-                        </ul>
-                        <ul className="ul-menu-product-laptop">
-                            <li>
-                                <a href="#">Dien thoai > </a>
-                            </li>
-                            <li><a href="#">Nokia 49inch</a></li>
-                            <li><a href="#">Nokia 50inch</a></li>
-                            <li><a href="#">Nokia 49inch</a></li>
-                            <li><a href="#">Nokia 50inch</a></li>
-                        </ul>
                     </div>
-                    {/* Sub menu for refrigerator */}
-                    <div className="menu-product-refri">
-                        <ul className="ul-menu-product-refri">
-                            <li>
-                                <a href="#">Tu lanh > </a>
-                            </li>
-                            <li><a href="#">Dien thoai </a></li>
-                            <li><a href="#">Asus 50inch</a></li>
-                            <li><a href="#">Asus 49inch</a></li>
-                            <li><a href="#">Asus 50inch</a></li>
+                )
+            })
+        }
+        return (
+            <div className="row">
+                <div className="col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                </div>
+                <div className="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                    <div className="menu-product" onMouseLeave={this.hideAllSubMenu}>
+                        <ul className="ul-menu-product">
+                            {listCategory}
                         </ul>
-                        <ul className="ul-menu-product-refri">
-                            <li>
-                                <a href="#">Dien thoai > </a>
-                            </li>
-                            <li><a href="#">Nokia 49inch</a></li>
-                            <li><a href="#">Nokia 50inch</a></li>
-                            <li><a href="#">Nokia 49inch</a></li>
-                            <li><a href="#">Nokia 50inch</a></li>
-                        </ul>
-                    </div>
+                        {/* sub menu for tivi */}
+                        <div className="menu-product-tivi">
+                            <ul className="ul-menu-product-tivi">
+                                <li>
+                                    <a href="#">Camera trước sau > </a>
+                                </li>
+                                <li><a href="#">1 CAM</a></li>
+                                <li><a href="#">2 CAM</a></li>
+                                <li><a href="#">3 CAM</a></li>
+                            </ul>
+                            <ul className="ul-menu-product-tivi">
+                                <li>
+                                    <a href="#">Dung lượng bộ nhớ > </a>
+                                </li>
+                                <li><a href="#">Dưới 12GB</a></li>
+                                <li><a href="#">Dưới 24GB </a></li>
+                                <li><a href="#">25GB trở lên</a></li>
+                            </ul>
+                            <ul className="ul-menu-product-tivi">
+                                <li>
+                                    <a href="#">Giá bán > </a>
+                                </li>
+                                <li><a href="#">Dưới 2tr</a></li>
+                                <li><a href="#">Dưới 10tr </a></li>
+                                <li><a href="#">10 trở lên</a></li>
+                            </ul>
 
-                    {/* Sub menu for software */}
-                    <div className="menu-product-software">
-                        <ul className="ul-menu-product-software">
-                            <li>
-                                <a href="#">Phan mem va phu kien > </a>
-                            </li>
-                            <li><a href="#">Dien thoai </a></li>
-                            <li><a href="#">Asus 50inch</a></li>
-                            <li><a href="#">Asus 49inch</a></li>
-                            <li><a href="#">Asus 50inch</a></li>
-                        </ul>
-                        <ul className="ul-menu-product-software">
-                            <li>
-                                <a href="#">Dien thoai > </a>
-                            </li>
-                            <li><a href="#">Nokia 49inch</a></li>
-                            <li><a href="#">Nokia 50inch</a></li>
-                            <li><a href="#">Nokia 49inch</a></li>
-                            <li><a href="#">Nokia 50inch</a></li>
-                        </ul>
+                        </div>
+                        {/* sub menu for dien thoai */}
+                        <div className="menu-product-mobiphone">
+                            <ul className="ul-menu-product-tivi">
+                                <li>
+                                    <a href="#">Camera trước sau > </a>
+                                </li>
+                                <li><a href="#">1 CAM</a></li>
+                                <li><a href="#">2 CAM</a></li>
+                                <li><a href="#">3 CAM</a></li>
+                            </ul>
+                            <ul className="ul-menu-product-tivi">
+                                <li>
+                                    <a href="#">Dung lượng bộ nhớ > </a>
+                                </li>
+                                <li><a href="#">Dưới 12GB</a></li>
+                                <li><a href="#">Dưới 24GB </a></li>
+                                <li><a href="#">25GB trở lên</a></li>
+                            </ul>
+                            <ul className="ul-menu-product-tivi">
+                                <li>
+                                    <a href="#">Giá bán > </a>
+                                </li>
+                                <li><a href="#">Dưới 2tr</a></li>
+                                <li><a href="#">Dưới 10tr </a></li>
+                                <li><a href="#">10 trở lên</a></li>
+                            </ul>
+                        </div>
+
+                        {/* Sub menu for laptop */}
+                        <div className="menu-product-laptop">
+                            <ul className="ul-menu-product-tivi">
+                                <li>
+                                    <a href="#">Camera trước sau > </a>
+                                </li>
+                                <li><a href="#">1 CAM</a></li>
+                                <li><a href="#">2 CAM</a></li>
+                                <li><a href="#">3 CAM</a></li>
+                            </ul>
+                            <ul className="ul-menu-product-tivi">
+                                <li>
+                                    <a href="#">Dung lượng bộ nhớ > </a>
+                                </li>
+                                <li><a href="#">Dưới 12GB</a></li>
+                                <li><a href="#">Dưới 24GB </a></li>
+                                <li><a href="#">25GB trở lên</a></li>
+                            </ul>
+                            <ul className="ul-menu-product-tivi">
+                                <li>
+                                    <a href="#">Giá bán > </a>
+                                </li>
+                                <li><a href="#">Dưới 2tr</a></li>
+                                <li><a href="#">Dưới 10tr </a></li>
+                                <li><a href="#">10 trở lên</a></li>
+                            </ul>
+                        </div>
+                        {/* Sub menu for refrigerator */}
+                        <div className="menu-product-refri">
+                            <ul className="ul-menu-product-tivi">
+                                <li>
+                                    <a href="#">Camera trước sau > </a>
+                                </li>
+                                <li><a href="#">1 CAM</a></li>
+                                <li><a href="#">2 CAM</a></li>
+                                <li><a href="#">3 CAM</a></li>
+                            </ul>
+                            <ul className="ul-menu-product-tivi">
+                                <li>
+                                    <a href="#">Dung lượng bộ nhớ > </a>
+                                </li>
+                                <li><a href="#">Dưới 12GB</a></li>
+                                <li><a href="#">Dưới 24GB </a></li>
+                                <li><a href="#">25GB trở lên</a></li>
+                            </ul>
+                            <ul className="ul-menu-product-tivi">
+                                <li>
+                                    <a href="#">Giá bán > </a>
+                                </li>
+                                <li><a href="#">Dưới 2tr</a></li>
+                                <li><a href="#">Dưới 10tr </a></li>
+                                <li><a href="#">10 trở lên</a></li>
+                            </ul>
+                        </div>
+
+                        {/* Sub menu for software */}
+                        <div className="menu-product-software">
+                            <ul className="ul-menu-product-tivi">
+                                <li>
+                                    <a href="#">Camera trước sau > </a>
+                                </li>
+                                <li><a href="#">1 CAM</a></li>
+                                <li><a href="#">2 CAM</a></li>
+                                <li><a href="#">3 CAM</a></li>
+                            </ul>
+                            <ul className="ul-menu-product-tivi">
+                                <li>
+                                    <a href="#">Dung lượng bộ nhớ > </a>
+                                </li>
+                                <li><a href="#">Dưới 12GB</a></li>
+                                <li><a href="#">Dưới 24GB </a></li>
+                                <li><a href="#">25GB trở lên</a></li>
+                            </ul>
+                            <ul className="ul-menu-product-tivi">
+                                <li>
+                                    <a href="#">Giá bán > </a>
+                                </li>
+                                <li><a href="#">Dưới 2tr</a></li>
+                                <li><a href="#">Dưới 10tr </a></li>
+                                <li><a href="#">10 trở lên</a></li>
+                            </ul>
+                        </div>
+                        {/* Sub menu for device */}
+                        <div className="menu-product-device">
+                            <ul className="ul-menu-product-tivi">
+                                <li>
+                                    <a href="#">Camera trước sau > </a>
+                                </li>
+                                <li><a href="#">1 CAM</a></li>
+                                <li><a href="#">2 CAM</a></li>
+                                <li><a href="#">3 CAM</a></li>
+                            </ul>
+                            <ul className="ul-menu-product-tivi">
+                                <li>
+                                    <a href="#">Dung lượng bộ nhớ > </a>
+                                </li>
+                                <li><a href="#">Dưới 12GB</a></li>
+                                <li><a href="#">Dưới 24GB </a></li>
+                                <li><a href="#">25GB trở lên</a></li>
+                            </ul>
+                            <ul className="ul-menu-product-tivi">
+                                <li>
+                                    <a href="#">Giá bán > </a>
+                                </li>
+                                <li><a href="#">Dưới 2tr</a></li>
+                                <li><a href="#">Dưới 10tr </a></li>
+                                <li><a href="#">10 trở lên</a></li>
+                            </ul>
+                        </div>
                     </div>
-                    {/* Sub menu for device */}
-                    <div className="menu-product-device">
-                        <ul className="ul-menu-product-device">
-                            <li>
-                                <a href="#">Thiet bi ngoai vi > </a>
-                            </li>
-                            <li><a href="#">Dien thoai </a></li>
-                            <li><a href="#">Asus 50inch</a></li>
-                            <li><a href="#">Asus 49inch</a></li>
-                            <li><a href="#">Asus 50inch</a></li>
-                        </ul>
-                        <ul className="ul-menu-product-device">
-                            <li>
-                                <a href="#">Dien thoai > </a>
-                            </li>
-                            <li><a href="#">Nokia 49inch</a></li>
-                            <li><a href="#">Nokia 50inch</a></li>
-                            <li><a href="#">Nokia 49inch</a></li>
-                            <li><a href="#">Nokia 50inch</a></li>
-                        </ul>
-                    </div>
+                </div>
+                <div className="col-xs-2 col-sm-2 col-md-2 col-lg-2">
                 </div>
             </div>
         )

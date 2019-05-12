@@ -24,7 +24,10 @@ class Home extends Component {
             product: {},
             showCart: false,
             cart: {},
-            search_product: ""
+            search: {
+                product_name: "",
+                category: 0
+            }
         }
     }
 
@@ -78,11 +81,20 @@ class Home extends Component {
     }
 
     onSearchProduct = (search_product) => {
-        this.setState({search_product: search_product});
+        let search = this.state.search;
+        search.product_name = search_product;
+        this.setState({search: search});
+    }
+
+    onFilterProduct = (cateogry_id) => {
+        let search = this.state.search;
+        search.category = cateogry_id;
+        this.setState({search: search});
     }
 
     render() {
-        var {showDetail,showCart, search_product}=this.state;
+        var {showDetail,showCart}=this.state;
+        var {product_name, category} = this.state.search;
         var {isAuthenticated,
             user, 
             uscategories,
@@ -92,11 +104,19 @@ class Home extends Component {
             news, 
             comment,
             adproduct} = this.props;
-        if(search_product != "") {
+        console.log(category);
+        
+        if(product_name != "") {
             adproduct = adproduct.filter((product) => {
-                return product.name.toLowerCase().indexOf(search_product.toLowerCase()) != -1;
+                return product.name.toLowerCase().indexOf(product_name.toLowerCase()) != -1;
             });
         }
+        if(category != 0) {
+            adproduct = adproduct.filter((product) => {
+                return product.category.category_id == category;
+            })
+        }
+        console.log(adproduct);
         return (
             <div style={{background:'gainsboro'}}>
                 <Header
@@ -111,18 +131,15 @@ class Home extends Component {
                 />
                 {showDetail == false && showCart == false &&
                 <div className="row">     
-                    <div className="col-xs-1 col-sm-1 col-md-1 col-lg-1">   
-                    </div>
-                    <div className="col-xs-10 col-sm-10 col-md-10 col-lg-10">
-                        <MenuCategory 
-                        adcategories={this.props.adcategories}/>
+                    <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <MenuCategory
+                        adcategories={this.props.adcategories}
+                        onFilterProduct={this.onFilterProduct}/>
                     </div>            
-                    <div className="col-xs-1 col-sm-1 col-md-1 col-lg-1">                      
-                    </div> 
                 </div>
                 }
 
-                {search_product != "" && 
+                {(product_name != "" || category != 0) && showDetail == false && showCart == false &&
                     <div className="body" style={{ marginTop: '150px', padding: '5px 40px' }}>
                         <div className="row">
                             <SearchProduct
@@ -133,7 +150,7 @@ class Home extends Component {
                     </div>
                 }
 
-                {showDetail == false && showCart == false && search_product == "" &&
+                {showDetail == false && showCart == false && product_name == "" && category == 0 &&
                 <div className="body" style={{ marginTop: '150px', padding: '5px 40px' }}>
                         <div className="row">
                             <ProductListNew

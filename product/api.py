@@ -22,6 +22,34 @@ class CategoryViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.AllowAny, ]
     serializer_class = CategorySerializer
 
+    @action(detail=False)
+    def statistic_category_in_product(self, request):
+        res=[]
+        res2=[]
+        try:
+            products = Product.objects.all()
+            categories = Category.objects.all()
+            for category in categories:
+                res.append({
+                    "category_id": category.category_id,
+                    "name": category.name,
+                    "memory": [
+                        product.memory
+                    for product in products if product.category.category_id == category.category_id],
+                    "camera": [
+                        product.camera
+                    for product in products if product.category.category_id == category.category_id],
+                    "price": [
+                        product.price
+                    for product in products if product.category.category_id == category.category_id],
+                })
+                    
+            return Response(res, 200)
+        except Exception as e:
+            return Response({
+                "Error": repr(e)
+            }, 400)
+
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     permission_classes = [permissions.AllowAny, ]

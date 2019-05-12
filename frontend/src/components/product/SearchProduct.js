@@ -32,13 +32,11 @@ class SearchProduct extends Component {
 
     componentWillReceiveProps(nextProps) {
         //data product list with pagination
-        // console.log(nextProps);
-
-        // this.dataProduct = nextProps.adproduct.map(
-        //     (a, i) => a
-        // );
-        // this.pageSizeProduct = 4;
-        // this.pagesCountProduct = Math.ceil(this.dataProduct.length / this.pageSizeProduct);
+        this.dataProduct = nextProps.adproduct.map(
+            (a, i) => a
+        );
+        this.pageSizeProduct = 20;
+        this.pagesCountProduct = Math.ceil(this.dataProduct.length / this.pageSizeProduct);
     }
 
     handleSwitchPagination(e, index) {
@@ -57,8 +55,6 @@ class SearchProduct extends Component {
 
     render() {
         const { currentPage } = this.state;
-        console.log(this.dataProduct);
-
         return (
             <div className="product-list">
 

@@ -7,7 +7,7 @@ class Footer extends Component {
         return (
             <section id="footer">
                 <div className="container">
-                    <div className="row text-center text-xs-center text-sm-left text-md-left">
+                    {/* <div className="row text-center text-xs-center text-sm-left text-md-left">
                         <div className="col-xs-12 col-sm-4 col-md-4">
                             <h5>Quick links</h5>
                             <ul className="list-unstyled quick-links">
@@ -38,7 +38,7 @@ class Footer extends Component {
                                 <li><a href="https://wwwe.sunlimetech.com" title="Design and developed by"><i className="fa fa-angle-double-right"></i>Imprint</a></li>
                             </ul>
                         </div>
-                    </div>
+                    </div> */}
                     <div className="row">
                         <div className="col-xs-12 col-sm-12 col-md-12 mt-2 mt-sm-2 text-center text-white">
                             <p><u><a href="https://www.nationaltransaction.com/">National Transaction Corporation</a></u> is a Registered MSP/ISO of Elavon, Inc. Georgia [a wholly owned subsidiary of U.S. Bancorp, Minneapolis, MN]</p>

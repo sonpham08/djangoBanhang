@@ -186,7 +186,8 @@ export const getCategoryById = (category_id) => {
 export const getListCategory = () => {
     return dispatch => {
         let headers = { "Content-Type": "application/json",'X-CSRFToken': csrftoken };
-        let url = "/api/v1/category/";
+        // let url = "/api/v1/category/";
+        let url = "/api/v1/category/statistic_category_in_product/";
         axios({
             url, headers, method: 'get'
         }).then(function(res){
