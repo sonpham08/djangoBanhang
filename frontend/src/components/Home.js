@@ -7,6 +7,7 @@ import ProductList from './product/ProductList';
 import ProductListPC from './product/ProductListPC';
 import ProductListNew from './product/ProductListNew';
 import ProductDetail from './product/ProductDetail';
+import SearchProduct from './product/SearchProduct';
 import Cart from './product/Cart';
 import * as authActions from '../actions/authActions';
 import * as userActions from '../actions/userActions';
@@ -22,7 +23,8 @@ class Home extends Component {
             showDetail: false,
             product: {},
             showCart: false,
-            cart: {}
+            cart: {},
+            search_product: ""
         }
     }
 
@@ -34,6 +36,7 @@ class Home extends Component {
     }
 
     async componentDidMount() {
+        await new Promise(resolve => resolve(this.props.adminActions.getListProduct()));
         await new Promise(resolve => resolve(this.props.userActions.getListProductUser()));
         await new Promise(resolve => resolve(this.props.userActions.getListProductNew()));
         await new Promise(resolve => resolve(this.props.userActions.getListProductPromotion()));
@@ -74,9 +77,26 @@ class Home extends Component {
         this.props.userActions.createBill(bill);
     }
 
+    onSearchProduct = (search_product) => {
+        this.setState({search_product: search_product});
+    }
+
     render() {
-        var {showDetail,showCart}=this.state;
-        var {isAuthenticated,user, uscategories,cart, staff,promotion, news, comment} = this.props;
+        var {showDetail,showCart, search_product}=this.state;
+        var {isAuthenticated,
+            user, 
+            uscategories,
+            cart, 
+            staff,
+            promotion, 
+            news, 
+            comment,
+            adproduct} = this.props;
+        if(search_product != "") {
+            adproduct = adproduct.filter((product) => {
+                return product.name.toLowerCase().indexOf(search_product.toLowerCase()) != -1;
+            });
+        }
         return (
             <div style={{background:'gainsboro'}}>
                 <Header
@@ -87,6 +107,7 @@ class Home extends Component {
                 logout={this.logout}
                 showCart={this.showCart}
                 showProductDetail={this.showProductDetail}
+                onSearchProduct={this.onSearchProduct}
                 />
                 {showDetail == false && showCart == false &&
                 <div className="row">     
@@ -100,7 +121,19 @@ class Home extends Component {
                     </div> 
                 </div>
                 }
-                {showDetail == false && showCart == false &&
+
+                {search_product != "" && 
+                    <div className="body" style={{ marginTop: '150px', padding: '5px 40px' }}>
+                        <div className="row">
+                            <SearchProduct
+                            // {...this.props}
+                            adproduct={adproduct}
+                            showProductDetail={this.showProductDetail}/>
+                        </div>
+                    </div>
+                }
+
+                {showDetail == false && showCart == false && search_product == "" &&
                 <div className="body" style={{ marginTop: '150px', padding: '5px 40px' }}>
                         <div className="row">
                             <ProductListNew
@@ -167,6 +200,7 @@ const mapStateToProps = state => {
         promotion: state.promotion,
         news: state.news,
         comment: state.comment,
+        adproduct: state.adproduct
     };
 };
 

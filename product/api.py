@@ -77,6 +77,7 @@ class ProductViewSet(viewsets.ModelViewSet):
                             "product_id": product.product_id,
                             "name": product.name,
                             "price": product.price,
+                            "image": str(product.image),
                             "size":product.size,
                             "quantity": product.quantity,
                             "rating": product.rating,

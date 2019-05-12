@@ -27,6 +27,8 @@ class ManageProduct extends Component {
                 return product.category.category_id == nextProps.filter;
             });
         }
+        console.log(product_filter);
+        
         this.dataProduct = product_filter.map(
             (a, i) => a
         );

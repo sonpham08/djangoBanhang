@@ -9,7 +9,7 @@ class Header extends Component {
         this.state = {
             username: "",
             token: null,
-            listJustSee: []
+            listJustSee: [],
         }
     }
 
@@ -95,6 +95,12 @@ class Header extends Component {
         this.props.showProductDetail(product);
     }
 
+    onSearchProduct = (e) => {
+        e.preventDefault();
+        let search_product = this.refs.search_product.value;
+        this.props.onSearchProduct(search_product);
+    }
+
     render() {
         var {user}=this.props;
         var {listJustSee}=this.state;
@@ -112,8 +118,12 @@ class Header extends Component {
                             <li><Link to="/sale" style={{ color: "white" }}><strong>Khuyến mãi</strong></Link></li>
                         </ul>
                         <div className="search-container">
-                            <form action="/action_page.php">
-                            <input type="text" placeholder="Search.." name="search"/>
+                            <form className="form-horizontal" role="form" onSubmit={this.onSearchProduct}>
+                            <input 
+                            type="text" 
+                            placeholder="Search.." 
+                            name="search_product"
+                            ref="search_product"/>
                             <button type="submit"><i className="fa fa-search"></i></button>
                             </form>
                         </div>
