@@ -33,6 +33,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = (
+    'chat',
+    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -52,6 +54,8 @@ INSTALLED_APPS = (
     'user',
     'product',
     'knox',
+    # 'chat.core.apps.CoreConfig',
+    # 'chat.channels_app.apps.ChannelsAppConfig',
 )
 SITE_ID = 1
 
@@ -99,6 +103,17 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'djangodkdt.wsgi.application'
+ASGI_APPLICATION = 'djangodkdt.routing.application'
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+
+        "CONFIG": {
+            "hosts": [("localhost", 6379)],
+        },
+    }    
+}
 
 
 # Database
@@ -175,6 +190,5 @@ MESSAGE_TAGS = {
     messages.WARNING: 'alert-warning',
     messages.ERROR: 'alert-danger',
 }
-
 
 # CRISPY_TEMPLATE_PACK = 'bootstrap4'
