@@ -8,35 +8,35 @@ class Footer extends Component {
             <section id="footer">
                 <div className="container">
                     <div className="row text-center text-xs-center text-sm-left text-md-left">
-                        <div className="col-xs-12 col-sm-4 col-md-4">
-                            <h5>Quick links</h5>
+                        <div className="col-xs-12 col-sm-2 col-md-2">
+                            {/* <h5>Quick links</h5>
                             <ul className="list-unstyled quick-links">
                                 <li><a href="javascript:void();"><i className="fa fa-angle-double-right"></i>Home</a></li>
                                 <li><a href="javascript:void();"><i className="fa fa-angle-double-right"></i>About</a></li>
                                 <li><a href="javascript:void();"><i className="fa fa-angle-double-right"></i>FAQ</a></li>
                                 <li><a href="javascript:void();"><i className="fa fa-angle-double-right"></i>Get Started</a></li>
                                 <li><a href="javascript:void();"><i className="fa fa-angle-double-right"></i>Videos</a></li>
-                            </ul>
+                            </ul> */}
                         </div>
-                        <div className="col-xs-12 col-sm-4 col-md-4">
-                            <h5>Quick links</h5>
+                        <div className="col-xs-12 col-sm-8 col-md-8">
+                            <h5>Liên hệ với chúng tôi</h5>
                             <ul className="list-unstyled quick-links">
-                                <li><a href="javascript:void();"><i className="fa fa-angle-double-right"></i>Home</a></li>
-                                <li><a href="javascript:void();"><i className="fa fa-angle-double-right"></i>About</a></li>
-                                <li><a href="javascript:void();"><i className="fa fa-angle-double-right"></i>FAQ</a></li>
-                                <li><a href="javascript:void();"><i className="fa fa-angle-double-right"></i>Get Started</a></li>
-                                <li><a href="javascript:void();"><i className="fa fa-angle-double-right"></i>Videos</a></li>
+                                <li><a href="javascript:void();"><i className="fa fa-angle-double-right"></i> <strong>Giờ làm việc:</strong> Thứ 2 - Thứ 7: 8h00 đến 17h30, Chủ Nhật làm việc.</a></li>
+                                <li><a href="javascript:void();"><i className="fa fa-angle-double-right"></i>  <strong>Email bán hàng:</strong> gunstore.com</a></li>
+                                <li><a href="javascript:void();"><i className="fa fa-angle-double-right"></i> <strong>Số điện thoại bán hàng:</strong> 0339157154</a></li>
+                                <li><a href="javascript:void();"><i className="fa fa-angle-double-right"></i> <strong>Facebook Hỏi - Đáp kỹ thuật:</strong> https://www.facebook.com/profile.php?id=100009367567639</a></li>
+                                <li><a href="javascript:void();"><i className="fa fa-angle-double-right"></i> <strong>Liên hệ WebDeveloper:</strong> gunmap08@gmail.com</a></li>
                             </ul>
                         </div>
-                        <div className="col-xs-12 col-sm-4 col-md-4">
-                            <h5>Quick links</h5>
+                        <div className="col-xs-12 col-sm-2 col-md-2">
+                            {/* <h5>Quick links</h5>
                             <ul className="list-unstyled quick-links">
                                 <li><a href="javascript:void();"><i className="fa fa-angle-double-right"></i>Home</a></li>
                                 <li><a href="javascript:void();"><i className="fa fa-angle-double-right"></i>About</a></li>
                                 <li><a href="javascript:void();"><i className="fa fa-angle-double-right"></i>FAQ</a></li>
                                 <li><a href="javascript:void();"><i className="fa fa-angle-double-right"></i>Get Started</a></li>
                                 <li><a href="https://wwwe.sunlimetech.com" title="Design and developed by"><i className="fa fa-angle-double-right"></i>Imprint</a></li>
-                            </ul>
+                            </ul> */}
                         </div>
                     </div>
                     <div className="row">

@@ -12,7 +12,8 @@ var initialState = {
     },
     'flashsale_user': {
         'data': [],
-        'status': 'loading'
+        'status': 'loading',
+        'empty': true
     }
 };
 
@@ -41,6 +42,15 @@ var myReducer = (state=initialState, action) => {
             let flashsale_user = Object.assign({}, newState.flashsale_user);
             flashsale_user.data = action.flashsale;
             flashsale_user.status = "loaded";
+            if(action.flashsale.length > 0) {
+                if(action.flashsale[0].flashproduct.length > 0) {
+                    flashsale_user.empty = false;
+                }else {
+                    flashsale_user.empty = true;
+                }
+            }else{
+                flashsale_user.empty = true;
+            }
             newState.flashsale_user = flashsale_user;
             return newState;
         default:

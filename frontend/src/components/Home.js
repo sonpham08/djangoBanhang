@@ -242,7 +242,7 @@ class Home extends Component {
                     </div>            
                 </div>
                 }
-                {flashsale.flashsale_user.status == "loaded" && flashsale.flashsale_user.data.length > 0 &&
+                {flashsale.flashsale_user.status == "loaded" && flashsale.flashsale_user.empty == false &&
                 showDetail == false && showCart == false && product_name == "" && category == 0 &&
                     <div className="text_show_flash">
                         <marquee>
@@ -273,7 +273,7 @@ class Home extends Component {
                             showProductDetail={this.showProductDetail}
                             />
                         </div>
-                        {flashsale.flashsale_user.data.length > 0 &&
+                        {flashsale.flashsale_user.empty == false &&
                             <div className="row">
                             <FlashSale
                             usproduct={flashsale.flashsale_user.data[0]}

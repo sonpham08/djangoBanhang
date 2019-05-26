@@ -57,7 +57,9 @@ class ProductListNew extends Component {
                 return (
                     <div className="col-xs-3 col-sm-3 col-md-3 col-lg-3 product-list-panel" key={idx} onClick={() => this.showProductDetail(product_each)}>
                         <img src={"static/dataset/"+product_each.image} className="img-responsive" alt="Image" />
-                        <h5 style={{ textAlign: 'center', margin: '0' }}><strong>{product_each.name}</strong></h5>
+                        <h5 
+                        style={{textAlign:'center', margin: '0', textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden'}}
+                        ><strong>{product_each.name}</strong></h5>
                         <p style={{ color: 'red', float: 'left' }}>{product_each.price - (product_each.price*product_each.promotion/100)}Đ</p>
                         &nbsp;<small><i><strike>{product_each.price}Đ</strike></i></small>
                         <br/><p className="rest_promotion">{date}</p>
