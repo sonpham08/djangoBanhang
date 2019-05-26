@@ -27,12 +27,10 @@ class ManageProduct extends Component {
                 return product.category.category_id == nextProps.filter;
             });
         }
-        console.log(product_filter);
-        
         this.dataProduct = product_filter.map(
             (a, i) => a
         );
-        this.pageSizeProduct = 5;
+        this.pageSizeProduct = 15;
         this.pagesCountProduct = Math.ceil(this.dataProduct.length / this.pageSizeProduct);
     }
 

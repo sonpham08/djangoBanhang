@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
+import toastr from 'toastr';
 var $ = require("jquery");
 
 class ManageCustomer extends Component {
@@ -18,11 +19,13 @@ class ManageCustomer extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
+        console.log(nextProps.adcustomer);
+        
         //data product with pagination
         this.dataCustomer = nextProps.adcustomer.map(
             (a, i) => a
         );
-        this.pageSizeCustomer = 2;
+        this.pageSizeCustomer = 10;
         this.pagesCountCustomer = Math.ceil(this.dataCustomer.length / this.pageSizeCustomer);
     }
 
@@ -31,6 +34,11 @@ class ManageCustomer extends Component {
         this.setState({
             currentPage: index
         });
+    }
+
+    openCoin = (user_id) => {
+        this.props.openCoin(user_id);
+        toastr.success("Bật chế độ kiếm xu cho người dùng thành công");
     }
 
     render() {
@@ -51,6 +59,7 @@ class ManageCustomer extends Component {
                                         <th style={{ textAlign: 'right' }}>Số điện thoại</th>
                                         <th style={{ textAlign: 'center' }}>Địa chỉ</th>
                                         <th style={{ textAlign: 'right' }}>CMND</th>
+                                        <th style={{ textAlign: 'right' }}>Cấp xu</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -66,6 +75,15 @@ class ManageCustomer extends Component {
                                                     <td>{customer.phone}</td>
                                                     <td>{customer.address}</td>
                                                     <td>{customer.cmnd}</td>
+                                                    <td align="right">
+                                                    {
+                                                        !customer.coin[0] && <button type="button" 
+                                                        className="btn btn-default mg-left" 
+                                                        onClick={() => this.openCoin(customer.id)}
+                                                        >
+                                                        <i className="fas fa-edit"></i> Bật kiếm xu</button>
+                                                    }
+                                                    </td>
                                                 </tr>
                                             ) : <tr></tr>
                                     }

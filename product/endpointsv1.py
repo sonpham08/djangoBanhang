@@ -4,7 +4,8 @@ from rest_framework import routers
 from djangodkdt.routers import SharedAPIRootRouter
 
 from .api import (CategoryViewSet,ProductViewSet,DealedProductViewSet,
-StatusProductViewSet,StaffViewSet, BillViewSet, DetailOrderViewSet,CommentViewSet,CartViewSet)
+StatusProductViewSet,StaffViewSet, BillViewSet, DetailOrderViewSet,CommentViewSet,CartViewSet,
+FlashSaleViewSet, CoinViewSet, TransporterViewSet, FlashProductViewSet)
 
 
 
@@ -18,7 +19,11 @@ router.register('staff', StaffViewSet)
 router.register('bill', BillViewSet)
 router.register('detail', DetailOrderViewSet)
 router.register('comment', CommentViewSet)
-router.register('cart', CartViewSet)
+router.register('cart', CartViewSet),
+router.register('coin', CoinViewSet),
+router.register('transporter', TransporterViewSet),
+router.register('flashsale', FlashSaleViewSet),
+router.register('flashproduct', FlashProductViewSet),
 
 urlpatterns = [
     path("", include(router.urls)),

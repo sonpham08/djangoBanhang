@@ -28,3 +28,13 @@ export const GET_PRODUCT_BY_ID = 'GET_PRODUCT_BY_ID';
 //comment
 export const USER_COMMENT = 'USER_COMMENT';
 export const GET_COMMENT = 'GET_COMMENT';
+
+//coin
+export const GET_COIN = 'GET_COIN';
+export const INITIAL_COIN = 'INITIAL_COIN';
+export const ADD_COIN = 'ADD_COIN';
+export const GET_COIN_BY_USER = 'GET_COIN_BY_USER';
+export const UPDATE_COIN = 'UPDATE_COIN';
+
+// flash sale
+export const GET_FLASH_SALE_USER = 'GET_FLASH_SALE_USER';

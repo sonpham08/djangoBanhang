@@ -1,4 +1,5 @@
 import * as types from '../constants/ActionTypes';
+import * as userType from '../constants/UserConstants';
 import axios from 'axios';
 import { browserHistory } from 'react-router';
 
@@ -83,7 +84,7 @@ export const authLogin = (username, password) => {
 
 export const authSignup = (username,email, password,fullname, is_staff, is_user, phone, address, cmnd) => {
     return dispatch => {
-        let headers = { "Content-Type": "application/json",'X-CSRFToken': csrftoken };
+        var headers = { "Content-Type": "application/json",'X-CSRFToken': csrftoken };
         let data = JSON.stringify({
             "username": username,
             "email": email,
@@ -100,7 +101,6 @@ export const authSignup = (username,email, password,fullname, is_staff, is_user,
             url, headers,method:'post',data:data
         }).then(res=>{
             console.log('res', res);
-            
             const token = res.data.key;
             const expirationDate = new Date(new Date().getTime() + 3600*1000);
             localStorage.setItem('token', token);

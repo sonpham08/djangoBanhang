@@ -41,6 +41,7 @@ class CheckTransfer extends Component {
         let tab = localStorage.getItem('tabTransfer');
         this.setState({tab: parseInt(tab)});
         await new Promise(resolve => resolve(this.props.staffActions.getBillUser()));
+        await new Promise(resolve => resolve(this.props.userActions.getCoinByUser()));
     }
 
     componentWillUnmount() {
@@ -87,7 +88,8 @@ class CheckTransfer extends Component {
 
     userAddComment = (content, product_id, user_id) => {
         this.props.userActions.userAddComment(content, product_id, user_id);
-        toastr.success("Thêm đánh giá thành công. Cảm ơn quý khách đã sử dụng dịch vụ!");
+        this.props.userActions.addCoin(this.props.coin[0].coin_id, user_id, this.props.coin[0].count);
+        toastr.success("Thêm đánh giá thành công, bạn đã được cộng 1 xu. Cảm ơn quý khách đã sử dụng dịch vụ!");
     }
 
     userRatingProduct = (product_id, rating) => {
@@ -95,9 +97,11 @@ class CheckTransfer extends Component {
     }
 
     render() {
-        var {detail, user}=this.props;
+        var {detail, user, coin}=this.props;
         var { currentPage } = this.state;
         var listDetails = [];
+        console.log(coin);
+        
         if (this.dataBill != undefined) {
             listDetails = this.dataBill
                 .slice(
@@ -105,7 +109,7 @@ class CheckTransfer extends Component {
                     (currentPage + 1) * this.pageSizeBill)
                 .map((EachDetail, idx) => {
                     let timestamp = moment(EachDetail.bill.create_date).unix();
-                    let date = moment(timestamp).format("MM/DD/YYYY HH:mm");
+                    let date = moment(new Date(timestamp*1000)).format("MM/DD/YYYY HH:mm");
                     
                     return (
                         <tr key={idx}>
@@ -203,6 +207,7 @@ const mapStateToProps = state => {
     return {
         user: state.user,
         detail: state.detail,
+        coin: state.coin
     };
 };
 

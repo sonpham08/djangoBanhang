@@ -34,6 +34,7 @@ class ProductListNew extends Component {
     }
 
     showProductDetail = (product) => {
+        product.flashsale_perform = false;
         this.props.showProductDetail(product);
         let listProduct = JSON.parse(localStorage.getItem('listPro')) || [];
         listProduct.push(product);
@@ -56,7 +57,7 @@ class ProductListNew extends Component {
                 return (
                     <div className="col-xs-3 col-sm-3 col-md-3 col-lg-3 product-list-panel" key={idx} onClick={() => this.showProductDetail(product_each)}>
                         <img src={"static/dataset/"+product_each.image} className="img-responsive" alt="Image" />
-                        <h5 style={{ textAlign: 'center' }}><strong>{product_each.name}</strong></h5>
+                        <h5 style={{ textAlign: 'center', margin: '0' }}><strong>{product_each.name}</strong></h5>
                         <p style={{ color: 'red', float: 'left' }}>{product_each.price - (product_each.price*product_each.promotion/100)}Đ</p>
                         &nbsp;<small><i><strike>{product_each.price}Đ</strike></i></small>
                         <br/><p className="rest_promotion">{date}</p>
@@ -68,7 +69,6 @@ class ProductListNew extends Component {
                 )
             });
         }
-        
         return (
             <div className="product-list-pc">
                 <div className="panel panel-danger">
@@ -104,33 +104,7 @@ class ProductListNew extends Component {
 
                     </div>
                 </div>
-                <React.Fragment>
-                    <div className="pagination-wrapper">
-                        <Pagination aria-label="Page navigation example">
-                            {/* <PaginationItem disabled={currentPage <= 0}>
-                                <PaginationLink
-                                    onClick={e => this.handleSwitchPagination(e, currentPage - 1)}
-                                    previous
-                                    href="#"
-                                />
-                            </PaginationItem> */}
-                            {[...Array(this.pagesCountNews)].map((page, i) =>
-                                <PaginationItem active={i === currentPage} key={i}>
-                                    <PaginationLink onClick={e => this.handleSwitchPagination(e, i)} href="#">
-                                        {i + 1}
-                                    </PaginationLink>
-                                </PaginationItem>
-                            )}
-                            {/* <PaginationItem disabled={currentPage >= this.pagesCountNews - 1}>
-                                <PaginationLink
-                                    onClick={e => this.handleSwitchPagination(e, currentPage + 1)}
-                                    next
-                                    href="#"
-                                />
-                            </PaginationItem> */}
-                        </Pagination>
-                    </div>
-                </React.Fragment>
+                {/* pagination here */}
             </div>
         )
     }

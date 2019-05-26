@@ -3,7 +3,10 @@ import * as types from '../constants/AdminConstants';
 var initialState = [
     {
         name: "",
-        phone: ""
+        phone: "",
+        transporter: [
+            {transporter_id: "", name: ""}
+        ]
     }
 ];
 

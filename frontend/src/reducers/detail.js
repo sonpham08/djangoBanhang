@@ -1,7 +1,6 @@
 import * as types from '../constants/StaffContants';
 
-var initialState = [
-];
+var initialState = [];
 
 var myReducer = (state=initialState, action) => {
     var newState = Object.assign([], state);

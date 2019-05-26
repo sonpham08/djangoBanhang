@@ -79,7 +79,7 @@ class DetailBox extends Component {
                                                 <label>Thanh toán: </label>
                                             </div>                                        
                                             <div className="col-xs-7 col-sm-7 col-md-7 col-lg-7">
-                                                <p>{checkout}</p>
+                                                <p>{checkout} Đ</p>
                                             </div>                                          
                                         </div>
                                         <div className="form-group">                                           

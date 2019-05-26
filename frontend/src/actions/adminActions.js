@@ -1,4 +1,5 @@
 import * as types from '../constants/AdminConstants';
+import * as typeUser from '../constants/UserConstants';
 import axios from 'axios';
 import { browserHistory } from 'react-router';
 
@@ -313,10 +314,25 @@ export const deleteCategory = (category_id) => {
     }
 }
 
+export const getListTransporter = () => {
+    return dispatch => {
+        let headers = { "Content-Type": "application/json",'X-CSRFToken': csrftoken };
+        let url = '/api/v1/transporter/';
+        axios({
+            url, headers, method: 'get'
+        }).then(function(res){
+            dispatch({
+                type: types.GET_TRANSPORTER,
+                transporter: res.data
+            })
+        })
+    }
+}
+
 export const getListStaffShip = () => {
     return dispatch => {
         let headers = { "Content-Type": "application/json",'X-CSRFToken': csrftoken };
-        let url = `/api/v1/staff/`;
+        let url = `/api/v1/staff/get_staff/`;
         axios({
             url, headers, method: 'get'
         }).then(function(res){
@@ -329,20 +345,39 @@ export const getListStaffShip = () => {
     }
 }
 
-export const addStaffship = (name,phone) => {
+export const addStaffship = (name,phone, transporter) => {
     return dispatch => {
-        let headers = { "Content-Type": "application/json",'X-CSRFToken': csrftoken };
+        var headers = { "Content-Type": "application/json",'X-CSRFToken': csrftoken };
         let data = JSON.stringify({
             "name": name,
-            "phone": phone
+            "phone": phone,
+            "transporter": transporter
         });
         let url = '/api/v1/staff/'; 
         axios({
             url, headers,method:'post',data:data
         }).then(function(res){
-            dispatch({
-                type: types.ADD_STAFFSHIP,
-                adstaffship: res.data
+            axios({
+                url: `/api/v1/transporter/${res.data.transporter}/`, headers, method: 'get'
+            }).then(function(response) {
+                let result = {
+                    staff_id: res.data.staff_id,
+                    name: res.data.name,
+                    phone: res.data.phone,
+                    transporter: [
+                        {
+                            transporter_id: response.data.transporter_id,
+                            name: response.data.name
+                        }
+                    ]
+                }
+                dispatch({
+                    type: types.ADD_STAFFSHIP,
+                    adstaffship: result
+                })
+            }).catch(error => {
+                console.log(error);
+                
             })
         }).catch(error => {
 
@@ -359,12 +394,31 @@ export const editStaffship = (staffship) => {
             phone: staffship.phone
         });
         axios({
-            url, headers, method: 'put', data
+            url, headers, method: 'patch', data
         }).then(function(res) {
-            dispatch({
-                type: types.EDIT_STAFFSHIP,
-                adstaffship: res.data
+            axios({
+                url: `/api/v1/transporter/${res.data.transporter}/`, headers, method: 'get'
+            }).then(function(response) {
+                let result = {
+                    staff_id: res.data.staff_id,
+                    name: res.data.name,
+                    phone: res.data.phone,
+                    transporter: [
+                        {
+                            transporter_id: response.data.transporter_id,
+                            name: response.data.name
+                        }
+                    ]
+                }
+                dispatch({
+                    type: types.EDIT_STAFFSHIP,
+                    adstaffship: result
+                })
+            }).catch(error => {
+                console.log(error);
+                
             })
+            
         })
     }
 }
@@ -383,6 +437,39 @@ export const deleteStaffship = (staff_id) => {
             dispatch({
                 type: types.DELETE_STAFFSHIP,
                 adstaffship: result
+            })
+        })
+    }
+}
+
+export const getCoin = () => {
+    return dispatch => {
+        let headers = { "Content-Type": "application/json",'X-CSRFToken': csrftoken };
+        let url = "/api/v1/coin/get_coin/";
+        axios({
+            url, headers, method: 'get'
+        }).then(function(res) {
+            dispatch({
+                type: typeUser.GET_COIN,
+                coin: res.data
+            })
+        })
+    }
+}
+
+export const initialCoinForCustomer = (user_id) => {
+    return dispatch => {
+        let headers = { "Content-Type": "application/json",'X-CSRFToken': csrftoken };
+        let url = "/api/v1/coin/";
+        let data = JSON.stringify({
+            user: user_id
+        });
+        axios({
+            url, headers, method: 'post', data
+        }).then(function(res) {
+            dispatch({
+                type: typeUser.INITIAL_COIN,
+                coin: res.data
             })
         })
     }

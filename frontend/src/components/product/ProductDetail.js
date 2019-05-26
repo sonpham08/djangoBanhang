@@ -40,7 +40,8 @@ class ProductDetail extends Component {
         this.state = {
             activeTab: '1',
             alert: "",
-            how_many_buy: "",
+            how_many_buy: 1,
+            how_many_coin: 0,
             product_buy: {
                 price: 0,
                 promotion: 0
@@ -93,13 +94,17 @@ class ProductDetail extends Component {
             }   
         }else {
             let how_many_buy = parseInt(this.state.how_many_buy);
+            let how_many_coin = parseInt(this.state.how_many_coin);
             if(how_many_buy > product.quantity) {
                 toastr.warning(`Kho hàng chỉ còn ${product.quantity} sản phẩm!`);
             }
             else {
-                console.log(product);
-                
                 product.number_product_order = how_many_buy;
+                product.coin = {
+                    coin_id: this.props.coin[0].coin_id,
+                    count: this.props.coin[0].count,
+                    num_coin_use: how_many_coin
+                };
                 this.setState({ product_buy: product });
             }
         }
@@ -110,16 +115,14 @@ class ProductDetail extends Component {
     }
 
     render() {
-        var {product, comment,user, staff} = this.props;
-        var {how_many_buy, product_buy} = this.state;
+        var {product, comment,user, staff, coin} = this.props;
+        var {how_many_buy, product_buy, how_many_coin} = this.state;
         // filter comment
         if(comment.length > 0) {
             comment = comment.filter((cmt) => {
                 return cmt.product == product.product_id;
             });
         }
-        console.log(product_buy);
-        
         return (
             <div style={{background:'gainsboro'}}>
                     <div className="panel panel-primary">
@@ -177,11 +180,28 @@ class ProductDetail extends Component {
                                             Mua ngay</button>
                                         </div><hr/>
                                         <div className="row mg-bottom" style={{marginLeft: '2px', display: 'flex'}}>                                                                       
+                                            <i className="fas fa-coins"></i>
+                                            <p style={{color: 'red', marginLeft: '5px', marginTop: '-3px', display: 'flex'}}>
+                                                <strong>Bạn đang có {coin[0].count} coin. Bạn muốn sử dụng </strong>&nbsp;
+                                                <input
+                                                style={{width: '15%', marginTop: '-6px'}}
+                                                type="number" 
+                                                min={0}
+                                                max={coin[0].count}
+                                                className="form-control" 
+                                                name="how_many_coin"
+                                                value={how_many_coin} 
+                                                onChange={this.onChange}/>&nbsp;
+                                                <strong> coin.</strong>
+                                            </p>
+                                        </div><hr/>
+                                        <div className="row mg-bottom" style={{marginLeft: '2px', display: 'flex'}}>                                                                       
                                             <i className="fas fa-check-circle"></i>
                                             <p style={{color: 'red', marginLeft: '5px', marginTop: '-3px'}}>
                                                 <strong>Miễn phí đổi trả trong 7 ngày</strong>
                                             </p>
                                         </div><hr/>
+        
                                         <div className="row mg-bottom" style={{marginLeft: '2px'}}>                                                                       
                                             <p style={{textAlign: 'left'}}><strong style={{color: 'red'}}>Shop được tài trợ bởi VinGroup.</strong>Mang lại cho
                                              khách hàng sự tin tưởng
@@ -192,13 +212,15 @@ class ProductDetail extends Component {
                           </div>
                     </div>
 
-                    { how_many_buy <= product.quantity &&     
+                    { how_many_buy <= product.quantity && this.props.user.username != "" &&
                         <BuyNowBox
                             user={user}
                             product={product_buy}
+                            transporter={this.props.transporter}
                             staff={staff}
                             createBill={this.props.createBill}
                             deleteFromCart={this.deleteFromCart}
+                            updateCoin={this.props.updateCoin}
                         />
                         }
 

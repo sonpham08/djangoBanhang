@@ -4,6 +4,15 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 # Create your models here.
+class Coin(models.Model):
+    coin_id = models.AutoField(primary_key=True)
+    user = models.OneToOneField(User, on_delete=models.DO_NOTHING)
+    count = models.IntegerField(default=0)
+
+class Transporter(models.Model):
+    transporter_id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=255)
+
 class Category(models.Model):
     category_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255)
@@ -25,6 +34,7 @@ class Product(models.Model):
     memory = models.CharField(max_length=255)
     camera = models.CharField(max_length=255)
     pin = models.CharField(max_length=255)
+    pay_type = models.IntegerField(default=0) # 0: tien mat, 1: 1 Card
     gurantee = models.CharField(max_length=255)
     promotion = models.IntegerField()
     start_promo = models.DateTimeField()
@@ -33,6 +43,16 @@ class Product(models.Model):
 
     def __unicode__(self):
         return u"%s..." % self.myfield
+
+class FlashSale(models.Model):
+    flash_id = models.AutoField(primary_key=True)
+    start_flash = models.DateTimeField()
+    end_flash = models.DateTimeField()
+
+class FlashProduct(models.Model):
+    flashproduct = models.AutoField(primary_key=True)
+    flashsale = models.ForeignKey(FlashSale, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
 
 class Cart(models.Model):
     cart_id = models.AutoField(primary_key=True)
@@ -50,6 +70,8 @@ class Staff(models.Model):
     staff_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255)
     phone = models.CharField(max_length=12)
+    price = models.IntegerField(default=0)
+    transporter = models.ForeignKey(Transporter, on_delete=models.DO_NOTHING, default=1) # GHN
 
     def __str__(self):
         return self.name

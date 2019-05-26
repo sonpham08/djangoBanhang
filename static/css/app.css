@@ -287,6 +287,7 @@ nav > div a.nav-item.nav-link:focus
     .side-nav>li>a {
         width: 225px;
         border-bottom: 1px rgba(0,0,0,.3) solid;
+        color: white;
     }
 
     .side-nav li a:hover {
@@ -761,4 +762,18 @@ section .section-title {
 .fr_show_cmt {
     display: flex;
     margin: 15px;
+}
+
+.menu_cate_main:hover {
+    color: green;
+    margin-top: -3px;
+}
+
+.text_show_flash {
+    color: red;
+    top: 136px;
+    /* position: fixed; */
+    width: 100%;
+    margin: 10px;
+    margin-top: 152px;
 }

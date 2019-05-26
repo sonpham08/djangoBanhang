@@ -117,7 +117,7 @@ class Header extends Component {
                             style={{height: '50px', width: '163px'}}/>
                             </Link></li>
                             {/* <li><a href={user.username == "" ? "#":"/transfer"} style={{ color: "white" }}>Kiểm tra đơn hàng</a></li> */}
-                            <li><Link to="/sale" style={{ color: "white" }}><strong>Khuyến mãi</strong></Link></li>
+                            <li><Link to="/" style={{ color: "white" }} onClick={this.navigateToHome}><strong>Trang chủ</strong></Link></li>
                         </ul>
                         <div className="search-container">
                             <form className="form-horizontal" role="form" onSubmit={this.onSearchProduct}>

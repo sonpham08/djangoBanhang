@@ -10,10 +10,12 @@ import * as staffActions from '../../actions/staffActions';
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
 import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
 import SubHeader from '../SubHeader';
+import DateTime from 'react-datetime';
 import moment from 'moment';
 import 'moment-timezone';
 import toastr from 'toastr';
 import DetailBox from './DetailBox';
+import Select from 'react-select'
 var $ = require("jquery");
 
 
@@ -26,7 +28,12 @@ class StaffHome extends Component {
             product: {},
             bill: {},
             currentPage: 0,
-            search_name: ""
+            search_name: "",
+            start: "",
+            end: "",
+            filter: {
+                product_status: -1
+            }
         }
     }
 
@@ -35,6 +42,7 @@ class StaffHome extends Component {
         if (token != undefined) {
             this.props.authActions.getUserInfo();
         }
+        // this.props.staffActions.getFlashSale();
     }
 
     async componentDidMount() {
@@ -45,10 +53,12 @@ class StaffHome extends Component {
         await new Promise(resolve => resolve(this.props.adminActions.getListCustomer()));
         await new Promise(resolve => resolve(this.props.adminActions.getListProduct()));
         await new Promise(resolve => resolve(this.props.staffActions.getBill()));
+        await new Promise(resolve => resolve(this.props.staffActions.getFlashSale()));
     }
 
     componentWillReceiveProps(nextProps) {
         //data product with pagination
+        console.log('receive props', nextProps.detail);
         this.dataBill = nextProps.detail.map(
             (a, i) => a
         );
@@ -82,11 +92,28 @@ class StaffHome extends Component {
             localStorage.setItem('tab', 2);
             this.setState({ tab: 2 });
         }
+        if (tab == 'flashsale' && $("#flashsale").hasClass('active') == false) {
+            localStorage.setItem('tab', 3);
+            this.setState({ tab: 3 });
+        }
     }
 
     onLogout = () => {
         this.props.authActions.logout();
         window.location.reload(true);
+    }
+
+    terminalSave = () => {
+        this.setState({start: "", end: ""});
+    }
+
+    onOpenFlashSale = (e) => {
+        e.preventDefault();
+        let start = this.state.start
+        let end = this.state.end;
+        let product = this.refs.choose_product.state.value;
+        this.props.staffActions.openFlashSale(start, end, product);
+        toastr.success("Flash sale đã được kích hoạt");
     }
 
     onChange = (event) => {
@@ -96,6 +123,17 @@ class StaffHome extends Component {
         this.setState({
             [name]:value
         });
+    }
+
+    onChangeDateStart = (date) => {
+        let newDate = moment.tz(date._d, 'YYYY-MM-DD HH:mm:ss', 'UTC');
+        this.setState({ start:newDate });
+        
+    }
+
+    onChangeDateEnd = (date) => {
+        let newDate = moment.tz(date._d, 'YYYY-MM-DD HH:mm:ss', 'UTC');
+        this.setState({ end:newDate });
     }
 
     showDetailProduct = (product, bill) => {
@@ -132,10 +170,32 @@ class StaffHome extends Component {
         }
     }
 
+    filterTabCheckTransfer = (mode) => {
+        let filter = this.state.filter;
+        filter.product_status = mode;
+        this.setState({filter: filter});
+    }
+
     render() {
-        var { product, detail, adcustomer, staff } = this.props;
-        var { currentPage } = this.state;
+        var { product, detail, adcustomer, staff, flashsale, adproduct } = this.props;
+        var { currentPage, filter,start,end } = this.state;
+        console.log(flashsale);
         
+        var list_product = [];
+        if(adproduct) { // filter to select product
+            list_product = adproduct.map(item => {
+                // if(item.hasOwnProperty("product_id")) {
+                //     item.id = item.product_id;
+                // }
+                // item.label = item.name;
+                let results = {
+                    id: item.product_id,
+                    label: item.name
+                };
+                return results;
+                // list_product.push(results);
+            })
+        }
         var { tab, search_name } = this.state;
         if (tab == 0) {
             if (localStorage.getItem('tab') == undefined) {
@@ -145,13 +205,42 @@ class StaffHome extends Component {
             }
         }
         var listDetails = [];
+        //filter by search name
         if(search_name != "") {
             this.dataProduct = this.dataProduct.filter((product) => {
                 return product.name == search_name;
             });
         }
+        //filter by status
+        var waitingForAccept = [];
+        switch (filter.product_status) {
+            case 1:
+                waitingForAccept = this.dataBill.filter((bill) => {
+                    return bill.bill.status_product == 1;
+                });
+                break;
+            case 2:
+                waitingForAccept = this.dataBill.filter((bill) => {
+                    return bill.bill.status_product == 2;
+                });
+                break;
+            case 3:
+                waitingForAccept = this.dataBill.filter((bill) => {
+                    return bill.bill.status_product == 3;
+                });
+                break;
+            default:
+                waitingForAccept = [];
+                break;
+        }
+        var listDataBillCurr = [];
+        if(waitingForAccept.length > 0) {
+            listDataBillCurr = waitingForAccept;
+        }else {
+            listDataBillCurr = this.dataBill;
+        }
         if (this.dataBill != undefined) {
-            listDetails = this.dataBill
+            listDetails = listDataBillCurr
                 .slice(
                     currentPage * this.pageSizeBill,
                     (currentPage + 1) * this.pageSizeBill)
@@ -160,7 +249,7 @@ class StaffHome extends Component {
                     let user = adcustomer[adcustomer.findIndex(obj => obj.id == EachDetail.user)].fullname;
                     let staffs = staff[staff.findIndex(obj => obj.staff_id == EachDetail.bill.staff)].name;
                     let timestamp = moment(EachDetail.bill.create_date).unix();
-                    let date = moment(timestamp).format("MM/DD/YYYY HH:mm");
+                    let date = moment(new Date(timestamp*1000)).format("DD/MM/YYYY HH:mm");
                     
                     return (
                         <tr key={idx}>
@@ -170,7 +259,7 @@ class StaffHome extends Component {
                             <td>{EachDetail.bill.status_product == 1 ? "Chưa thanh toán" : (EachDetail.bill.status_product == 2 ? "Đã giao hàng":"Đang giao hàng")}</td>
                             <td align={"center"}>
                                 {EachDetail.bill.status_product == 1 ? <i
-                                    className="fas fa-caret-down"
+                                    className="fas fa-eye"
                                     data-toggle="modal" data-target="#detailmodal"
                                     onClick={() => this.showDetailProduct(EachDetail.product, EachDetail.bill)}
                                 ></i> :
@@ -181,6 +270,7 @@ class StaffHome extends Component {
                             <td>{staffs}</td>
                             <td align="right">
                                 <button type="button" className="btn btn-default mg-left"
+                                disabled={EachDetail.bill.status_product == 1 || EachDetail.bill.status_product == 2}
                                  onClick={() => this.changeStatusProduct(EachDetail.bill.bill_id, EachDetail.bill.staff, 2)}>
                                     <i className="fas fa-edit"></i> Đã giao hàng</button>
                                 <button type="button" className="btn btn-danger mg-left"
@@ -211,12 +301,17 @@ class StaffHome extends Component {
                                 <li id="transfer">
                                     <Link to="#"
                                         className={tab == 1 ? "active" : ""}
-                                        onClick={(e) => this.open(e, 'transfer')}><i className="fa fa-fw fa-user-plus"></i>Kiểm tra đơn hàng</Link>
+                                        onClick={(e) => this.open(e, 'transfer')}><i className="fa fa-fw fa-user-plus"></i> Kiểm tra đơn hàng</Link>
                                 </li>
                                 <li id="product">
                                     <Link to="#"
                                         className={tab == 2 ? "active" : ""}
-                                        onClick={(e) => this.open(e, 'product')}><i className="fab fa-product-hunt"></i>Sản phẩm trong kho</Link>
+                                        onClick={(e) => this.open(e, 'product')}><i className="fab fa-product-hunt"></i> Sản phẩm trong kho</Link>
+                                </li>
+                                <li id="flashsale">
+                                    <Link to="#"
+                                        className={tab == 3 ? "active" : ""}
+                                        onClick={(e) => this.open(e, 'flashsale')}><i className="fas fa-bolt"></i> Flash Sale</Link>
                                 </li>
                             </ul>
                         </div>
@@ -233,7 +328,23 @@ class StaffHome extends Component {
                                             <th>Người mua</th>
                                             <th>Ngày đặt</th>
                                             <th>Tình trạng</th>
-                                            <th>Chi tiết đơn hàng</th>
+                                            <th  style={{textAlign: 'center'}}>Chi tiết đơn hàng<br/>
+                                            <i className="fas fa-eye"
+                                            onClick={() => this.filterTabCheckTransfer(1)}
+                                            title="Đang chờ duyệt"
+                                            value={1}
+                                            ></i>&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <i className="fas fa-check"
+                                            onClick={() => this.filterTabCheckTransfer(2)}
+                                            title="Đã giao hàng"
+                                            value={2}
+                                            ></i>&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <i className="fas fa-exchange-alt"
+                                            onClick={() => this.filterTabCheckTransfer(3)}
+                                            title="Đang giao hàng"
+                                            value={3}
+                                            ></i>
+                                            </th>
                                             <th>Nhân viên giao hàng</th>
                                         </tr>
                                     </thead>
@@ -308,6 +419,11 @@ class StaffHome extends Component {
                                     <Link to="#"
                                         className={tab == 2 ? "active" : ""}
                                         onClick={(e) => this.open(e, 'product')}><i className="fab fa-product-hunt"></i>Sản phẩm trong kho</Link>
+                                </li>
+                                <li id="flashsale">
+                                    <Link to="#"
+                                        className={tab == 3 ? "active" : ""}
+                                        onClick={(e) => this.open(e, 'flashsale')}><i className="fas fa-bolt"></i> Flash Sale</Link>
                                 </li>
                             </ul>
                         </div>
@@ -411,6 +527,159 @@ class StaffHome extends Component {
                 </div>
             )
         }
+        if(tab == 3) {
+            return (
+                <div style={{ background: 'gainsboro' }}>
+                    <SubHeader
+                        onLogout={this.onLogout} />
+                    <div className="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                        <div className="collapse navbar-collapse navbar-ex1-collapse">
+                            <ul className="nav navbar-nav side-nav">
+                                <li>
+                                    <Link to="/" style={{padding: '0'}}>
+                                        <img src="/static/img/lg.png"
+                                        style={{height: '50px', width: '225px'}}/> 
+                                    </Link>
+                                </li>
+                                <li id="transfer">
+                                    <Link to="#"
+                                        className={tab == 1 ? "active" : ""}
+                                        onClick={(e) => this.open(e, 'transfer')}><i className="fa fa-fw fa-user-plus"></i> Kiểm tra đơn hàng</Link>
+                                </li>
+                                <li id="product">
+                                    <Link to="#"
+                                        className={tab == 2 ? "active" : ""}
+                                        onClick={(e) => this.open(e, 'product')}><i className="fab fa-product-hunt"></i> Sản phẩm trong kho</Link>
+                                </li>
+                                <li id="flashsale">
+                                    <Link to="#"
+                                        className={tab == 3 ? "active" : ""}
+                                        onClick={(e) => this.open(e, 'flashsale')}><i className="fas fa-bolt"></i> Flash Sale</Link>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    
+                    
+                    <div className="col-xs-5 col-sm-5 col-md-5 col-lg-5" style={{marginTop: '60px'}}>
+                        
+                        <div className="panel panel-warning">
+                              <div className="panel-body" style={{padding: '0'}}>
+                                    <h3 style={{textAlign: 'center', margin: '10px'}}>Kích hoạt Flash Sale</h3>
+                                    <form onSubmit={this.onOpenFlashSale} method="POST" className="form-horizontal" role="form">
+                                        <div className="form-group">
+                                            <div className="col-md-3">
+                                                <label>Bắt đầu: </label>
+                                            </div>
+                                            <div className="col-md-9" style={{width: '73%'}}>
+                                                <DateTime
+                                                ref="start"
+                                                name="start"
+                                                onChange={this.onChangeDateStart}
+                                                value={this.state.start}
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="form-group">
+                                            <div className="col-md-3">
+                                                <label>Kết thúc: </label>
+                                            </div>
+                                            <div className="col-md-9" style={{width: '73%'}}>
+                                                <DateTime
+                                                ref="end"
+                                                name="end"
+                                                onChange={this.onChangeDateEnd}
+                                                value={this.state.end}
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="form-group">
+                                            <div className="col-md-3">
+                                                <label>Sản phẩm: </label>
+                                            </div>
+                                            <div className="col-md-9" style={{width: '73%'}}>
+                                            <Select
+                                                defaultValue={list_product[1]}
+                                                isMulti
+                                                name="colors"
+                                                ref="choose_product"
+                                                getOptionValue={opt => opt.id}
+                                                options={list_product}
+                                                className="basic-multi-select"
+                                                classNamePrefix="select"
+                                            />
+                                            </div>
+                                        </div>
+                                        <div className="form-group">
+                                            <div className="col-sm-10 col-sm-offset-2">
+                                                <button 
+                                                type="submit" 
+                                                className="btn btn-primary" 
+                                                style={{float: 'right', marginLeft:'10px', marginRight: '10px'}}
+                                                >Lưu thay đổi</button>
+                                                <button 
+                                                type="button" 
+                                                className="btn btn-default" 
+                                                style={{float: 'right'}}
+                                                onClick={this.terminalSave}
+                                                >Hủy bỏ</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                              </div>
+                        </div>
+                        
+                    </div>
+                    
+                    <div className="col-xs-5 col-sm-5 col-md-5 col-lg-5" style={{marginTop: '60px'}}>
+                        
+                        <div className="panel panel-warning">
+                              <div className="panel-heading">
+                                    <h3 className="panel-title">Thống kê Flash Sale</h3>
+                              </div>
+                              <div className="panel-body">
+                                    
+                                    <table className="table table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>No</th>
+                                                <th>Ngày kích hoạt</th>
+                                                <th>Khung giờ</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        {
+                                            flashsale.flashsale.data.map((flash, idx) => {
+                                                let timestamp = {
+                                                    start: moment(flash.start_flash).unix(),
+                                                    end: moment(flash.end_flash).unix()
+                                                };
+                                                let time = {
+                                                    start: moment(new Date(timestamp.start*1000)).tz('Africa/Accra').format("HH:mm"),
+                                                    end: moment(new Date(timestamp.end*1000)).tz('Africa/Accra').format("HH:mm"),
+                                                    day: moment(new Date(timestamp.start*1000)).format("MM/DD/YYYY")
+                                                };
+                                                return(
+                                                    <tr key={idx}>
+                                                        <td>{idx + 1}</td>
+                                                        <td>{time.day}</td>
+                                                        <td>{time.start} => {time.end}</td>
+                                                    </tr>
+                                                )
+                                            })
+                                        }
+                                        </tbody>
+                                    </table>
+                                    
+                              </div>
+                        </div>
+                        
+                    </div>
+                    {/* here we aree */}
+                </div>
+            )
+        }
     }
 }
 
@@ -421,7 +690,8 @@ const mapStateToProps = state => {
         detail: state.detail,
         adcustomer: state.adcustomer,
         staff: state.staff,
-        adproduct: state.adproduct
+        adproduct: state.adproduct,
+        flashsale: state.flashsale
     };
 };
 

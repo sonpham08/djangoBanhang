@@ -5,3 +5,10 @@ export const EDIT_BILL_IN_DETAIL = 'EDIT_BILL_IN_DETAIL';
 
 export const UPDATE_QUANTITY_PRODUCT = 'UPDATE_QUANTITY_PRODUCT';
 export const DELETE_BILL = 'DELETE_BILL';
+
+// flash sale
+export const OPEN_FLASH_SALE = 'OPEN_FLASH_SALE';
+export const GET_LIST_FLASH_SALE = 'GET_LIST_FLASH_SALE';
+
+// flash product
+export const ADD_FLASH_PRODUCT = 'ADD_FLASH_PRODUCT';

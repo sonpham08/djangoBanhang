@@ -27,6 +27,8 @@ class AdminHome extends Component {
         await new Promise(resolve => resolve(this.props.adminActions.getListCustomer()));
         await new Promise(resolve => resolve(this.props.adminActions.getListStaff()));
         await new Promise(resolve => resolve(this.props.adminActions.getListStaffShip()));
+        await new Promise(resolve => resolve(this.props.adminActions.getListTransporter()));
+        await new Promise(resolve => resolve(this.props.adminActions.getCoin()));
         await new Promise(resolve => resolve(this.props.staffActions.getBill()));
     }
 
@@ -88,12 +90,16 @@ class AdminHome extends Component {
         this.props.adminActions.deleteStaffship(id);
     }
 
-    addStaffship = (name, phone) => {
-        this.props.adminActions.addStaffship(name,phone);
+    addStaffship = (name, phone, transporter) => {
+        this.props.adminActions.addStaffship(name,phone,transporter);
     }
 
     editStaffship = (staffship) => {
         this.props.adminActions.editStaffship(staffship);
+    }
+
+    openCoin = (user_id) => {
+        this.props.adminActions.initialCoinForCustomer(user_id);
     }
 
     render() {
@@ -105,8 +111,9 @@ class AdminHome extends Component {
             adcustomer,
             adstaffship,
             detail,
+            coin,
+            transporter
         } = this.props;
-
         return (
             <div style={{background:'gainsboro'}} style={{paddingTop: '63px'}}>
                 <AdminHeader
@@ -124,6 +131,8 @@ class AdminHome extends Component {
                 adcategories={adcategories}
                 adcustomer={adcustomer}
                 detail={detail}
+                coin={coin}
+                transporter={transporter}
                 tab={this.state.tab}
                 addProduct={this.addProduct}
                 editProduct={this.editProduct}
@@ -137,6 +146,7 @@ class AdminHome extends Component {
                 deleteStaffShip={this.deleteStaffShip}
                 addStaffship={this.addStaffship}
                 editStaffship={this.editStaffship}
+                openCoin={this.openCoin}
                 />
             </div>
         );
@@ -152,7 +162,9 @@ const mapStateToProps = state => {
         adstaff: state.adstaff,
         adcustomer: state.adcustomer,
         adstaffship: state.adstaffship,
-        detail: state.detail
+        detail: state.detail,
+        coin: state.coin,
+        transporter: state.transporter
     };
 };
 

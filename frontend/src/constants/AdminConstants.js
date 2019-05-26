@@ -25,3 +25,6 @@ export const GET_LIST_STAFF_SHIP = 'GET_LIST_STAFF_SHIP';
 export const ADD_STAFFSHIP = 'ADD_STAFFSHIP';
 export const EDIT_STAFFSHIP = 'EDIT_STAFFSHIP';
 export const DELETE_STAFFSHIP = 'DELETE_STAFFSHIP';
+
+// transporter
+export const GET_TRANSPORTER = 'GET_TRANSPORTER';

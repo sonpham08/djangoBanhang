@@ -10,6 +10,7 @@ import ManageStaff from './MangeStaff';
 import ManageCustomer from './MangeCustomer';
 import ManageBill from './ManageBill';
 import ManageStaffShip from './ManageStaffShip';
+import ManageCoin from './ManageCoin';
 var $ = require("jquery");
 
 class AdminManage extends Component {
@@ -139,7 +140,8 @@ class AdminManage extends Component {
                 />
                 <ManageCustomer
                 tab={tab}
-                adcustomer={this.props.adcustomer}/>
+                adcustomer={this.props.adcustomer}
+                openCoin={this.props.openCoin}/>
                 <ManageBill
                 tab={tab}
                 adcustomer={this.props.adcustomer}
@@ -151,12 +153,18 @@ class AdminManage extends Component {
                 openAddForm={this.state.openAddForm}
                 adstaffship={this.props.adstaffship}
                 staffship={this.state.staffship}
+                transporter={this.props.transporter}
                 toggleAddForm={this.toggleAddForm}
                 closeAddForm={this.closeAddForm}
                 openAddFormStaffShip={this.openAddFormStaffShip}
                 deleteStaffShip={this.props.deleteStaffShip}
                 addStaffship={this.props.addStaffship}
                 editStaffship={this.props.editStaffship}/>
+                
+                <ManageCoin
+                tab={tab}
+                coin={this.props.coin}
+                />
             </div>
         )
     }

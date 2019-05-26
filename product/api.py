@@ -3,18 +3,18 @@ from rest_framework import viewsets, permissions
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from .models import (Category,Product,DealedProduct,StatusProduct,
-Staff, Bill, DetailOrder, Comment, Cart)
+Staff, Bill, DetailOrder, Comment, Cart, Coin, Transporter, FlashSale, FlashProduct)
 from django.contrib.auth import get_user_model
 
 from .serializers import (CategorySerializer,ProductSerializer,DealedProductSerializer,
 StatusProductSerializer,StaffSerializer,BillSerializer,DetailOrderSerializer,CommentSerializer,
-CartSerializer)
+CartSerializer,CoinSerializer,TransporterSerializer,FlashSaleSerializer,FlashProductSerializer)
 import base64
 import os
 import time
 import moment
 import datetime
-
+import pytz
 User=get_user_model()
 
 class CategoryViewSet(viewsets.ModelViewSet):
@@ -49,6 +49,61 @@ class CategoryViewSet(viewsets.ModelViewSet):
             return Response({
                 "Error": repr(e)
             }, 400)
+
+class CoinViewSet(viewsets.ModelViewSet):
+    queryset = Coin.objects.all()
+    permission_classes = [permissions.AllowAny, ]
+    serializer_class = CoinSerializer
+
+    @action(detail=False)
+    def get_coin(self, request):
+        res=[]
+        try:
+            coins = Coin.objects.all()
+            users = User.objects.all()
+            for coin in coins:
+                res.append({
+                    "coin_id": coin.coin_id,
+                    "count": coin.count,
+                    "user": [{
+                        "user_id": user.id,
+                        "fullname": user.fullname
+                    }for user in users if user.id == coin.user.id]
+                })
+                    
+            return Response(res, 200)
+        except Exception as e:
+            return Response({
+                "Error": repr(e)
+            }, 400)
+
+    @action(detail=False)
+    def get_coin_by_user(self, request):
+        req_user = request.user
+        res={}
+        try:
+            coins = Coin.objects.all()
+            users = User.objects.all()
+            for coin in coins:
+                for user in users: 
+                    if user.id == coin.user.id and user.id == req_user.id:
+                        res = {
+                            "coin_id": coin.coin_id,
+                            "count": coin.count,
+                            "user_id": user.id,
+                            "fullname": user.fullname 
+                        }
+                    
+            return Response(res, 200)
+        except Exception as e:
+            return Response({
+                "Error": repr(e)
+            }, 400)
+
+class TransporterViewSet(viewsets.ModelViewSet):
+    queryset = Transporter.objects.all()
+    permission_classes = [permissions.AllowAny, ]
+    serializer_class = TransporterSerializer
 
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
@@ -216,6 +271,62 @@ class ProductViewSet(viewsets.ModelViewSet):
                 "Error": repr(e)
             }, 400)
 
+class FlashSaleViewSet(viewsets.ModelViewSet):
+    queryset = FlashSale.objects.all()
+    permission_classes = [permissions.AllowAny, ]
+    serializer_class = FlashSaleSerializer
+
+    ## only get flash sale today
+    @action(detail=False)
+    def get_flash_product(self, request):
+        res=[]
+        try:
+            flashsale = FlashSale.objects.all()
+            flashproduct = FlashProduct.objects.all()
+            for sale in flashsale:
+                # print('start', sale.start_flash.hour)
+                # print('end', sale.end_flash.hour)
+                if str(datetime.date.today()) == str(sale.start_flash.strftime('%Y-%m-%d')):
+                    timenow = datetime.datetime.today().hour
+                    print(timenow)
+                    res.append({
+                        "flash_id": sale.flash_id,
+                        "start": sale.start_flash,
+                        "end": sale.end_flash,
+                        "flashproduct": [{
+                            "product_id": product.product.product_id,
+                            "name": product.product.name,
+                            "price": product.product.price,
+                            "image": str(product.product.image),
+                            "size":product.product.size,
+                            "quantity": product.product.quantity,
+                            "rating": product.product.rating,
+                            "hdh": product.product.hdh,
+                            "color": product.product.color,
+                            "CPU": product.product.CPU,
+                            "memory": product.product.memory,
+                            "camera": product.product.camera,
+                            "pin": product.product.pin,
+                            "gurantee": product.product.gurantee,
+                            "promotion": product.product.promotion,
+                            "start_promo": product.product.start_promo,
+                            "end_promo": product.product.end_promo,
+                            "category": product.product.category.category_id
+                        }for product in flashproduct if product.flashsale.flash_id == sale.flash_id and
+                        timenow + 7 >= sale.start_flash.hour and timenow + 7 < sale.end_flash.hour]
+                    })
+            return Response(res, 200)
+        except Exception as e:
+            return Response({
+                "Error": repr(e)
+            }, 400)
+
+class FlashProductViewSet(viewsets.ModelViewSet):
+    queryset = FlashProduct.objects.all()
+    permission_classes = [permissions.AllowAny, ]
+    serializer_class = FlashProductSerializer
+
+
 class DealedProductViewSet(viewsets.ModelViewSet):
     queryset = DealedProduct.objects.all()
     permission_classes = [permissions.AllowAny, ]
@@ -279,6 +390,30 @@ class StaffViewSet(viewsets.ModelViewSet):
     queryset = Staff.objects.all()
     permission_classes = [permissions.AllowAny, ]
     serializer_class = StaffSerializer
+
+    @action(detail=False)
+    def get_staff(self, request):
+        res=[]
+        try:
+            staffs = Staff.objects.all()
+            transporters = Transporter.objects.all()
+            for staff in staffs:
+                res.append({
+                    "staff_id": staff.staff_id,
+                    "name": staff.name,
+                    "phone": staff.phone,
+                    "price": staff.price,
+                    "transporter": [{
+                        "transporter_id": transporter.transporter_id,
+                        "name": transporter.name
+                    }for transporter in transporters if transporter.transporter_id == staff.transporter.transporter_id]
+                })
+                    
+            return Response(res, 200)
+        except Exception as e:
+            return Response({
+                "Error": repr(e)
+            }, 400)
 
 class BillViewSet(viewsets.ModelViewSet):
     queryset = Bill.objects.all()

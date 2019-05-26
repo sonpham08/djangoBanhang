@@ -9,7 +9,7 @@ class MenuProduct extends Component {
     constructor(props) {
         super(props);
         this.state = {
-
+            category_id: ""
         }
     }
 
@@ -24,7 +24,7 @@ class MenuProduct extends Component {
         })
     }
 
-    showSubMenuItem(mode) {
+    showSubMenuItem(category_id, mode) {
         switch (mode) {
             case 'sub-tivi':
                 $(".menu-product-tivi").show();
@@ -77,6 +77,7 @@ class MenuProduct extends Component {
             default:
                 break;
         }
+        this.setState({category_id: category_id});     
     }
 
     hideSubMenuItem(mode) {
@@ -147,6 +148,11 @@ class MenuProduct extends Component {
         this.props.onFilterProduct(category_id);
     }
 
+    onFilter = (category_id, name, value) => {
+        console.log(category_id, name, value);
+        this.props.onFilter(category_id, name, value);
+    }
+
     render() {
         var { adcategories } = this.props;
         console.log(adcategories);
@@ -171,46 +177,15 @@ class MenuProduct extends Component {
                 }
                 return (
                     <li key={idx}
-                        onMouseOver={() => this.showSubMenuItem(label)}
+                        onMouseOver={() => this.showSubMenuItem(category.category_id, label)}
                         style={{ cursor: 'pointer' }}
                         value={category.category_id}
+                        className="menu_cate_main"
                         onClick={() => this.filterProduct(category.category_id)}
                     >
                         {category.name}</li>
                 );
             });
-
-            filterXiao = adcategories.map((xiao, idx) => {
-                return (
-                    <div className="menu-product-tivi">
-                        <ul className="ul-menu-product-tivi">
-                            <li>
-                                <a href="#">Camera trước sau > </a>
-                            </li>
-                            <li><a href="#">1 CAM</a></li>
-                            <li><a href="#">2 CAM</a></li>
-                            <li><a href="#">3 CAM</a></li>
-                        </ul>
-                        <ul className="ul-menu-product-tivi">
-                            <li>
-                                <a href="#">Dung lượng bộ nhớ > </a>
-                            </li>
-                            <li><a href="#">Dưới 12GB</a></li>
-                            <li><a href="#">Dưới 24GB </a></li>
-                            <li><a href="#">25GB trở lên</a></li>
-                        </ul>
-                        <ul className="ul-menu-product-tivi">
-                            <li>
-                                <a href="#">Giá bán > </a>
-                            </li>
-                            <li><a href="#">Dưới 2tr</a></li>
-                            <li><a href="#">Dưới 10tr </a></li>
-                            <li><a href="#">10 trở lên</a></li>
-                        </ul>
-
-                    </div>
-                )
-            })
         }
         return (
             <div className="row">
@@ -222,168 +197,168 @@ class MenuProduct extends Component {
                             {listCategory}
                         </ul>
                         {/* sub menu for tivi */}
-                        <div className="menu-product-tivi">
+                        <div className="menu-product-tivi xiao">
                             <ul className="ul-menu-product-tivi">
                                 <li>
-                                    <a href="#">Camera trước sau > </a>
+                                    <a href="#">Xiaomi > Camera trước sau > </a>
                                 </li>
-                                <li><a href="#">1 CAM</a></li>
-                                <li><a href="#">2 CAM</a></li>
-                                <li><a href="#">3 CAM</a></li>
+                                <li onClick={() => this.onFilter(this.state.category_id, "cam", 1)}><a href="#">1 CAM</a></li>
+                                <li onClick={() => this.onFilter(this.state.category_id, "cam", 2)}><a href="#">2 CAM</a></li>
+                                <li onClick={() => this.onFilter(this.state.category_id, "cam", 3)}><a href="#">3 CAM</a></li>
                             </ul>
                             <ul className="ul-menu-product-tivi">
                                 <li>
-                                    <a href="#">Dung lượng bộ nhớ > </a>
+                                    <a href="#">Xiaomi > Dung lượng bộ nhớ > </a>
                                 </li>
-                                <li><a href="#">Dưới 12GB</a></li>
-                                <li><a href="#">Dưới 24GB </a></li>
-                                <li><a href="#">25GB trở lên</a></li>
+                                <li onClick={() => this.onFilter(this.state.category_id, "memory", 12)}><a href="#">Dưới 12GB</a></li>
+                                <li onClick={() => this.onFilter(this.state.category_id, "memory", 24)}><a href="#">Dưới 24GB </a></li>
+                                <li onClick={() => this.onFilter(this.state.category_id, "memory", 32)}><a href="#">25GB trở lên</a></li>
                             </ul>
                             <ul className="ul-menu-product-tivi">
                                 <li>
-                                    <a href="#">Giá bán > </a>
+                                    <a href="#">Xiaomi > Giá bán > </a>
                                 </li>
-                                <li><a href="#">Dưới 2tr</a></li>
-                                <li><a href="#">Dưới 10tr </a></li>
-                                <li><a href="#">10 trở lên</a></li>
+                                <li onClick={() => this.onFilter(this.state.category_id, "price", 2)}><a href="#">Dưới 2tr</a></li>
+                                <li onClick={() => this.onFilter(this.state.category_id, "price", 10)}><a href="#">Dưới 10tr </a></li>
+                                <li onClick={() => this.onFilter(this.state.category_id, "price", 11)}><a href="#">10 trở lên</a></li>
                             </ul>
 
                         </div>
                         {/* sub menu for dien thoai */}
-                        <div className="menu-product-mobiphone">
+                        <div className="menu-product-mobiphone honor">
                             <ul className="ul-menu-product-tivi">
                                 <li>
-                                    <a href="#">Camera trước sau > </a>
+                                    <a href="#">Honor > Camera trước sau > </a>
                                 </li>
-                                <li><a href="#">1 CAM</a></li>
-                                <li><a href="#">2 CAM</a></li>
-                                <li><a href="#">3 CAM</a></li>
+                                <li onClick={() => this.onFilter(this.state.category_id, "cam", 1)}><a href="#">1 CAM</a></li>
+                                <li onClick={() => this.onFilter(this.state.category_id, "cam", 2)}><a href="#">2 CAM</a></li>
+                                <li onClick={() => this.onFilter(this.state.category_id, "cam", 3)}><a href="#">3 CAM</a></li>
                             </ul>
                             <ul className="ul-menu-product-tivi">
                                 <li>
-                                    <a href="#">Dung lượng bộ nhớ > </a>
+                                    <a href="#">Honor > Dung lượng bộ nhớ > </a>
                                 </li>
-                                <li><a href="#">Dưới 12GB</a></li>
-                                <li><a href="#">Dưới 24GB </a></li>
-                                <li><a href="#">25GB trở lên</a></li>
+                                <li onClick={() => this.onFilter(this.state.category_id, "memory", 12)}><a href="#">Dưới 12GB</a></li>
+                                <li onClick={() => this.onFilter(this.state.category_id, "memory", 24)}><a href="#">Dưới 24GB </a></li>
+                                <li onClick={() => this.onFilter(this.state.category_id, "memory", 32)}><a href="#">25GB trở lên</a></li>
                             </ul>
                             <ul className="ul-menu-product-tivi">
                                 <li>
-                                    <a href="#">Giá bán > </a>
+                                    <a href="#">Honor > Giá bán > </a>
                                 </li>
-                                <li><a href="#">Dưới 2tr</a></li>
-                                <li><a href="#">Dưới 10tr </a></li>
-                                <li><a href="#">10 trở lên</a></li>
+                                <li onClick={() => this.onFilter(this.state.category_id, "price", 2)}><a href="#">Dưới 2tr</a></li>
+                                <li onClick={() => this.onFilter(this.state.category_id, "price", 10)}><a href="#">Dưới 10tr </a></li>
+                                <li onClick={() => this.onFilter(this.state.category_id, "price", 11)}><a href="#">10 trở lên</a></li>
                             </ul>
                         </div>
 
                         {/* Sub menu for laptop */}
-                        <div className="menu-product-laptop">
+                        <div className="menu-product-laptop samsung">
                             <ul className="ul-menu-product-tivi">
                                 <li>
-                                    <a href="#">Camera trước sau > </a>
+                                    <a href="#">Samsung > Camera trước sau > </a>
                                 </li>
-                                <li><a href="#">1 CAM</a></li>
-                                <li><a href="#">2 CAM</a></li>
-                                <li><a href="#">3 CAM</a></li>
+                                <li onClick={() => this.onFilter(this.state.category_id, "cam", 1)}><a href="#">1 CAM</a></li>
+                                <li onClick={() => this.onFilter(this.state.category_id, "cam", 2)}><a href="#">2 CAM</a></li>
+                                <li onClick={() => this.onFilter(this.state.category_id, "cam", 3)}><a href="#">3 CAM</a></li>
                             </ul>
                             <ul className="ul-menu-product-tivi">
                                 <li>
-                                    <a href="#">Dung lượng bộ nhớ > </a>
+                                    <a href="#">Samsung > Dung lượng bộ nhớ > </a>
                                 </li>
-                                <li><a href="#">Dưới 12GB</a></li>
-                                <li><a href="#">Dưới 24GB </a></li>
-                                <li><a href="#">25GB trở lên</a></li>
+                                <li onClick={() => this.onFilter(this.state.category_id, "memory", 12)}><a href="#">Dưới 12GB</a></li>
+                                <li onClick={() => this.onFilter(this.state.category_id, "memory", 24)}><a href="#">Dưới 24GB </a></li>
+                                <li onClick={() => this.onFilter(this.state.category_id, "memory", 32)}><a href="#">25GB trở lên</a></li>
                             </ul>
                             <ul className="ul-menu-product-tivi">
                                 <li>
-                                    <a href="#">Giá bán > </a>
+                                    <a href="#">Samsung > Giá bán > </a>
                                 </li>
-                                <li><a href="#">Dưới 2tr</a></li>
-                                <li><a href="#">Dưới 10tr </a></li>
-                                <li><a href="#">10 trở lên</a></li>
+                                <li onClick={() => this.onFilter(this.state.category_id, "price", 2)}><a href="#">Dưới 2tr</a></li>
+                                <li onClick={() => this.onFilter(this.state.category_id, "price", 10)}><a href="#">Dưới 10tr </a></li>
+                                <li onClick={() => this.onFilter(this.state.category_id, "price", 11)}><a href="#">10 trở lên</a></li>
                             </ul>
                         </div>
                         {/* Sub menu for refrigerator */}
-                        <div className="menu-product-refri">
+                        <div className="menu-product-refri iphone">
                             <ul className="ul-menu-product-tivi">
                                 <li>
-                                    <a href="#">Camera trước sau > </a>
+                                    <a href="#">Iphone > Camera trước sau > </a>
                                 </li>
-                                <li><a href="#">1 CAM</a></li>
-                                <li><a href="#">2 CAM</a></li>
-                                <li><a href="#">3 CAM</a></li>
+                                <li onClick={() => this.onFilter(this.state.category_id, "cam", 1)}><a href="#">1 CAM</a></li>
+                                <li onClick={() => this.onFilter(this.state.category_id, "cam", 2)}><a href="#">2 CAM</a></li>
+                                <li onClick={() => this.onFilter(this.state.category_id, "cam", 3)}><a href="#">3 CAM</a></li>
                             </ul>
                             <ul className="ul-menu-product-tivi">
                                 <li>
-                                    <a href="#">Dung lượng bộ nhớ > </a>
+                                    <a href="#">Iphone > Dung lượng bộ nhớ > </a>
                                 </li>
-                                <li><a href="#">Dưới 12GB</a></li>
-                                <li><a href="#">Dưới 24GB </a></li>
-                                <li><a href="#">25GB trở lên</a></li>
+                                <li onClick={() => this.onFilter(this.state.category_id, "memory", 12)}><a href="#">Dưới 12GB</a></li>
+                                <li onClick={() => this.onFilter(this.state.category_id, "memory", 24)}><a href="#">Dưới 24GB </a></li>
+                                <li onClick={() => this.onFilter(this.state.category_id, "memory", 32)}><a href="#">25GB trở lên</a></li>
                             </ul>
                             <ul className="ul-menu-product-tivi">
                                 <li>
-                                    <a href="#">Giá bán > </a>
+                                    <a href="#">Iphone > Giá bán > </a>
                                 </li>
-                                <li><a href="#">Dưới 2tr</a></li>
-                                <li><a href="#">Dưới 10tr </a></li>
-                                <li><a href="#">10 trở lên</a></li>
+                                <li onClick={() => this.onFilter(this.state.category_id, "price", 2)}><a href="#">Dưới 2tr</a></li>
+                                <li onClick={() => this.onFilter(this.state.category_id, "price", 10)}><a href="#">Dưới 10tr </a></li>
+                                <li onClick={() => this.onFilter(this.state.category_id, "price", 11)}><a href="#">10 trở lên</a></li>
                             </ul>
                         </div>
 
                         {/* Sub menu for software */}
-                        <div className="menu-product-software">
+                        <div className="menu-product-software oppo">
                             <ul className="ul-menu-product-tivi">
                                 <li>
-                                    <a href="#">Camera trước sau > </a>
+                                    <a href="#">Oppo > Camera trước sau > </a>
                                 </li>
-                                <li><a href="#">1 CAM</a></li>
-                                <li><a href="#">2 CAM</a></li>
-                                <li><a href="#">3 CAM</a></li>
+                                <li onClick={() => this.onFilter(this.state.category_id, "cam", 1)}><a href="#">1 CAM</a></li>
+                                <li onClick={() => this.onFilter(this.state.category_id, "cam", 2)}><a href="#">2 CAM</a></li>
+                                <li onClick={() => this.onFilter(this.state.category_id, "cam", 3)}><a href="#">3 CAM</a></li>
                             </ul>
                             <ul className="ul-menu-product-tivi">
                                 <li>
-                                    <a href="#">Dung lượng bộ nhớ > </a>
+                                    <a href="#">Oppo > Dung lượng bộ nhớ > </a>
                                 </li>
-                                <li><a href="#">Dưới 12GB</a></li>
-                                <li><a href="#">Dưới 24GB </a></li>
-                                <li><a href="#">25GB trở lên</a></li>
+                                <li onClick={() => this.onFilter(this.state.category_id, "memory", 12)}><a href="#">Dưới 12GB</a></li>
+                                <li onClick={() => this.onFilter(this.state.category_id, "memory", 24)}><a href="#">Dưới 24GB </a></li>
+                                <li onClick={() => this.onFilter(this.state.category_id, "memory", 32)}><a href="#">25GB trở lên</a></li>
                             </ul>
                             <ul className="ul-menu-product-tivi">
                                 <li>
-                                    <a href="#">Giá bán > </a>
+                                    <a href="#">Oppo > Giá bán > </a>
                                 </li>
-                                <li><a href="#">Dưới 2tr</a></li>
-                                <li><a href="#">Dưới 10tr </a></li>
-                                <li><a href="#">10 trở lên</a></li>
+                                <li onClick={() => this.onFilter(this.state.category_id, "price", 2)}><a href="#">Dưới 2tr</a></li>
+                                <li onClick={() => this.onFilter(this.state.category_id, "price", 10)}><a href="#">Dưới 10tr </a></li>
+                                <li onClick={() => this.onFilter(this.state.category_id, "price", 11)}><a href="#">10 trở lên</a></li>
                             </ul>
                         </div>
                         {/* Sub menu for device */}
-                        <div className="menu-product-device">
+                        <div className="menu-product-device huawuei">
                             <ul className="ul-menu-product-tivi">
                                 <li>
-                                    <a href="#">Camera trước sau > </a>
+                                    <a href="#">Huawuei > Camera trước sau > </a>
                                 </li>
-                                <li><a href="#">1 CAM</a></li>
-                                <li><a href="#">2 CAM</a></li>
-                                <li><a href="#">3 CAM</a></li>
+                                <li onClick={() => this.onFilter(this.state.category_id, "cam", 1)}><a href="#">1 CAM</a></li>
+                                <li onClick={() => this.onFilter(this.state.category_id, "cam", 2)}><a href="#">2 CAM</a></li>
+                                <li onClick={() => this.onFilter(this.state.category_id, "cam", 3)}><a href="#">3 CAM</a></li>
                             </ul>
                             <ul className="ul-menu-product-tivi">
                                 <li>
-                                    <a href="#">Dung lượng bộ nhớ > </a>
+                                    <a href="#">Huawuei > Dung lượng bộ nhớ > </a>
                                 </li>
-                                <li><a href="#">Dưới 12GB</a></li>
-                                <li><a href="#">Dưới 24GB </a></li>
-                                <li><a href="#">25GB trở lên</a></li>
+                                <li onClick={() => this.onFilter(this.state.category_id, "memory", 12)}><a href="#">Dưới 12GB</a></li>
+                                <li onClick={() => this.onFilter(this.state.category_id, "memory", 24)}><a href="#">Dưới 24GB </a></li>
+                                <li onClick={() => this.onFilter(this.state.category_id, "memory", 32)}><a href="#">25GB trở lên</a></li>
                             </ul>
                             <ul className="ul-menu-product-tivi">
                                 <li>
-                                    <a href="#">Giá bán > </a>
+                                    <a href="#">Huawuei > Giá bán > </a>
                                 </li>
-                                <li><a href="#">Dưới 2tr</a></li>
-                                <li><a href="#">Dưới 10tr </a></li>
-                                <li><a href="#">10 trở lên</a></li>
+                                <li onClick={() => this.onFilter(this.state.category_id, "price", 2)}><a href="#">Dưới 2tr</a></li>
+                                <li onClick={() => this.onFilter(this.state.category_id, "price", 10)}><a href="#">Dưới 10tr </a></li>
+                                <li onClick={() => this.onFilter(this.state.category_id, "price", 11)}><a href="#">10 trở lên</a></li>
                             </ul>
                         </div>
                     </div>

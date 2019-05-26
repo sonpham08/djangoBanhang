@@ -20,6 +20,7 @@ class ManageShip extends Component {
 
     componentWillReceiveProps(nextProps) {
         //data staff ship with pagination
+        console.log(nextProps.adstaffship);
         this.dataStaffShip = nextProps.adstaffship.map(
             (a, i) => a
         );
@@ -64,6 +65,7 @@ class ManageShip extends Component {
                                     <tr>
                                         <th>Tên nhân viên</th>
                                         <th>Số điện thoại</th>
+                                        <th>Nhà vận chuyển</th>
                                         <th>Hiệu chỉnh</th>
                                     </tr>
                                 </thead>
@@ -79,6 +81,7 @@ class ManageShip extends Component {
                                                     <tr key={idx}>
                                                         <td>{staff.name}</td>
                                                         <td>{staff.phone}</td>
+                                                        <td>{staff.transporter[0].name}</td>
                                                         <td>
                                                             <button type="button" className="btn btn-default mg-left" onClick={() => this.openAddFormStaffShip(staff)}>
                                                                 <i className="fas fa-edit"></i> Sửa</button>
@@ -125,6 +128,7 @@ class ManageShip extends Component {
                     <AddStaffShip
                         openAddForm={this.props.openAddForm}
                         staffship={this.props.staffship}
+                        transporter={this.props.transporter}
                         closeAddForm={this.props.closeAddForm}
                         addStaffship={this.props.addStaffship}
                         onSaveCategory={this.props.onSaveCategory}

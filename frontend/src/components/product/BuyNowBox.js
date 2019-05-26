@@ -25,17 +25,28 @@ class BuyNowBox extends Component {
     createBill = (e) => {
         e.preventDefault();
         let {product, user}=this.props;
+        let coin = product.coin;
+        let choose_transporter = this.refs.choose_transporter.value.split("-");
+        let staff_id = parseInt(choose_transporter[0]);
+        let price_transfer = parseInt(choose_transporter[1]);
         let bill = {
-            total_price: product.price * (product.promotion/100),
+            total_price: product.price - product.price * (product.promotion/100) + price_transfer - product.number_coin_use*1000,
             address: user.address,
             status: "Nothing",
             user: user.id,
             status_product: 1,
-            staff: 1,
+            staff: staff_id,
             number_product_order: product.number_product_order,
-            product_id: product.product_id
+            product_id: product.product_id,
         };
-        console.log(bill);
+        // let email = {
+        //     fullname: user.fullname,
+        //     address: user.address,
+        //     status_product: "Sản phẩm đã được chuyển cho"
+        // };
+
+        // update coin
+        this.props.updateCoin(coin);
         
         this.props.createBill(bill);
         //get cart_id by product_id in cart
@@ -47,6 +58,8 @@ class BuyNowBox extends Component {
 
     render() {
         var {product,user,staff}=this.props;
+        console.log(product);
+        
         return (
             <div className="modal fade" id="buymodal" role="dialog">
                 <div className="modal-dialog">
@@ -110,12 +123,48 @@ class BuyNowBox extends Component {
                                                 <p>{user.phone}</p>
                                             </div>                                          
                                         </div>
+                                        
+                                        <div className="form-group">                                           
+                                            <div className="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+                                                <label>Xu: </label>
+                                            </div>                                        
+                                            <div className="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+                                                {product.coin && <p>Giảm {product.coin.num_coin_use * 1000} Đ với {product.coin.num_coin_use} xu.</p>}
+                                            </div>                                          
+                                        </div>
+
                                         <div className="form-group">                                           
                                             <div className="col-xs-5 col-sm-5 col-md-5 col-lg-5">
                                                 <label>Thanh toán: </label>
                                             </div>                                        
                                             <div className="col-xs-7 col-sm-7 col-md-7 col-lg-7">
                                                 <p>{product.price - (product.price * product.promotion/100)} Đ</p>
+                                            </div>                                          
+                                        </div>
+        
+                                        <div className="form-group">                                           
+                                            <div className="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+                                                <label>Hình thức thanh toán: </label>
+                                            </div>                                        
+                                            <div className="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+                                            <select name="" id="input" className="form-control" required="required" ref="choose_transporter">
+                                                <option value={0}>Thanh toán khi nhận hàng</option>
+                                                <option value={1}>Thanh toán bằng thẻ</option>
+                                            </select>
+                                            </div>                                          
+                                        </div>
+                                        <div className="form-group">                                           
+                                            <div className="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+                                                <label>Bên giao hàng: </label>
+                                            </div>                                        
+                                            <div className="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+                                            <select name="" id="input" className="form-control" required="required" ref="choose_transporter">
+                                                {
+                                                    staff.map((sta, idx) => 
+                                                        <option key={idx} value={`${sta.staff_id}` + '-' + `${sta.price}`}>{sta.name} -- {sta.transporter[0].name} -- {sta.price}Đ</option>
+                                                    )
+                                                }
+                                            </select>
                                             </div>                                          
                                         </div>
                                         <div className="form-group">                                           

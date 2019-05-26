@@ -35,10 +35,7 @@ class Body extends Component {
                 )
             } else {
                 return (
-                    <div>
-                        <Home/>
-                        <Footer/>
-                    </div>
+                    <Home/>
                 )
             }
         }

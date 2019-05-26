@@ -8,6 +8,7 @@ from rest_framework import viewsets, permissions
 from rest_framework.decorators import action
 from knox.models import AuthToken
 from .serializers import UserSerializer, CreateUserSerializer
+from product.models import Coin
 # from product.models import Product, DetailOrder
 User = get_user_model()
 # from .models import User
@@ -71,6 +72,7 @@ class MeViewSet(viewsets.ModelViewSet):
         res=[]
         try:
             users = User.objects.all()
+            coins = Coin.objects.all()
             for user in users:
                 if user.is_superuser == False and user.is_user == True:
                     result = {
@@ -83,7 +85,11 @@ class MeViewSet(viewsets.ModelViewSet):
                         "email": user.email,
                         "phone": user.phone,
                         "address": user.address,
-                        "cmnd": user.cmnd
+                        "cmnd": user.cmnd,
+                        "coin": [{
+                            "coin_id": coin.coin_id,
+                            "count": coin.count
+                        }for coin in coins if coin.user.id == user.id]
                     }
                     res.append(result)
             return Response(res, 200)

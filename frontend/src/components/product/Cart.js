@@ -19,6 +19,7 @@ class Cart extends Component {
         super(props);
         this.state = {
             num_buy: 1,
+            num_coin: 0,
             product: {
                 image: "",
                 name: "",
@@ -31,7 +32,10 @@ class Cart extends Component {
         };
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentDidMount() {
+        // if(this.props.coin) {
+        //     this.setState({coin: this.props.coin});
+        // }
     }
 
     onChange = (event) => {
@@ -51,11 +55,18 @@ class Cart extends Component {
             window.location.href="/login";
         } else {
             let numbuy = parseInt(this.state.num_buy);
+            let num_coin = parseInt(this.state.num_coin);
+            
             if(numbuy > product.quantity) {
                 toastr.warning(`Kho hàng chỉ còn ${product.quantity} sản phẩm!`);
             }
             else {
                 product.number_product_order = numbuy;
+                product.coin = {
+                    coin_id: this.props.coin[0].coin_id,
+                    count: this.props.coin[0].count,
+                    num_coin_use: num_coin
+                };
                 this.setState({ product: product });
             }
         }
@@ -66,12 +77,14 @@ class Cart extends Component {
     }
 
     render() {
-        const {cart,user,staff}=this.props;
-        const {num_buy, product}=this.state;
+        var {cart,user,staff,transporter,coin}=this.props;
+        const {num_buy, product, num_coin}=this.state;
+        console.log(coin);
+        
         const listCart = cart.product
         .map((product_each,idx) => {
             return (
-                <div className="row" key={idx}>
+                <div className="row" key={idx} style={{paddingBottom: '40px'}}>
                         <div className="col-xs-2 col-sm-2 col-md-2 col-lg-2">
                             <img src={"static/dataset/"+product_each.image} className="img_on_cart"/>
                         </div>
@@ -86,14 +99,29 @@ class Cart extends Component {
                             <input type="number" className="form-control" name="num_buy"
                             value={num_buy} onChange={this.onChange}/>
                         </div>
+
+                        <div className="col-xs-1 col-sm-1 col-md-1 col-lg-1"
+                        style={{borderRight: '1px', display: 'flex'}}>
+                            <i className="fas fa-coins" style={{marginRight: '2px', marginTop: '9px'}}></i>
+                            <input 
+                            type="number" 
+                            className="form-control" 
+                            name="num_coin"
+                            min={0}
+                            max={coin[0].count}
+                            value={num_coin} 
+                            onChange={this.onChange}/>
+                        </div>
                              
-                        <div className="col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                        <div className="col-xs-1 col-sm-1 col-md-1 col-lg-1" style={{marginTop: '6px'}}>
                             <i className="fa fa-trash" aria-hidden="true"
                             style={{cursor: 'pointer'}}
+                            title="Delete"
                             onClick={() => this.deleteFromCart(product_each.cart_id)}
                             ></i>
                         </div>
-                        <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4"
+                        
+                        <div className="col-xs-3 col-sm-3 col-md-3 col-lg-3"
                             style={{borderLeft: '1px solid', display: 'flex'}}>
                             <div className="row">
                                 <div className="col-xs-6 col-sm-6 col-md-6 col-lg-6">
@@ -129,6 +157,7 @@ class Cart extends Component {
                                     <BuyNowBox
                                         user={user}
                                         product={product}
+                                        transporter={transporter}
                                         staff={staff}
                                         createBill={this.props.createBill}
                                         deleteFromCart={this.deleteFromCart}

@@ -240,7 +240,7 @@ export const getListStaffship = () => {
     let token = localStorage.getItem('token');
     return dispatch => {
         let headers = { "Content-Type": "application/json",'X-CSRFToken': csrftoken };
-        let url = '/api/v1/staff/';
+        let url = '/api/v1/staff/get_staff/';
         axios({
             url, headers, method: 'get',
         }).then(function(res){     
@@ -268,7 +268,7 @@ export const createBill = (bill) => {
         axios({
             url, headers, method: 'post',data
         }).then(function(res){
-            toastr.success('Đặt hàng thành công. Bạn sẽ nhận được cuộc gọi từ cửa hàng để xác nhận');
+            toastr.success('Đặt hàng thành công. Bạn sẽ nhận được email từ cửa hàng để xác nhận');
             dispatch({
                 type: types.CREATE_BILL,
                 bill: res.data
@@ -323,6 +323,83 @@ export const getComment = () => {
             dispatch({
                 type: types.GET_COMMENT,
                 comment: res.data
+            })
+        })
+    }
+}
+
+export const getCoinByUser = () => {
+    let token = localStorage.getItem('token');
+    return dispatch => {
+        let headers = { "Content-Type": "application/json",'X-CSRFToken': csrftoken,
+        'Authorization': `Token ${token}` };
+        let url = '/api/v1/coin/get_coin_by_user/';
+        axios({
+            url, headers, method: 'get'
+        }).then(function(res){   
+            console.log(res);
+              
+            dispatch({
+                type: types.GET_COIN_BY_USER,
+                coin: res.data
+            })
+        })
+    }
+}
+
+export const addCoin = (coin_id, user_id, count) => {
+    return dispatch => {
+        let headers = { "Content-Type": "application/json",'X-CSRFToken': csrftoken };
+        let url = `/api/v1/coin/${coin_id}/`;
+        let data = JSON.stringify({
+            user: user_id,
+            count: count + 1
+        });
+        axios({
+            url, headers, method: 'patch', data
+        }).then(function(res){   
+            console.log(res);
+              
+            dispatch({
+                type: types.ADD_COIN,
+                coin: res.data
+            })
+        })
+    }
+}
+
+export const updateCoin = (coin) => {
+    return dispatch => {
+        let headers = { "Content-Type": "application/json",'X-CSRFToken': csrftoken };
+        let url = `/api/v1/coin/${coin.coin_id}/`;
+        let data = JSON.stringify({
+            count: coin.count - coin.num_coin_use
+        });
+        axios({
+            url, headers, method: 'patch', data
+        }).then(function(res){   
+            console.log(res);
+              
+            dispatch({
+                type: types.UPDATE_COIN,
+                coin: res.data
+            })
+        })
+    }
+}
+
+export const getFlashSale = () => {
+    return dispatch => {
+        let headers = { "Content-Type": "application/json",'X-CSRFToken': csrftoken };
+        let url = '/api/v1/flashsale/get_flash_product/';
+        axios({
+            url, headers, method: 'get'
+        }).then(function(res){   
+            console.log(res);
+              
+            dispatch({
+                type: types.GET_FLASH_SALE_USER,
+                flashsale: res.data
             })
         })
     }

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import axios , {post} from 'axios';
 import DateTime from 'react-datetime';
 import moment from 'moment';
 import 'moment-timezone';

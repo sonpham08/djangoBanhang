@@ -170,3 +170,61 @@ export const addDealedProduct = (quantity, product_id) => {
         })
     }
 }
+
+
+export const openFlashSale = (start, end, product) => {
+    return dispatch => {
+        var headers = { "Content-Type": "application/json",'X-CSRFToken': csrftoken };
+        let url = '/api/v1/flashsale/';
+        let data = JSON.stringify({
+            start_flash: start,
+            end_flash: end
+        });
+        axios({
+            url, headers, method: 'post', data
+        }).then(function(res){
+            let arrayAxios = [];
+            console.log(res);
+            for(var i=0; i < product.length; i++) {
+                let ax = axios({
+                    url: '/api/v1/flashproduct/',
+                    headers, method: 'post',
+                    data: JSON.stringify({
+                        flashsale: res.data.flash_id,
+                        product: product[i].id
+                    })
+                });
+                arrayAxios.push(ax);
+            }
+            Promise.all(arrayAxios).then(function(results) {
+                console.log(results);
+                
+                dispatch({
+                    type: typesStaff.ADD_FLASH_PRODUCT,
+                    flashproduct: results.data
+                })
+            })
+            dispatch({
+                type: typesStaff.OPEN_FLASH_SALE,
+                flashsale: res.data
+            })
+        })
+    }
+}
+
+export const getFlashSale = () => {
+    return dispatch => {
+        let headers = { "Content-Type": "application/json",'X-CSRFToken': csrftoken };
+        let url = '/api/v1/flashsale/';
+        axios({
+            url, headers, method: 'get'
+        }).then(function(res){   
+            console.log(res);
+              
+            dispatch({
+                type: typesStaff.GET_LIST_FLASH_SALE,
+                flashsale: res.data
+            })
+        })
+    }
+}

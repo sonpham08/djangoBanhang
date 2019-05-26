@@ -59,6 +59,11 @@ class AdminSideMenu extends Component {
             this.setState({tabAd: 7});
             this.props.selectFormToOpen(7);
         }
+        if(tabAd == 8 && $("#manage_coin").hasClass('active') == false) {
+            localStorage.setItem('tabAd', 8);
+            this.setState({tabAd: 8});
+            this.props.selectFormToOpen(8);
+        }
     }
 
     render() {
@@ -129,6 +134,14 @@ class AdminSideMenu extends Component {
                             style={{ color: "white" }}
                             onClick={(e) => this.open(e, 7)}
                             ><i className="fab fa-hornbill"></i> Quản lý nhân viên giao hàng</Link>
+                        </li>
+                        <li id="manage_coin">
+                            <Link 
+                            className={this.state.tabAd == 8 ? "active" : ""}
+                            to="#" 
+                            style={{ color: "white" }}
+                            onClick={(e) => this.open(e, 8)}
+                            ><i className="fas fa-coins"></i> Quản lý Xu</Link>
                         </li>
                     </ul>
                 </div>
