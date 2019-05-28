@@ -76,8 +76,8 @@ class Home extends Component {
         this.setState({showCart: true});
     }
 
-    addToCart = (product_id, user_id) => {
-        this.props.userActions.addToCart(product_id, user_id);
+    addToCart = (product_id, user_id,how_many_buy) => {
+        this.props.userActions.addToCart(product_id, user_id,how_many_buy);
     }
 
     deleteFromCart = (cart_id) => {
@@ -130,7 +130,33 @@ class Home extends Component {
             flashsale,
         } = this.props;
         console.log(flashsale);
-            
+        // filter data flashsale to rest relate component
+        if(flashsale.flashsale_user.empty == false) {
+            flashsale.flashsale_user.data[0].flashproduct.map(flash => {
+                for(var i=0; i<promotion.length; i++) {
+                    if(flash.product_id == promotion[i].product_id) {
+                        promotion[i].flashsale_perform = true;
+                    }
+                }
+                for(var i=0; i<this.props.usproduct.length; i++) {
+                    if(flash.product_id == this.props.usproduct[i].product_id) {
+                        this.props.usproduct[i].flashsale_perform = true;
+                    }
+                }
+                for(var i=0; i<news.length; i++) {
+                    if(flash.product_id == news[i].product_id) {
+                        news[i].flashsale_perform = true;
+                    }
+                }
+                for(var i=0; i<cart.product.length; i++) {
+                    if(flash.product_id == cart.product[i].product_id) {
+                        cart.product[i].flashsale_perform = true;
+                    }
+                }
+            });
+        }
+        console.log(this.props.usproduct);
+        
         // get coin filter by user_id
         if(user.id != "") {
             coin = coin.filter((co) => {
@@ -265,8 +291,7 @@ class Home extends Component {
                 {showDetail == false && showCart == false && product_name == "" && category == 0 &&
                 <div className="body" style={{ marginTop: '0', padding: '5px 40px' }}>
                         <div className="row" 
-                        style={{marginTop: flashsale.flashsale_user.data.length > 0 ? 
-                        (flashsale.flashsale_user.data[0].flashproduct.length > 0 ? '0':'150px') :'150px'}}>
+                        style={{marginTop: flashsale.flashsale_user.empty == false ? '0' :'150px'}}>
                             <ProductListNew
                             news={news}
                             usproduct={this.props.usproduct}
@@ -322,6 +347,7 @@ class Home extends Component {
                     deleteFromCart={this.deleteFromCart}
                     createBill={this.createBill}
                     staff={staff}
+                    updateCoin={this.updateCoin}
                     />
                 </div>
                 }

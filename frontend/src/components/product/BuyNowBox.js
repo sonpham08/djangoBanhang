@@ -10,8 +10,8 @@ import {
     ModalFooter
 } from 'reactstrap';
 import { BrowserRouter, Link, Route, Router, NavLink } from 'react-router-dom';
-
 var $ = require("jquery");
+
 
 class BuyNowBox extends Component {
     // eslint-disable-next-line
@@ -28,9 +28,9 @@ class BuyNowBox extends Component {
         let coin = product.coin;
         let choose_transporter = this.refs.choose_transporter.value.split("-");
         let staff_id = parseInt(choose_transporter[0]);
-        let price_transfer = parseInt(choose_transporter[1]);
+        let price_transfer = product.flashsale_perform == true ? 0 : parseInt(choose_transporter[1]);
         let bill = {
-            total_price: product.price - product.price * (product.promotion/100) + price_transfer - product.number_coin_use*1000,
+            total_price: product.price - product.price * (product.promotion/100) + price_transfer - product.coin.num_coin_use*1000,
             address: user.address,
             status: "Nothing",
             user: user.id,
@@ -39,15 +39,16 @@ class BuyNowBox extends Component {
             number_product_order: product.number_product_order,
             product_id: product.product_id,
         };
-        // let email = {
-        //     fullname: user.fullname,
-        //     address: user.address,
-        //     status_product: "Sản phẩm đã được chuyển cho"
-        // };
+        let email = {
+            fullname: user.fullname,
+            address: user.address,
+            status_product: "Sản phẩm đã được chuyển cho"
+        };
+        console.log(bill);
+        
 
         // update coin
         this.props.updateCoin(coin);
-        
         this.props.createBill(bill);
         //get cart_id by product_id in cart
 

@@ -64,16 +64,12 @@ class ProductDetail extends Component {
     }
 
     addProductToCard = (product) => {
-        // let cart = localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : [];
-        // cart.push(product);
-        // localStorage.setItem('cart', JSON.stringify(cart));
-        // this.props.updateNumOnCart();
         if(this.props.user.username == "") {
             if(window.confirm('Bạn cần đăng nhập để thực hiện thao tác này!')) {
                 window.location.href="/login";
             }   
         } else {
-            this.props.addToCart(product.product_id, this.props.user.id);
+            this.props.addToCart(product.product_id, this.props.user.id, this.state.how_many_buy);
         }
         
     }

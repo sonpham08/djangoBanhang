@@ -147,13 +147,14 @@ export const getCartByProductId = (product_id) => {
     }
 }
 
-export const addToCart = (product_id, user_id) => {
+export const addToCart = (product_id, user_id, how_many_buy) => {
     return dispatch => {
         let headers = { "Content-Type": "application/json",'X-CSRFToken': csrftoken };
         let url = '/api/v1/cart/';
         let data = JSON.stringify({
             user: user_id,
-            product: product_id
+            product: product_id,
+            num_buy: how_many_buy
         });
         axios({
             url, headers, method: 'post',data
@@ -264,6 +265,7 @@ export const createBill = (bill) => {
             status_product: 1,
             staff: bill.staff
         });
+        console.log(data);
         
         axios({
             url, headers, method: 'post',data

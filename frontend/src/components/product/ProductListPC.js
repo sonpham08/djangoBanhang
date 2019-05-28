@@ -34,7 +34,6 @@ class ProductListPC extends Component {
     }
 
     showProductDetail = (product) => {
-        product.flashsale_perform = false;
         this.props.showProductDetail(product);
         let listProduct = JSON.parse(localStorage.getItem('listPro')) || [];
         listProduct.push(product);

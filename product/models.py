@@ -56,6 +56,7 @@ class FlashProduct(models.Model):
 
 class Cart(models.Model):
     cart_id = models.AutoField(primary_key=True)
+    num_buy = models.IntegerField(default=0)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=0)
 

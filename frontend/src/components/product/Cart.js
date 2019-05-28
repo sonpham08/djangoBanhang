@@ -18,8 +18,6 @@ class Cart extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            num_buy: 1,
-            num_coin: 0,
             product: {
                 image: "",
                 name: "",
@@ -28,7 +26,8 @@ class Cart extends Component {
                 price: "",
                 promotion: ""
             },
-            select_product_buy: ""
+            select_product_buy: "",
+            toggleActive: false,
         };
     }
 
@@ -38,6 +37,10 @@ class Cart extends Component {
         // }
     }
 
+    onToggle = () => {
+        this.setState({ toggleActive: !this.state.toggleActive });
+    }
+
     onChange = (event) => {
         var target = event.target;
         var name = target.name;  
@@ -45,17 +48,15 @@ class Cart extends Component {
         this.setState({
             [name]:value
         });
-        this.setState({
-            flag_for_msg: false,
-        });
     }
 
     onBuyNowFromCart = (product) => {
         if(this.props.user.username == "") {
             window.location.href="/login";
         } else {
-            let numbuy = parseInt(this.state.num_buy);
-            let num_coin = parseInt(this.state.num_coin);
+
+            let numbuy = product.num_buy;
+            let num_coin = this.refs.open_coin.checked == true ? this.props.coin[0].count : 0;
             
             if(numbuy > product.quantity) {
                 toastr.warning(`Kho hàng chỉ còn ${product.quantity} sản phẩm!`);
@@ -78,7 +79,7 @@ class Cart extends Component {
 
     render() {
         var {cart,user,staff,transporter,coin}=this.props;
-        const {num_buy, product, num_coin}=this.state;
+        const { product}=this.state;
         console.log(coin);
         
         const listCart = cart.product
@@ -96,21 +97,7 @@ class Cart extends Component {
                              
                         <div className="col-xs-1 col-sm-1 col-md-1 col-lg-1"
                         style={{borderRight: '1px'}}>
-                            <input type="number" className="form-control" name="num_buy"
-                            value={num_buy} onChange={this.onChange}/>
-                        </div>
-
-                        <div className="col-xs-1 col-sm-1 col-md-1 col-lg-1"
-                        style={{borderRight: '1px', display: 'flex'}}>
-                            <i className="fas fa-coins" style={{marginRight: '2px', marginTop: '9px'}}></i>
-                            <input 
-                            type="number" 
-                            className="form-control" 
-                            name="num_coin"
-                            min={0}
-                            max={coin[0].count}
-                            value={num_coin} 
-                            onChange={this.onChange}/>
+                            <input type="number" className="form-control" value={product_each.num_buy} readOnly/>
                         </div>
                              
                         <div className="col-xs-1 col-sm-1 col-md-1 col-lg-1" style={{marginTop: '6px'}}>
@@ -149,11 +136,17 @@ class Cart extends Component {
                 <div className="panel panel-primary">
                     <div className="panel-heading" style={{display: 'flex', background: '#007b5e'}}>Giỏ hàng của tôi 
                     <p><i> (Hiện tại đang có {this.props.cart.product.length} sản phẩm)</i></p>
+                    <p style={{marginLeft: '751px'}}>Sử dụng xu: </p>
+
+                        <div className="checkbox" style={{marginTop: '0px', marginLeft: '10px'}}>
+                        <label>
+                            <input type="checkbox" data-toggle="toggle" ref="open_coin"/>
+                        </label>
+                        </div>
                     </div>
                     <div className="panel-body">              
                         <div className="row">                     
                                 {listCart}     
-                                { num_buy <= product.quantity &&     
                                     <BuyNowBox
                                         user={user}
                                         product={product}
@@ -161,8 +154,9 @@ class Cart extends Component {
                                         staff={staff}
                                         createBill={this.props.createBill}
                                         deleteFromCart={this.deleteFromCart}
+                                        updateCoin={this.props.updateCoin}
                                     />
-                                }                   
+                                    
                         </div>
                     </div>
                 </div>

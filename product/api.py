@@ -136,6 +136,7 @@ class ProductViewSet(viewsets.ModelViewSet):
                     "promotion": deal.product.promotion,
                     "start_promo": deal.product.start_promo,
                     "end_promo": deal.product.end_promo,
+                    "flashsale_perform": False,
                     "category": [{
                         "category_id": category.category_id,
                         "name": category.name
@@ -174,6 +175,7 @@ class ProductViewSet(viewsets.ModelViewSet):
                             "promotion": product.promotion,
                             "start_promo": product.start_promo,
                             "end_promo": product.end_promo,
+                            "flashsale_perform": False,
                             "category": {
                                 "category_id": category.category_id,
                                 "name": category.name
@@ -216,6 +218,7 @@ class ProductViewSet(viewsets.ModelViewSet):
                                 "promotion": product.promotion,
                                 "start_promo": product.start_promo,
                                 "end_promo": product.end_promo,
+                                "flashsale_perform": False,
                                 "category": {
                                     "category_id": category.category_id,
                                     "name": category.name
@@ -258,6 +261,7 @@ class ProductViewSet(viewsets.ModelViewSet):
                                 "promotion": product.promotion,
                                 "start_promo": product.start_promo,
                                 "end_promo": product.end_promo,
+                                "flashsale_perform": False,
                                 "category": {
                                     "category_id": category.category_id,
                                     "name": category.name
@@ -288,7 +292,6 @@ class FlashSaleViewSet(viewsets.ModelViewSet):
                 # print('end', sale.end_flash.hour)
                 if str(datetime.date.today()) == str(sale.start_flash.strftime('%Y-%m-%d')):
                     timenow = datetime.datetime.today().hour
-                    print(timenow)
                     res.append({
                         "flash_id": sale.flash_id,
                         "start": sale.start_flash,
@@ -311,6 +314,7 @@ class FlashSaleViewSet(viewsets.ModelViewSet):
                             "promotion": product.product.promotion,
                             "start_promo": product.product.start_promo,
                             "end_promo": product.product.end_promo,
+                            "flashsale_perform": True,
                             "category": product.product.category.category_id
                         }for product in flashproduct if product.flashsale.flash_id == sale.flash_id and
                         timenow + 7 >= sale.start_flash.hour and timenow + 7 < sale.end_flash.hour]
@@ -351,6 +355,7 @@ class CartViewSet(viewsets.ModelViewSet):
                         if product.product_id == cart.product.product_id:
                             json = {
                                     "cart_id": cart.cart_id,
+                                    "num_buy": cart.num_buy,
                                     "product_id": product.product_id,
                                     "name": product.name,
                                     "price": product.price,
@@ -368,6 +373,7 @@ class CartViewSet(viewsets.ModelViewSet):
                                     "promotion": product.promotion,
                                     "start_promo": product.start_promo,
                                     "end_promo": product.end_promo,
+                                    "flashsale_perform": False,
                             }   
                             res.append(json)     
             res2 = {

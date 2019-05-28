@@ -26,7 +26,6 @@ class FlashSale extends Component {
     }
 
     showProductDetail = (product) => {
-        product.flashsale_perform = true;
         console.log(product);
         
         this.props.showProductDetail(product);
