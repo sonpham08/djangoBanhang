@@ -30,7 +30,14 @@ class AdminHome extends Component {
         await new Promise(resolve => resolve(this.props.adminActions.getListTransporter()));
         await new Promise(resolve => resolve(this.props.adminActions.getCoin()));
         await new Promise(resolve => resolve(this.props.staffActions.getBill()));
+        this.props.adminActions.statictic_basic_year(2019, 0);
     }
+
+    // componentWillReceiveProps(nextProps) {
+    //     if(nextProps.statistic.status !== this.props.statistic.status) {
+
+    //     }
+    // }
 
     getUserInfo = () => {
         this.props.authActions.getUserInfo();
@@ -102,6 +109,10 @@ class AdminHome extends Component {
         this.props.adminActions.initialCoinForCustomer(user_id);
     }
 
+    onFilterReport = (year, month) => {
+        this.props.adminActions.statictic_basic_year(year, month);
+    }
+
     render() {
         var {isAuthenticated,
             user,
@@ -112,7 +123,8 @@ class AdminHome extends Component {
             adstaffship,
             detail,
             coin,
-            transporter
+            transporter,
+            statistic
         } = this.props;
         return (
             <div style={{background:'gainsboro'}} style={{paddingTop: '63px'}}>
@@ -132,6 +144,7 @@ class AdminHome extends Component {
                 adcustomer={adcustomer}
                 detail={detail}
                 coin={coin}
+                statistic={statistic}
                 transporter={transporter}
                 tab={this.state.tab}
                 addProduct={this.addProduct}
@@ -147,6 +160,7 @@ class AdminHome extends Component {
                 addStaffship={this.addStaffship}
                 editStaffship={this.editStaffship}
                 openCoin={this.openCoin}
+                onFilterReport={this.onFilterReport}
                 />
             </div>
         );
@@ -164,7 +178,8 @@ const mapStateToProps = state => {
         adstaffship: state.adstaffship,
         detail: state.detail,
         coin: state.coin,
-        transporter: state.transporter
+        transporter: state.transporter,
+        statistic: state.statistic
     };
 };
 

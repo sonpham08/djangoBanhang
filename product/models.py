@@ -91,6 +91,9 @@ class Bill(models.Model):
 class DealedProduct(models.Model): # chi tiết đơn đặt hàng
     dealed_id = models.AutoField(primary_key=True)
     number_product_dealed = models.IntegerField() # so luong san pham da ban cho 1 san pham
+    year = models.IntegerField(default=0)
+    month = models.IntegerField(default=0)
+    day = models.IntegerField(default=0)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
 
 class DetailOrder(models.Model):

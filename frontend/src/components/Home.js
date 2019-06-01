@@ -155,18 +155,23 @@ class Home extends Component {
                 }
             });
         }
-        console.log(this.props.usproduct);
         
         // get coin filter by user_id
         if(user.id != "") {
             coin = coin.filter((co) => {
-                return co.user[0].user_id == user.id;
+                if(Array.isArray(co.user)) {
+                    return co.user[0].user_id == user.id;
+                }else {
+                    return co.user_id == user.id;
+                }
             })
+            
         } else {
             coin = [
                 {coin_id: "", count: 0, user: []}
             ];
         }
+        console.log(coin);
         if(product_name != "") {
             adproduct = adproduct.filter((product) => {
                 return product.name.toLowerCase().indexOf(product_name.toLowerCase()) != -1;

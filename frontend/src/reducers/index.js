@@ -18,6 +18,7 @@ import comment from './comment';
 import coin from './coin';
 import flashsale from './flashsale';
 import transporter from './transporter';
+import statistic from './statistic';
 
 const myReducer = combineReducers({
     auth,
@@ -39,6 +40,7 @@ const myReducer = combineReducers({
     coin,
     transporter,
     flashsale,
+    statistic,
 });
 
 export default myReducer;

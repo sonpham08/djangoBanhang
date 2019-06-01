@@ -13,6 +13,7 @@ import base64
 import os
 import time
 import moment
+import calendar
 import datetime
 import pytz
 User=get_user_model()
@@ -335,6 +336,88 @@ class DealedProductViewSet(viewsets.ModelViewSet):
     queryset = DealedProduct.objects.all()
     permission_classes = [permissions.AllowAny, ]
     serializer_class = DealedProductSerializer
+
+    @action(detail=False)
+    def statistic_basic_year(self, request):
+        req_year=int(request.GET['year'])
+        req_month = int(request.GET['month'])
+        list_day = []
+        if(req_month != 0):
+            days = calendar.monthcalendar(req_year, req_month)
+            for day in days:
+                for d in day:
+                    if d != 0:
+                        list_day.append(d)
+        months = [1,2,3,4,5,6,7,8,9,10,11,12] ## ngay trong 1 nam
+        output = []
+        results = {}
+        statistics = []
+        try:
+            dealed = DealedProduct.objects.all()
+            if req_year != 0 and req_month == 0:
+                for month in months:
+                    count = 0
+                    for deal in dealed:
+                        if deal.month == month:
+                            count += 1
+                    output.append(count)
+                    statistics.append({
+                        "month": month,
+                        "year": deal.year,
+                        "count": count
+                    })
+                results = {
+                    "day": [],
+                    "month": months,
+                    "output": output,
+                    "statistics": statistics
+                }
+            else:
+                if req_year != 0 and req_month != 0:
+                    for day in list_day:
+                        count = 0
+                        for deal in dealed:
+                            
+                            if deal.month == req_month and deal.day == day:
+                                count += 1
+                        output.append(count)
+                        statistics.append({
+                            "day": day,
+                            "year": deal.year,
+                            "count": count
+                        })
+                    results = {
+                        "day": list_day,
+                        "month": [],
+                        "output": output,
+                        "statistics": statistics
+                    }
+
+            return Response(results, 200)
+        except Exception as e:
+            return Response({
+                "Error": repr(e)
+            }, 400)
+
+    @action(detail=False)
+    def statistic_category(self, request):
+        res = []
+        try:
+            dealed = DealedProduct.objects.all()
+            products = Product.objects.all()
+            for deal in dealed:
+                for product in products:
+                    if deal.product.product_id == product.product_id:
+                        res.append({
+                            "product_id": product.product_id,
+                            "dealed_id": deal.dealed_id
+                        })
+            return Response(res, 200)
+        except Exception as e:
+            return Response({
+                "Error": repr(e)
+            },400)
+    
 
 class CartViewSet(viewsets.ModelViewSet):
     queryset = Cart.objects.all()

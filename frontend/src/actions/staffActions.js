@@ -155,10 +155,16 @@ export const getListStaffShip = () => {
 export const addDealedProduct = (quantity, product_id) => {
     return dispatch => {
         let headers = { "Content-Type": "application/json",'X-CSRFToken': csrftoken };
+        let d = new Date();
+        let month = d.getMonth();
+        let day = d.getDate();
         let url = '/api/v1/dealedproduct/';
         let data = JSON.stringify({
             number_product_dealed: quantity,
-            product: product_id
+            product: product_id,
+            year: 2019,
+            month: month,
+            day: day
         });
         axios({
             url, headers, method: 'post', data

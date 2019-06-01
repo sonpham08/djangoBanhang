@@ -10,6 +10,7 @@ import ManageStaff from './MangeStaff';
 import ManageCustomer from './MangeCustomer';
 import ManageBill from './ManageBill';
 import ManageStaffShip from './ManageStaffShip';
+import ReportContent from './ReportContent';
 import ManageCoin from './ManageCoin';
 var $ = require("jquery");
 
@@ -138,6 +139,10 @@ class AdminManage extends Component {
                     openFormEditStaff={this.openFormEditStaff}
                     addStaff={this.props.addStaff}
                 />
+                <ReportContent
+                    tab={tab}
+                    statistic={this.props.statistic}
+                    onFilterReport={this.props.onFilterReport}/>
                 <ManageCustomer
                 tab={tab}
                 adcustomer={this.props.adcustomer}

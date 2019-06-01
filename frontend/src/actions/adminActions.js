@@ -474,3 +474,29 @@ export const initialCoinForCustomer = (user_id) => {
         })
     }
 }
+
+export const statictic_basic_year = (year, month) => {
+    return dispatch => {
+        dispatch({
+            type: types.STATISTIC_BASIC_YEAR,
+            status: "loading"
+        })
+        let headers = { "Content-Type": "application/json",'X-CSRFToken': csrftoken };
+        let url = `/api/v1/dealedproduct/statistic_basic_year/?year=${parseInt(year)}&month=${parseInt(month)}`;
+        console.log(url);
+        
+        axios({
+            url, headers, method: 'get'
+        }).then(function(res) {
+            dispatch({
+                type: types.RESPONSE_STATISTIC_BASIC_YEAR,
+                statistic: res.data
+            })
+        }).catch(function(err) {
+            dispatch({
+                type: types.STATISTIC_BASIC_YEAR,
+                status: "failed"
+            })
+        })
+    }
+}
