@@ -368,7 +368,7 @@ class DealedProductViewSet(viewsets.ModelViewSet):
                     })
                 results = {
                     "day": [],
-                    "month": months,
+                    "month": req_month,
                     "output": output,
                     "statistics": statistics
                 }
@@ -388,7 +388,7 @@ class DealedProductViewSet(viewsets.ModelViewSet):
                         })
                     results = {
                         "day": list_day,
-                        "month": [],
+                        "month": req_month,
                         "output": output,
                         "statistics": statistics
                     }
@@ -401,23 +401,60 @@ class DealedProductViewSet(viewsets.ModelViewSet):
 
     @action(detail=False)
     def statistic_category(self, request):
+        req_year=int(request.GET['year'])
+        req_month = int(request.GET['month'])
+        count = 0
         res = []
+        total = 0
         try:
             dealed = DealedProduct.objects.all()
+            categories = Category.objects.all()
             products = Product.objects.all()
-            for deal in dealed:
-                for product in products:
-                    if deal.product.product_id == product.product_id:
+            if req_year != 0 and req_month != 0:
+                for category in categories:
+                    count = 0
+                    for deal in dealed:
+                        if deal.product.category.category_id == category.category_id and deal.month == req_month:
+                            count += 1
+                            total += 1
+                    res.append({
+                        "category": category.name,
+                        "count": count,
+                        "month": req_month,
+                        "year": deal.year
+                    })
+
+                res.append({
+                    "category": "Tổng số",
+                    "count": total,
+                    "month": req_month,
+                    "year": 2019
+                })
+            else:
+                if req_year != 0 and req_month == 0:
+                    for category in categories:
+                        count = 0
+                        for deal in dealed:
+                            if deal.product.category.category_id == category.category_id:
+                                count += 1
+                                total += 1
                         res.append({
-                            "product_id": product.product_id,
-                            "dealed_id": deal.dealed_id
+                            "category": category.name,
+                            "count": count,
+                            "year": deal.year
                         })
+
+                    res.append({
+                        "category": "Tổng số",
+                        "count": total,
+                        "year": 2019
+                    })
+                    
             return Response(res, 200)
         except Exception as e:
             return Response({
                 "Error": repr(e)
             },400)
-    
 
 class CartViewSet(viewsets.ModelViewSet):
     queryset = Cart.objects.all()

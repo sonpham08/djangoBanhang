@@ -51,6 +51,7 @@
     "react-router": "^3.2.1",
     "react-router-dom": "^4.3.1",
     "react-select": "^2.4.3",
+    "react-svg-piechart": "^2.4.0",
     "reactstrap": "^6.5.0",
     "redux": "^4.0.0",
     "redux-thunk": "^2.3.0",

@@ -8,6 +8,7 @@ import { css } from '@emotion/core';
 import { ClipLoader } from 'react-spinners';
 import ReactTable from 'react-table'
 import 'react-table/react-table.css'
+import ReactSvgPieChart from "react-svg-piechart"
 var $ = require("jquery");
 const override = css`
     display: block;
@@ -78,10 +79,50 @@ class ReportContent extends Component {
         
     }
 
+    setColumnCategory(category) {
+        if(category[0].hasOwnProperty('month')) {
+            return [
+                {
+                    Header: 'Lọai sản phẩm',
+                    accessor: 'category'
+                }, 
+                {
+                    Header: 'Số lượng', // Custom header components!
+                    accessor: 'count'
+                },
+                {
+                    Header: 'Tháng',
+                    accessor: 'month'
+                },
+                {
+                    Header: 'Năm', // Custom header components!
+                    accessor: 'year'
+                },
+            ]
+        } else {
+            return [
+                {
+                    Header: 'Lọai sản phẩm',
+                    accessor: 'category'
+                }, 
+                {
+                    Header: 'Số lượng', // Custom header components!
+                    accessor: 'count'
+                },
+                {
+                    Header: 'Năm', // Custom header components!
+                    accessor: 'year'
+                },
+            ]
+        }
+    }
+
     getOption(statistic) {
+        console.log(statistic);
+        
         return {
             title : {
-                text: 'Thống kê trong năm 2019',
+                text: statistic.month == 0 ? 'Thống kê trong năm 2019' : `Thống kê trong tháng ${statistic.month}`,
                 // subtext: 'trong '
             },
             tooltip : {
@@ -253,17 +294,32 @@ class ReportContent extends Component {
                             </div> 
                         }
                     </div>
+
                     <div className="row" style={{marginLeft: '0'}}>
                         {
                             statistic.year.status == 'loaded' &&
                             <ReactTable
                                 data={statistic.year.data.statistics}
-                                style={{textAlign: 'center'}}
+                                style={{textAlign: 'center', marginBottom: '50px'}}
                                 columns={this.setColumns(statistic.year.data.statistics)}
                             />
                         }
                     </div>
-                    
+                    <div className="row" style={{marginLeft: '0'}}>
+                        {
+                            statistic.category.status == 'loaded' &&
+                            <h3>Bảng thống kê theo các loại điện thoại</h3>
+                        }
+                        {
+                            statistic.category.status == 'loaded' &&
+                            <ReactTable
+                                data={statistic.category.data}
+                                style={{textAlign: 'center'}}
+                                minRows={5}
+                                columns={this.setColumnCategory(statistic.category.data)}
+                            />
+                        }
+                    </div>
                 </div>
             );
         }

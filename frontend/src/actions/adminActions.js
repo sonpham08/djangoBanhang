@@ -482,7 +482,7 @@ export const statictic_basic_year = (year, month) => {
             status: "loading"
         })
         let headers = { "Content-Type": "application/json",'X-CSRFToken': csrftoken };
-        let url = `/api/v1/dealedproduct/statistic_basic_year/?year=${parseInt(year)}&month=${parseInt(month)}`;
+        let url = `/api/v1/dealedproduct/statistic_basic_year/?year=${year}&month=${month}`;
         console.log(url);
         
         axios({
@@ -495,6 +495,30 @@ export const statictic_basic_year = (year, month) => {
         }).catch(function(err) {
             dispatch({
                 type: types.STATISTIC_BASIC_YEAR,
+                status: "failed"
+            })
+        })
+    }
+}
+
+export const statictic_category = (year, month) => {
+    return dispatch => {
+        dispatch({
+            type: types.STATISTIC_CATEGORY,
+            status: "loading"
+        })
+        let headers = { "Content-Type": "application/json",'X-CSRFToken': csrftoken };
+        let url = `/api/v1/dealedproduct/statistic_category/?year=${year}&month=${month}`;
+        axios({
+            url, headers, method: 'get'
+        }).then(function(res) {
+            dispatch({
+                type: types.RESPONSE_STATISTIC_CATEGORY,
+                statistic: res.data
+            })
+        }).catch(function(err) {
+            dispatch({
+                type: types.STATISTIC_CATEGORY,
                 status: "failed"
             })
         })

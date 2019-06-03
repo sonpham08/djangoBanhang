@@ -31,6 +31,7 @@ class AdminHome extends Component {
         await new Promise(resolve => resolve(this.props.adminActions.getCoin()));
         await new Promise(resolve => resolve(this.props.staffActions.getBill()));
         this.props.adminActions.statictic_basic_year(2019, 0);
+        this.props.adminActions.statictic_category(2019, 0);
     }
 
     // componentWillReceiveProps(nextProps) {
@@ -111,6 +112,7 @@ class AdminHome extends Component {
 
     onFilterReport = (year, month) => {
         this.props.adminActions.statictic_basic_year(year, month);
+        this.props.adminActions.statictic_category(year, month);
     }
 
     render() {
