@@ -77,10 +77,17 @@ class ProductList extends Component {
                                         <p style={{color: 'red', float: 'left'}}>{product.price - (product.price * product.promotion/100)}Đ</p>
                                         &nbsp;
                                         {product.promotion != 0 && <small><i><strike>{product.price}Đ</strike></i></small> }
-                                        <button type="button" className="btn btn-primary" style={{float: 'right', height: '30px'}}>
+                                        {/* <button type="button" className="btn btn-primary" style={{float: 'right', height: '30px'}}>
                                         Còn lại <span className="badge badge-light">{product.quantity}</span>
                                         <span className="sr-only">unread messages</span>
-                                        </button>
+                                        </button> */}
+                                        <div style={{marginLeft: '55px',right: '0', display: 'initial', float: 'right', position: 'absolute'}}>
+                                            <i className="fas fa-star" style={{color: product.rating >= 5 ? 'red':''}}></i>
+                                            <i className="fas fa-star" style={{color: product.rating >= 4 ? 'red':''}}></i>
+                                            <i className="fas fa-star" style={{color: product.rating >= 3 ? 'red':''}}></i>
+                                            <i className="fas fa-star" style={{color: product.rating >= 2 ? 'red':''}}></i>
+                                            <i className="fas fa-star" style={{color: product.rating >= 1 ? 'red':''}}></i>
+                                        </div>
                                     </div>
                                 )
                                 : <h2>No Product Found</h2>}

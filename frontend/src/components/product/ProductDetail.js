@@ -297,11 +297,11 @@ class ProductDetail extends Component {
                                     <Row >
                                         <Col sm="6" style={{marginLeft: '0', display: 'flex'}}>
                                         <h1>{product.rating}/</h1><h3 style={{marginTop: '30px', color: 'red'}}>5 
-                                            {product.rating >= 1 ? <i className="fas fa-star"></i>: ""}
-                                            {product.rating >= 2 ? <i className="fas fa-star"></i>: ""}
-                                            {product.rating >= 3 ? <i className="fas fa-star"></i>: ""}
+                                            {product.rating >= 5 ? <i className="fas fa-star"></i>: ""}
                                             {product.rating >= 4 ? <i className="fas fa-star"></i>: ""}
-                                            {product.rating >= 5 ? <i className="fas fa-star"></i>: ""}</h3>
+                                            {product.rating >= 3 ? <i className="fas fa-star"></i>: ""}
+                                            {product.rating >= 2 ? <i className="fas fa-star"></i>: ""}
+                                            {product.rating >= 1 ? <i className="fas fa-star"></i>: ""}</h3>
                                         </Col>
                                         <Col sm="6" style={{marginTop: '22px'}}>
                                             <div className="list_rating">

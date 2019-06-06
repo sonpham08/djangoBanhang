@@ -368,7 +368,8 @@ class DealedProductViewSet(viewsets.ModelViewSet):
                     })
                 results = {
                     "day": [],
-                    "month": req_month,
+                    "month": months,
+                    "current": req_month,
                     "output": output,
                     "statistics": statistics
                 }
@@ -388,7 +389,8 @@ class DealedProductViewSet(viewsets.ModelViewSet):
                         })
                     results = {
                         "day": list_day,
-                        "month": req_month,
+                        "month": [],
+                        "current": req_month,
                         "output": output,
                         "statistics": statistics
                     }

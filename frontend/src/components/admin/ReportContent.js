@@ -122,7 +122,7 @@ class ReportContent extends Component {
         
         return {
             title : {
-                text: statistic.month == 0 ? 'Thống kê trong năm 2019' : `Thống kê trong tháng ${statistic.month}`,
+                text: statistic.current == 0 ? 'Thống kê trong năm 2019' : `Thống kê trong tháng ${statistic.current}`,
                 // subtext: 'trong '
             },
             tooltip : {
@@ -146,7 +146,7 @@ class ReportContent extends Component {
                 {
                     type : 'category',
                     boundaryGap : false,
-                    data : statistic.month
+                    data : statistic.current == 0 ? statistic.month : statistic.day
                 }
             ],
             yAxis : [

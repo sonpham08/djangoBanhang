@@ -51,7 +51,7 @@ class ProductListPC extends Component {
                 (currentPage + 1) * this.pageSizePromotion
             )
             .map((product_each, idx) => {
-                console.log(product_each.end_promo);
+                console.log(product_each);
                 
                 let timestamp = moment(product_each.end_promo).unix();
                 console.log(timestamp);
@@ -66,10 +66,17 @@ class ProductListPC extends Component {
                         <p style={{ color: 'red', float: 'left' }}>{product_each.price - (product_each.price*product_each.promotion/100)}Đ</p>
                         &nbsp;<small><i><strike>{product_each.price}Đ</strike></i></small>
                         <br/><p className="rest_promotion">{date}</p>
-                        <button type="button" className="btn btn-primary" style={{ float: 'right', height: '30px' }}>
+                        {/* <button type="button" className="btn btn-primary" style={{ float: 'right', height: '30px' }}>
                             Còn lại <span className="badge badge-light">{product_each.quantity}</span>
                             <span className="sr-only">unread messages</span>
-                        </button>
+                        </button> */}
+                        <div style={{marginLeft: '70px',right: '0', display: 'initial', float: 'right', position: 'absolute'}}>
+                            <i className="fas fa-star" style={{color: product_each.rating >= 5 ? 'red':''}}></i>
+                            <i className="fas fa-star" style={{color: product_each.rating >= 4 ? 'red':''}}></i>
+                            <i className="fas fa-star" style={{color: product_each.rating >= 3 ? 'red':''}}></i>
+                            <i className="fas fa-star" style={{color: product_each.rating >= 2 ? 'red':''}}></i>
+                            <i className="fas fa-star" style={{color: product_each.rating >= 1 ? 'red':''}}></i>
+                        </div>
                     </div>
                 )
             });
