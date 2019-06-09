@@ -1,4 +1,5 @@
 import * as types from '../constants/UserConstants';
+import * as authTypes from '../constants/ActionTypes';
 import axios from 'axios';
 import { browserHistory } from 'react-router';
 import toastr from 'toastr';
@@ -30,6 +31,9 @@ export const getListProductUser = () => {
                 type: types.USER_GET_LIST_PRODUCT,
                 usproduct: res.data
             })
+        }).catch(function(err) {
+            console.log(err);
+            
         })
     }
 }
@@ -45,6 +49,9 @@ export const getListProductPromotion = () => {
                 type: types.USER_GET_LIST_PRODUCT_PROMOTION,
                 promotion: res.data
             })
+        }).catch(function(err) {
+            console.log(err);
+            
         })
     }
 }
@@ -62,6 +69,9 @@ export const getListProductNew = () => {
                 type: types.USER_GET_LIST_PRODUCT_NEW,
                 news: res.data
             })
+        }).catch(function(err) {
+            console.log(err);
+            
         })
     }
 }
@@ -76,12 +86,13 @@ export const userRatingProduct = (product_id, rating) => {
         axios({
             url, headers, method: 'patch', data
         }).then(function(res){
-            console.log(res);
-            
             dispatch({
                 type: types.USER_RATING_PRODUCT,
                 products: res.data
             })
+        }).catch(function(err) {
+            console.log(err);
+            
         })
     }
 }
@@ -109,6 +120,9 @@ export const getCategoryById = (category_id) => {
                 type: types.USER_GET_CATEGORY_BY_ID,
                 uscategories: res.data
             })
+        }).catch(function(err) {
+            console.log(err);
+            
         })
     }
 }
@@ -128,6 +142,9 @@ export const getListCart = () => {
                 type: types.GET_LIST_CART,
                 cart: res.data
             })
+        }).catch(function(err) {
+            console.log(err);
+            
         })
     }
 }
@@ -143,6 +160,9 @@ export const getCartByProductId = (product_id) => {
                 type: types.GET_LIST_STAFFSHIP,
                 staff: res.data
             })
+        }).catch(function(err) {
+            console.log(err);
+            
         })
     }
 }
@@ -172,7 +192,13 @@ export const addToCart = (product_id, user_id, how_many_buy) => {
                     type: types.ADD_CART,
                     cart: res.data
                 })
+            }).catch(function(err) {
+                console.log(err);
+                
             })
+            
+        }).catch(function(error) {
+            console.log(error);
             
         })
     }
@@ -189,6 +215,9 @@ export const deleteFromCart = (cart_id) => {
                 type: types.DELETE_CART,
                 cart_id: cart_id
             })
+        }).catch(function(err) {
+            console.log(err);
+            
         })
     }
 }
@@ -210,6 +239,9 @@ export const buyProduct = (product_id) => {
                 type: types.BUY_PRODUCT,
                 product: res.data
             })
+        }).catch(function(err) {
+            console.log(err);
+            
         })
     }
 }
@@ -233,6 +265,9 @@ export const changeInfo = (user) => {
                 type: types.CHANGE_INFO,
                 user: res.data
             })
+        }).catch(function(err) {
+            console.log(err);
+            
         })
     }
 }
@@ -249,6 +284,9 @@ export const getListStaffship = () => {
                 type: types.GET_LIST_STAFFSHIP,
                 staff: res.data
             })
+        }).catch(function(err) {
+            console.log(err);
+            
         })
     }
 }
@@ -286,7 +324,13 @@ export const createBill = (bill) => {
             }).then(function(response) {
                 console.log(response);
                 
+            }).catch(function(err) {
+                console.log(err);
+                
             })
+        }).catch(function(error) {
+            console.log(error);
+            
         })
     }
 }
@@ -308,6 +352,9 @@ export const userAddComment = (content, product_id, user_id) => {
                 type: types.USER_COMMENT,
                 comment: res.data
             })
+        }).catch(function(err) {
+            console.log(err);
+            
         })
     }
 }
@@ -326,6 +373,9 @@ export const getComment = () => {
                 type: types.GET_COMMENT,
                 comment: res.data
             })
+        }).catch(function(err) {
+            console.log(err);
+            
         })
     }
 }
@@ -345,6 +395,9 @@ export const getCoinByUser = () => {
                 type: types.GET_COIN_BY_USER,
                 coin: res.data
             })
+        }).catch(function(err) {
+            console.log(err);
+            
         })
     }
 }
@@ -357,6 +410,8 @@ export const addCoin = (coin_id, user_id, count) => {
             user: user_id,
             count: count + 1
         });
+        console.log(data);
+        
         axios({
             url, headers, method: 'patch', data
         }).then(function(res){   
@@ -366,6 +421,9 @@ export const addCoin = (coin_id, user_id, count) => {
                 type: types.ADD_COIN,
                 coin: res.data
             })
+        }).catch(function(err) {
+            console.log(err);
+            
         })
     }
 }
@@ -386,6 +444,9 @@ export const updateCoin = (coin) => {
                 type: types.UPDATE_COIN,
                 coin: res.data
             })
+        }).catch(function(err) {
+            console.log(err);
+            
         })
     }
 }
@@ -403,6 +464,67 @@ export const getFlashSale = () => {
                 type: types.GET_FLASH_SALE_USER,
                 flashsale: res.data
             })
+        }).catch(function(err) {
+            console.log(err);
+            
+        })
+    }
+}
+
+export const logged = (user_id) => {
+    return dispatch => {
+        let headers = { "Content-Type": "application/json",'X-CSRFToken': csrftoken };
+        let url = '/api/logging/';
+        let data = JSON.stringify({
+            user: user_id
+        });
+        axios({
+            url, headers, method: 'post', data
+        }).then(function(res){   
+            console.log(res);
+              
+            dispatch({
+                type: authTypes.LOGGED,
+                user: res.data
+            })
+        }).catch(function(err) {
+            console.log(err);
+            
+        })
+    }
+}
+
+export const getLogging = () => {
+    return dispatch => {
+        let headers = { "Content-Type": "application/json",'X-CSRFToken': csrftoken };
+        let url = '/api/logging/get_logging/';
+        axios({
+            url, headers, method: 'get',
+        }).then(function(res){   
+            console.log(res);
+              
+            dispatch({
+                type: authTypes.GET_LOGGING,
+                user: res.data
+            })
+        }).catch(function(err) {
+            console.log(err);
+            
+        })
+    }
+}
+
+export const userSendmail = (send) => {
+    return dispatch => {
+        let headers = { "Content-Type": "application/json",'X-CSRFToken': csrftoken };
+        let url = `/api/v1/bill/email/?subject=${send.subject}&email=${send.email}&message=${send.message}`;
+        axios({
+            url, headers, method: 'get'
+        }).then(function(res){   
+            console.log(res);
+        }).catch(function(err) {
+            console.log(err);
+            
         })
     }
 }

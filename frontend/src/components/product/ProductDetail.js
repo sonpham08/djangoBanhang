@@ -217,6 +217,7 @@ class ProductDetail extends Component {
                             createBill={this.props.createBill}
                             deleteFromCart={this.deleteFromCart}
                             updateCoin={this.props.updateCoin}
+                            sendEmail={this.props.sendEmail}
                         />
                         }
 

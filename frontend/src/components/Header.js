@@ -184,6 +184,7 @@ class Header extends Component {
                                     <ul className="dropdown-menu" ref="dropdownmenu">
                                     <li className="p-d-10"><i className="fas fa-user"><Link to="/transfer" onClick={() => this.setTabForTransfer(1)}> Thông tin cá nhân</Link></i></li>
                                     <li className="p-d-10"><i className="fas fa-exchange-alt"><Link to="/transfer" onClick={() => this.setTabForTransfer(2)}> Kiểm tra đơn hàng</Link></i></li>
+                                    <li className="p-d-10"><i className="fas fa-coins"><Link to="#"> Nhận xu</Link></i></li>
                                     <li className="p-d-10"><i className="fas fa-sign-out-alt"><Link to="/" onClick={this.onLogout}> Đăng xuất</Link></i></li>
                                     </ul>
                                 

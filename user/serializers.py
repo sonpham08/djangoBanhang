@@ -1,6 +1,7 @@
 
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
+from .models import Logging
 from rest_framework.validators import UniqueValidator
 User = get_user_model()
 
@@ -30,3 +31,8 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id','fullname', 'email', 'is_staff_gun','is_user','phone', 'address', 'cmnd')
+
+class LoggingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Logging
+        fields = "__all__"

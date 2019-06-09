@@ -21,7 +21,7 @@ class AddCommentBox extends Component {
         super(props);
         this.state = {
             content_cmt: "",
-            rating: 0
+            rating: 0,
         };
     }
 
@@ -34,13 +34,18 @@ class AddCommentBox extends Component {
         });
     }
 
+    componentWillReceiveProps(nextProps) {
+        $("#send_comment").prop("disabled", false);
+    }
+
     sendComment = (e) => {
         e.preventDefault();
         let content = this.refs.content_cmt.value;
         let product_id = this.props.product;
         let user_id = this.props.user;
         let rating = (this.state.rating + this.props.rating)/2;
-        this.props.userRatingProduct(product_id, rating);
+        $("#send_comment").prop("disabled", true);
+        this.props.userRatingProduct(product_id, Math.ceil(rating));
         this.props.userAddComment(content, product_id, user_id);
         this.setState({content_cmt: ""});
     }
@@ -102,6 +107,7 @@ class AddCommentBox extends Component {
                                         <button
                                             className="btn btn-default"
                                             type="submit"
+                                            id="send_comment"
                                         >Gửi</button>
                                     </div>
                                 </div>

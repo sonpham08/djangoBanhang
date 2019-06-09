@@ -84,7 +84,7 @@ class Bill(models.Model):
     total_price = models.IntegerField()
     address = models.CharField(max_length=255)
     status = models.CharField(max_length=255) # ghi chú
-    user = models.ForeignKey(User, on_delete=models.CASCADE, default=0)
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING, default=0)
     status_product = models.ForeignKey(StatusProduct, on_delete=models.CASCADE, default=1)
     staff = models.ForeignKey(Staff, on_delete=models.CASCADE)
 
@@ -94,13 +94,13 @@ class DealedProduct(models.Model): # chi tiết đơn đặt hàng
     year = models.IntegerField(default=0)
     month = models.IntegerField(default=0)
     day = models.IntegerField(default=0)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.DO_NOTHING)
 
 class DetailOrder(models.Model):
     detail_id = models.AutoField(primary_key=True)
     number_product_order = models.IntegerField() ## so luong mỗi sản phẩm trong hóa đơn
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    bill = models.ForeignKey(Bill, on_delete=models.CASCADE, default=0)
+    product = models.ForeignKey(Product, on_delete=models.DO_NOTHING)
+    bill = models.ForeignKey(Bill, on_delete=models.DO_NOTHING, default=0)
 
 class Comment(models.Model):
     comment_id = models.AutoField(primary_key=True)

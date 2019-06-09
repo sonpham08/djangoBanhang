@@ -18,8 +18,11 @@ class BuyNowBox extends Component {
     constructor(props) {
         super(props);
         this.state = {
-
         };
+    }
+
+    componentWillReceiveProps(nextProps) {
+        $("#send_comment").prop("disabled", false);
     }
 
     createBill = (e) => {
@@ -39,14 +42,17 @@ class BuyNowBox extends Component {
             number_product_order: product.number_product_order,
             product_id: product.product_id,
         };
-        let email = {
+        let send = {
             fullname: user.fullname,
             address: user.address,
-            status_product: "Sản phẩm đã được chuyển cho"
+            message: "Bạn đã đặt " + bill.number_product_order + " điện thoại "+ product.name +". Thanh toán " +
+            bill.total_price + " vnd. Đơn hàng dự kiến sẽ được giao từ 2 đến 3 ngày nữa.",
+            subject: "Thông báo đặt hàng từ Gun store",
+            email: user.email
         };
-        console.log(bill);
-        
-
+        console.log(send);
+        $("#send_comment").prop("disabled", true);
+        this.props.sendEmail(send);
         // update coin
         this.props.updateCoin(coin);
         this.props.createBill(bill);
@@ -54,7 +60,6 @@ class BuyNowBox extends Component {
 
         //delete product out of cart
         this.props.deleteFromCart(product.cart_id);
-        // $("#buymodal").modal('hide');
     }
 
     render() {
@@ -178,6 +183,7 @@ class BuyNowBox extends Component {
                                                 <button 
                                                 type="submit" 
                                                 className="btn btn-primary"
+                                                id="send_comment"
                                                 style={{float: 'right', marginTop: '23px'}}
                                                 >Gửi</button>
                                             </div>

@@ -11,7 +11,11 @@ var initialState = {
     is_user: false,
     phone: "",
     address: "",
-    cmnd: ""
+    cmnd: "",
+    logging: {
+        date: "",
+        user: []
+    }
 }
 
 var myReducer = (state=initialState, action) => {
@@ -35,6 +39,12 @@ var myReducer = (state=initialState, action) => {
             console.log(action.user);
             
             return state;
+        case types.GET_LOGGING:
+            let get_logging = Object.assign({}, newState.logging);
+            get_logging.date = action.user.date,
+            get_logging.user = action.user.user;
+            newState.logging = get_logging;
+            return newState;
         default:
             return state;
     }

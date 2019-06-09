@@ -38,3 +38,5 @@ export const UPDATE_COIN = 'UPDATE_COIN';
 
 // flash sale
 export const GET_FLASH_SALE_USER = 'GET_FLASH_SALE_USER';
+
+export const USER_SEND_MAIL = 'USER_SEND_MAIL';

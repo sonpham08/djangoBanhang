@@ -58,7 +58,7 @@ export const logout = () => {
 
 export const authLogin = (username, password) => {
     return dispatch => {
-        let headers = { "Content-Type": "application/json",'X-CSRFToken': csrftoken };
+        var headers = { "Content-Type": "application/json",'X-CSRFToken': csrftoken };
         let data = JSON.stringify({
             "username": username,
             "password": password

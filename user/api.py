@@ -7,9 +7,13 @@ from django.contrib.auth import get_user_model
 from rest_framework import viewsets, permissions
 from rest_framework.decorators import action
 from knox.models import AuthToken
-from .serializers import UserSerializer, CreateUserSerializer
+from .serializers import UserSerializer, CreateUserSerializer, LoggingSerializer
 from product.models import Coin
-# from product.models import Product, DetailOrder
+from .models import Logging
+import time
+import moment
+import calendar
+import datetime
 User = get_user_model()
 # from .models import User
 
@@ -92,6 +96,30 @@ class MeViewSet(viewsets.ModelViewSet):
                         }for coin in coins if coin.user.id == user.id]
                     }
                     res.append(result)
+            return Response(res, 200)
+        except Exception as e:
+            return Response({
+                "Error": repr(e)
+            }, 400)
+
+class LoggingViewSet(viewsets.ModelViewSet):
+    queryset = Logging.objects.all()
+    permission_classes = [permissions.AllowAny, ]
+    serializer_class = LoggingSerializer
+
+    @action(detail=False)
+    def get_logging(self, request):
+        res={}
+        try:
+            users = User.objects.all()
+            logging = Logging.objects.all()
+            res = {
+                "date": datetime.date.today(),
+                "user": [
+                    logg.user.id
+                for logg in logging 
+                if str(datetime.date.today()) == str(logg.date_logging.strftime('%Y-%m-%d'))]
+            }
             return Response(res, 200)
         except Exception as e:
             return Response({

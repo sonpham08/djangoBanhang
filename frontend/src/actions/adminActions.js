@@ -64,7 +64,10 @@ export const addProduct = (name, price, size,quantity, hdh, color, CPU,
                 type: types.ADD_PRODUCT,
                 adproduct: res[0].data
             })
-        });
+        }).catch(function(err) {
+            console.log(err);
+            
+        })
     }
 }
 
@@ -111,7 +114,10 @@ export const editProduct = (product) => {
                 type: types.EDIT_PRODUCT,
                 adproduct: res[0].data
             })
-        });
+        }).catch(function(err) {
+            console.log(err);
+            
+        })
     }
 }
 
@@ -130,6 +136,9 @@ export const deleteProduct = (product_id) => {
                 type: types.DELETE_PRODUCT,
                 adproduct: result
             })
+        }).catch(function(err) {
+            console.log(err);
+            
         })
     }
 }
@@ -145,6 +154,9 @@ export const getListProduct = () => {
                 type: types.GET_LIST_PRODUCT,
                 adproduct: res.data
             })
+        }).catch(function(err) {
+            console.log(err);
+            
         })
     }
 }
@@ -180,6 +192,9 @@ export const getCategoryById = (category_id) => {
                 type: types.GET_CATEGORY_BY_ID,
                 adcategories: res.data
             })
+        }).catch(function(err) {
+            console.log(err);
+            
         })
     }
 }
@@ -196,6 +211,9 @@ export const getListCategory = () => {
                 type: types.GET_LIST_CATEGORY,
                 adcategories: res.data
             })
+        }).catch(function(err) {
+            console.log(err);
+            
         })
     }
 }
@@ -211,6 +229,9 @@ export const getListStaff = () => {
                 type: types.GET_LIST_STAFF,
                 adstaff: res.data
             })
+        }).catch(function(err) {
+            console.log(err);
+            
         })
     }
 }
@@ -237,6 +258,9 @@ export const editStaffInfo = (staff) => {
                 type: types.EDIT_STAFF_INFO,
                 adstaff: res.data
             })
+        }).catch(function(err) {
+            console.log(err);
+            
         })
     }
 }
@@ -256,6 +280,9 @@ export const deleteStaff = (id) => {
                 type: types.DELETE_STAFF,
                 adstaff: result
             })
+        }).catch(function(err) {
+            console.log(err);
+            
         })
     }
 }
@@ -273,6 +300,9 @@ export const getListCustomer = () => {
                 type: types.GET_LIST_CUSTOMER,
                 adcustomer: res.data
             })
+        }).catch(function(err) {
+            console.log(err);
+            
         })
     }
 }
@@ -291,6 +321,9 @@ export const editCategory = (category) => {
                 type: types.EDIT_CATEGORY,
                 adcategories: res.data
             })
+        }).catch(function(err) {
+            console.log(err);
+            
         })
     }
 }
@@ -310,6 +343,9 @@ export const deleteCategory = (category_id) => {
                 type: types.DELETE_CATEGORY,
                 adcategories: result
             })
+        }).catch(function(err) {
+            console.log(err);
+            
         })
     }
 }
@@ -325,6 +361,9 @@ export const getListTransporter = () => {
                 type: types.GET_TRANSPORTER,
                 transporter: res.data
             })
+        }).catch(function(err) {
+            console.log(err);
+            
         })
     }
 }
@@ -341,6 +380,9 @@ export const getListStaffShip = () => {
                 type: types.GET_LIST_STAFF_SHIP,
                 adstaffship: res.data
             })
+        }).catch(function(err) {
+            console.log(err);
+            
         })
     }
 }
@@ -419,6 +461,9 @@ export const editStaffship = (staffship) => {
                 
             })
             
+        }).catch(function(err) {
+            console.log(err);
+            
         })
     }
 }
@@ -438,6 +483,9 @@ export const deleteStaffship = (staff_id) => {
                 type: types.DELETE_STAFFSHIP,
                 adstaffship: result
             })
+        }).catch(function(err) {
+            console.log(err);
+            
         })
     }
 }
@@ -453,6 +501,9 @@ export const getCoin = () => {
                 type: typeUser.GET_COIN,
                 coin: res.data
             })
+        }).catch(function(err) {
+            console.log(err);
+            
         })
     }
 }
@@ -471,6 +522,9 @@ export const initialCoinForCustomer = (user_id) => {
                 type: typeUser.INITIAL_COIN,
                 coin: res.data
             })
+        }).catch(function(err) {
+            console.log(err);
+            
         })
     }
 }

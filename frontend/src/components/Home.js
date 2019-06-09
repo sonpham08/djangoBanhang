@@ -9,6 +9,7 @@ import ProductListNew from './product/ProductListNew';
 import ProductDetail from './product/ProductDetail';
 import SearchProduct from './product/SearchProduct';
 import Footer from './Footer';
+import toastr from 'toastr';
 import Cart from './product/Cart';
 import * as authActions from '../actions/authActions';
 import * as userActions from '../actions/userActions';
@@ -41,6 +42,7 @@ class Home extends Component {
         if(token != undefined) {
             this.props.userActions.getListCart();
         }
+        // this.props.adminActions.getCoin()
     }
 
     async componentDidMount() {
@@ -54,6 +56,24 @@ class Home extends Component {
         await new Promise(resolve => resolve(this.props.adminActions.getCoin()));
         await new Promise(resolve => resolve(this.props.userActions.getComment()));
         await new Promise(resolve => resolve(this.props.userActions.getFlashSale()));
+        await new Promise(resolve => resolve(this.props.userActions.getLogging()));
+    }
+
+    componentWillReceiveProps(nextProps) {
+        console.log(nextProps);
+        if(nextProps.user.logging.date !== this.props.user.logging.date && nextProps.user.id != "") {
+            if(nextProps.user.logging.user.findIndex(obj => obj == nextProps.user.id) == -1) {
+                this.props.userActions.logged(nextProps.user.id);
+                let coin_user = nextProps.coin.filter(obj => {
+                    return obj.user[0].user_id == nextProps.user.id
+                });
+                console.log(coin_user);
+    
+                
+                this.props.userActions.addCoin(coin_user[0].coin_id, nextProps.user.id, coin_user[0].count);
+                toastr.success("Bạn đã được tặng 1 xu phần quà đăng nhập mỗi ngày!");
+            }
+        }
     }
 
     componentWillUnmount() {
@@ -113,6 +133,14 @@ class Home extends Component {
         this.props.userActions.updateCoin(coin);
     }
 
+    getLogging = () => {
+        this.props.userActions.getLogging();
+    }
+
+    sendEmail = (send) => {
+        this.props.userActions.userSendmail(send);
+    }
+
     render() {
         var {showDetail,showCart}=this.state;
         var {product_name, category, camera, memory, price} = this.state.search;
@@ -129,7 +157,7 @@ class Home extends Component {
             coin,
             flashsale,
         } = this.props;
-        console.log(flashsale);
+        console.log(user);
         // filter data flashsale to rest relate component
         if(flashsale.flashsale_user.empty == false) {
             flashsale.flashsale_user.data[0].flashproduct.map(flash => {
@@ -262,6 +290,7 @@ class Home extends Component {
                 showCart={this.showCart}
                 showProductDetail={this.showProductDetail}
                 onSearchProduct={this.onSearchProduct}
+                // getLogging={this.getLogging}
                 />
                 {showDetail == false && showCart == false &&
                 <div className="row">     
@@ -339,6 +368,7 @@ class Home extends Component {
                         createBill={this.createBill}
                         deleteFromCart={this.deleteFromCart}
                         updateCoin={this.updateCoin}
+                        sendEmail={this.sendEmail}
                         />
                     </div>
                 </div>

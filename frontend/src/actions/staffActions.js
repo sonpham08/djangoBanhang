@@ -33,6 +33,9 @@ export const getBill = () => {
                 type: typesStaff.DETAIL_BILL,
                 detail: res.data
             });
+        }).catch(function(err) {
+            console.log(err);
+            
         })
     }
 }
@@ -50,6 +53,9 @@ export const getBillUser = () => {
                 type: typesStaff.DETAIL_BILL,
                 detail: res.data
             });
+        }).catch(function(err) {
+            console.log(err);
+            
         })
     }
 }
@@ -69,6 +75,9 @@ export const editBillWithStaffAndQuantity = (bill_id, staff_id,status_product) =
                 type: typesStaff.EDIT_BILL_IN_DETAIL,
                 detail: res.data
             });
+        }).catch(function(err) {
+            console.log(err);
+            
         })
     }
 }
@@ -113,7 +122,10 @@ export const deleteBill = (product, bill_id) => {
                 type: typesStaff.DELETE_BILL,
                 detail: response
             });
-        });
+        }).catch(function(err) {
+            console.log(err);
+            
+        })
     }
 }
 
@@ -133,6 +145,9 @@ export const editQuanityProductAfterBuy = (product_id, res) => {
             //     type: typesStaff.UPDATE_QUANTITY_PRODUCT,
             //     detail: res.data
             // });
+        }).catch(function(err) {
+            console.log(err);
+            
         })
     }
 }
@@ -148,6 +163,9 @@ export const getListStaffShip = () => {
                 type: typesUser.GET_LIST_STAFFSHIP,
                 staff: res.data
             })
+        }).catch(function(err) {
+            console.log(err);
+            
         })
     }
 }
@@ -173,6 +191,9 @@ export const addDealedProduct = (quantity, product_id) => {
                 type: typesStaff.ADD_DEALED_PRODUCT,
                 dealed: res.data
             })
+        }).catch(function(err) {
+            console.log(err);
+            
         })
     }
 }
@@ -214,6 +235,9 @@ export const openFlashSale = (start, end, product) => {
                 type: typesStaff.OPEN_FLASH_SALE,
                 flashsale: res.data
             })
+        }).catch(function(err) {
+            console.log(err);
+            
         })
     }
 }
@@ -231,6 +255,9 @@ export const getFlashSale = () => {
                 type: typesStaff.GET_LIST_FLASH_SALE,
                 flashsale: res.data
             })
+        }).catch(function(err) {
+            console.log(err);
+            
         })
     }
 }

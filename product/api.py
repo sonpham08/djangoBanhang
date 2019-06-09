@@ -16,6 +16,9 @@ import moment
 import calendar
 import datetime
 import pytz
+import json
+from django.core.mail import send_mail
+from django.conf import settings
 User=get_user_model()
 
 class CategoryViewSet(viewsets.ModelViewSet):
@@ -111,43 +114,88 @@ class ProductViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.AllowAny, ]
     serializer_class = ProductSerializer
     
+    # @action(detail=False)
+    # def get_product_hightlight(self, request):
+    #     res=[]
+    #     try:
+    #         products = Product.objects.all()
+    #         dealed = DealedProduct.objects.all()
+    #         categories = Category.objects.all()
+    #         for deal in dealed:
+    #             res.append({
+    #                 "product_id": deal.product.product_id,
+    #                 "name": deal.product.name,
+    #                 "price": deal.product.price,
+    #                 "image": str(deal.product.image),
+    #                 "size":deal.product.size,
+    #                 "quantity": deal.product.quantity,
+    #                 "rating": deal.product.rating,
+    #                 "hdh": deal.product.hdh,
+    #                 "color": deal.product.color,
+    #                 "CPU": deal.product.CPU,
+    #                 "memory": deal.product.memory,
+    #                 "camera": deal.product.camera,
+    #                 "pin": deal.product.pin,
+    #                 "gurantee": deal.product.gurantee,
+    #                 "promotion": deal.product.promotion,
+    #                 "start_promo": deal.product.start_promo,
+    #                 "end_promo": deal.product.end_promo,
+    #                 "flashsale_perform": False,
+    #                 "category": [{
+    #                     "category_id": category.category_id,
+    #                     "name": category.name
+    #                 }for category in categories if category.category_id == deal.product.category.category_id]
+    #             })
+    #         return Response(res, 200)
+    #     except Exception as e:
+    #         return Response({
+    #             "Error": repr(e)
+    #         }, 400)
+
     @action(detail=False)
     def get_product_hightlight(self, request):
         res=[]
         try:
             products = Product.objects.all()
-            dealed = DealedProduct.objects.all()
             categories = Category.objects.all()
-            for deal in dealed:
-                res.append({
-                    "product_id": deal.product.product_id,
-                    "name": deal.product.name,
-                    "price": deal.product.price,
-                    "image": str(deal.product.image),
-                    "size":deal.product.size,
-                    "quantity": deal.product.quantity,
-                    "rating": deal.product.rating,
-                    "hdh": deal.product.hdh,
-                    "color": deal.product.color,
-                    "CPU": deal.product.CPU,
-                    "memory": deal.product.memory,
-                    "camera": deal.product.camera,
-                    "pin": deal.product.pin,
-                    "gurantee": deal.product.gurantee,
-                    "promotion": deal.product.promotion,
-                    "start_promo": deal.product.start_promo,
-                    "end_promo": deal.product.end_promo,
-                    "flashsale_perform": False,
-                    "category": [{
-                        "category_id": category.category_id,
-                        "name": category.name
-                    }for category in categories if category.category_id == deal.product.category.category_id]
-                })
+            for product in products:
+                if product.rating >= 3:
+                    for category in categories:
+                        if product.category.category_id  == category.category_id:
+                            price_after_promotion = product.price - product.promotion
+                            result = {
+                                "product_id": product.product_id,
+                                "name": product.name,
+                                "image": str(product.image),
+                                "price": product.price,
+                                "size":product.size,
+                                "quantity": product.quantity,
+                                "rating": product.rating,
+                                "hdh": product.hdh,
+                                "color": product.color,
+                                "CPU": product.CPU,
+                                "memory": product.memory,
+                                "camera": product.camera,
+                                "pin": product.pin,
+                                "gurantee": product.gurantee,
+                                "promotion": product.promotion,
+                                "start_promo": product.start_promo,
+                                "end_promo": product.end_promo,
+                                "flashsale_perform": False,
+                                "category": {
+                                    "category_id": category.category_id,
+                                    "name": category.name
+                                },
+                                "price_after_promotion": price_after_promotion
+                            }
+                            res.append(result)
             return Response(res, 200)
         except Exception as e:
             return Response({
                 "Error": repr(e)
             }, 400)
+
+
     @action(detail=False)
     def get_product(self, request):
         res=[]
@@ -476,26 +524,26 @@ class CartViewSet(viewsets.ModelViewSet):
                     for product in products:
                         if product.product_id == cart.product.product_id:
                             json = {
-                                    "cart_id": cart.cart_id,
-                                    "num_buy": cart.num_buy,
-                                    "product_id": product.product_id,
-                                    "name": product.name,
-                                    "price": product.price,
-                                    "image": str(product.image),
-                                    "size":product.size,
-                                    "quantity": product.quantity,
-                                    "rating": product.rating,
-                                    "hdh": product.hdh,
-                                    "color": product.color,
-                                    "CPU": product.CPU,
-                                    "memory": product.memory,
-                                    "camera": product.camera,
-                                    "pin": product.pin,
-                                    "gurantee": product.gurantee,
-                                    "promotion": product.promotion,
-                                    "start_promo": product.start_promo,
-                                    "end_promo": product.end_promo,
-                                    "flashsale_perform": False,
+                                "cart_id": cart.cart_id,
+                                "num_buy": cart.num_buy,
+                                "product_id": product.product_id,
+                                "name": product.name,
+                                "price": product.price,
+                                "image": str(product.image),
+                                "size":product.size,
+                                "quantity": product.quantity,
+                                "rating": product.rating,
+                                "hdh": product.hdh,
+                                "color": product.color,
+                                "CPU": product.CPU,
+                                "memory": product.memory,
+                                "camera": product.camera,
+                                "pin": product.pin,
+                                "gurantee": product.gurantee,
+                                "promotion": product.promotion,
+                                "start_promo": product.start_promo,
+                                "end_promo": product.end_promo,
+                                "flashsale_perform": False,
                             }   
                             res.append(json)     
             res2 = {
@@ -548,53 +596,20 @@ class BillViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.AllowAny, ]
     serializer_class = BillSerializer
 
-    # get list bill with each product and bill in one user
-    # @action(detail=False)
-    # def get_bill_with_product(self, request):
-    #     res = []
-    #     json = {}
-    #     try:
-    #         bills = Bill.objects.all()
-    #         details = DetailOrder.objects.all()
-    #         users = User.objects.all()
-    #         for bill in bills:
-    #             json = {
-    #                 "user": bill.user.id,
-    #                 "bill": [{
-    #                     "bill_id": detail.bill.bill_id,
-    #                     "create_date": detail.bill.create_date,
-    #                     "total_price": detail.bill.total_price,
-    #                     "address": detail.bill.address,
-    #                     "status_product": detail.bill.status_product.status_id,
-    #                     "staff": detail.bill.staff.staff_id,
-    #                     "product": {
-    #                         "product_id": detail.product.product_id,
-    #                         "camera": detail.product.camera,
-    #                         "name": detail.product.name,
-    #                         "price": detail.product.price,
-    #                         "image": str(detail.product.image),
-    #                         "size":detail.product.size,
-    #                         "quantity": detail.product.quantity,
-    #                         "rating": detail.product.rating,
-    #                         "hdh": detail.product.hdh,
-    #                         "color": detail.product.color,
-    #                         "CPU": detail.product.CPU,
-    #                         "memory": detail.product.memory,
-    #                         "pin": detail.product.pin,
-    #                         "gurantee": detail.product.gurantee,
-    #                         "promotion": detail.product.promotion,
-    #                         "start_promo": detail.product.start_promo,
-    #                         "end_promo": detail.product.end_promo,
-    #                         }
-    #                 }for detail in details if detail.bill.user.id == bill.user.id]
-    #             }
-    #             if json not in res:
-    #                 res.append(json)
-    #         return Response(res,200)
-    #     except Exception as e:
-    #         return Response({
-    #             "Error": repr(e)
-    #         }, 400)
+    @action(detail=False)
+    def email(self, request):
+        subject = request.query_params['subject']
+        email = request.query_params['email']
+        message = request.query_params['message']
+        try:
+            email_from = settings.EMAIL_HOST_USER
+            recipient_list = [email]
+            send_mail( subject, message, email_from, recipient_list )
+            return Response("successfully", 200)
+        except Exception as e:
+            return Response({
+                "Error": repr(e)
+            }, 400)
 
 
     # get bill for user
