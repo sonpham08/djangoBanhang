@@ -59,7 +59,7 @@ class ManageCustomer extends Component {
                                         <th style={{ textAlign: 'right' }}>Số điện thoại</th>
                                         <th style={{ textAlign: 'center' }}>Địa chỉ</th>
                                         <th style={{ textAlign: 'right' }}>CMND</th>
-                                        <th style={{ textAlign: 'right' }}>Cấp xu</th>
+                                        <th style={{ textAlign: 'right' }}>Chức năng</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -75,14 +75,9 @@ class ManageCustomer extends Component {
                                                     <td>{customer.phone}</td>
                                                     <td>{customer.address}</td>
                                                     <td>{customer.cmnd}</td>
-                                                    <td align="right">
-                                                    {
-                                                        !customer.coin[0] && <button type="button" 
-                                                        className="btn btn-default mg-left" 
-                                                        onClick={() => this.openCoin(customer.id)}
-                                                        >
-                                                        <i className="fas fa-edit"></i> Bật kiếm xu</button>
-                                                    }
+                                                    <td style={{ cursor: 'pointer' }}>
+                                                        <a onClick={() => this.openAddFormProduct()}>Sửa</a>
+                                                        <a onClick={() => this.deleteProduct()}>   Xóa</a>
                                                     </td>
                                                 </tr>
                                             ) : <tr></tr>

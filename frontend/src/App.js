@@ -3,6 +3,7 @@ import './App.css';
 import Body from './components/Body';
 import NotFound from './components/NotFound.jsx';
 import Login from './components/Login';
+import ChangePassword from './components/ChangePassword';
 import Register from './components/Register';
 import Sale from './components/sale/Sale';
 // import ProductDetail from './components/product/ProductDetail';
@@ -24,7 +25,7 @@ class App extends Component {
       <Route exact path="/login" component={Login} />
       <Route exact path="/register" component={Register} />
       <Route exact path="/sale" component={Sale} />
-      {/* <Route exact path="/product_detail" component={ProductDetail} /> */}
+      <Route exact path="/changepass" component={ChangePassword} />
       <Route exact path="/transfer" component={CheckTransfer} />
       <Route path="**" component={NotFound} />
       

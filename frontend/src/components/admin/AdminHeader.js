@@ -68,9 +68,14 @@ class AdminHeader extends Component {
                                 :
                                 <li><Link to="/" style={{ color: "white" }} onClick={this.onLogout}>Đăng xuất</Link></li>
                             }
-                            <li>
+                            <div className="dropdown" style={{float:'right', marginTop: '10px'}}>
+                                <li>
                                     <Link to="/"
-                                     style={{ color: "white", textDecoration: 'none', padding: '10px' }}
+                                     style={{ color: "white", textDecoration: 'none', padding: '10px', background: "#e5101d" }}
+                                     id="my-dropdown" 
+                                     className="dropdown-toggle"
+                                     data-toggle="dropdown"
+                                     onClick={this.openFormCustomUser}
                                     >{this.state.username}
                                     <Avatar 
                                         name={this.state.username} 
@@ -79,6 +84,10 @@ class AdminHeader extends Component {
                                     />
                                     </Link>
                                 </li>
+                                <ul className="dropdown-menu" ref="dropdownmenu">
+                                    <li className="p-d-10"><i className="fas fa-key"><Link to="/changepass"> Đổi mật khẩu</Link></i></li>
+                                </ul>
+                            </div>
                         </ul>
                     </div>
                 </div>

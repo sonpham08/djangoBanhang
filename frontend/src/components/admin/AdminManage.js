@@ -59,6 +59,10 @@ class AdminManage extends Component {
         this.setState({ openAddForm: false });
     }
 
+    closeChangeForm = () => {
+        this.setState({ openChangeForm: false });
+    }
+
     openAddFormProduct = (product) => {
         this.setState({ openAddForm: true, product: product });
     }
@@ -134,9 +138,10 @@ class AdminManage extends Component {
                     toggleAddForm={this.toggleAddForm}
                     openAddForm={this.state.openAddForm}
                     closeAddForm={this.closeAddForm}
+                    closeChangeForm={this.closeChangeForm}
                     deleteStaff={this.props.deleteStaff}
-                    onSaveChangeStaff={this.props.onSaveChangeStaff}
                     openFormEditStaff={this.openFormEditStaff}
+                    openFormChangePass={this.openFormChangePass}
                     addStaff={this.props.addStaff}
                 />
                 <ReportContent
@@ -146,6 +151,7 @@ class AdminManage extends Component {
                 <ManageCustomer
                 tab={tab}
                 adcustomer={this.props.adcustomer}
+                openAddForm={this.state.openAddForm}
                 openCoin={this.props.openCoin}/>
                 <ManageBill
                 tab={tab}

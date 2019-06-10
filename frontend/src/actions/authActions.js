@@ -1,6 +1,7 @@
 import * as types from '../constants/ActionTypes';
 import * as userType from '../constants/UserConstants';
 import axios from 'axios';
+import toastr from 'toastr';
 import { browserHistory } from 'react-router';
 
 export const authStart = () => {
@@ -168,5 +169,29 @@ export const checkTimeOut = expirationDate => {
         setTimeout(() => {
             dispatch(logout());
         }, expirationDate*1000);       
+    }
+}
+
+export const changePassword = data => {
+    let token = localStorage.getItem('token');
+    return dispatch => {
+        let headers = { "Content-Type": "application/json", 'Authorization': `Token ${token}` };
+        let url = '/rest-auth/password/change/';
+        axios({
+                url, headers, method: "post", data
+        }).then(function(res) {
+            // dispatch({
+            //     type: types.USER_INFO,
+            //     user
+            // })
+            console.log(res);
+            
+            toastr.success("Thay đổi mật khẩu thành công");
+            browserHistory.push('/');
+            window.location.reload(true);
+        }).catch(function(err) {
+            console.log(err);
+            toastr.warning("Thay đổi mật khẩu thất bại");
+        })
     }
 }

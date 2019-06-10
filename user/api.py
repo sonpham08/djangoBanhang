@@ -51,7 +51,7 @@ class MeViewSet(viewsets.ModelViewSet):
         try:
             users = User.objects.all()
             for user in users:
-                if user.is_superuser == False and user.is_staff_gun == True:
+                if  user.is_superuser == False and user.is_staff_gun == True:
                     result = {
                         "username": user.username,
                         "id": user.id,

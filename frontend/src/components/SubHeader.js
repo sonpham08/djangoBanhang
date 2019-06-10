@@ -35,6 +35,15 @@ class SubHeader extends Component {
         this.props.onLogout();
     }
 
+    openFormCustomUser = () => {
+        
+        if(this.refs.dropdownmenu.style.display == 'none') {
+            this.refs.dropdownmenu.style.display = 'block';
+        }else {
+            this.refs.dropdownmenu.style.display = 'none';
+        }
+    }
+
     render() {
         return (
             <nav className="navbar navbar-default" style={{ background: '#e5101d', position: 'fixed', top: '0', width: '100%', zIndex: '1000',borderColor: '#e5101d', borderRadius: '0' }}>
@@ -51,9 +60,14 @@ class SubHeader extends Component {
                                 :
                                 <li><Link to="/" style={{ color: "white" }} onClick={this.onLogout}>Đăng xuất</Link></li>
                             }
+                            <div className="dropdown" style={{float:'right', marginTop: '10px'}}>
                             <li>
                                 <Link to="/"
-                                style={{ color: "white", textDecoration: 'none', padding: '10px' }}
+                                style={{ color: "white", textDecoration: 'none', padding: '10px', background: "#e5101d" }}
+                                id="my-dropdown" 
+                                className="dropdown-toggle"
+                                data-toggle="dropdown"
+                                onClick={this.openFormCustomUser}
                                 >{this.state.username}
                                 <Avatar 
                                     name={this.state.username} 
@@ -63,6 +77,10 @@ class SubHeader extends Component {
                                 </Link>
                                 
                             </li>
+                            <ul className="dropdown-menu" ref="dropdownmenu">
+                                <li className="p-d-10"><i className="fas fa-key"><Link to="/changepass"> Đổi mật khẩu</Link></i></li>
+                            </ul>
+                            </div>
                         </ul>
                     </div>
                 </div>

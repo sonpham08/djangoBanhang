@@ -143,7 +143,8 @@ class Header extends Component {
                                     listJustSee.map((justsee, idx) =>
                                         <li key={idx} onClick={() => this.showProductDetail(justsee)}>
                                         <img src={"static/dataset/"+justsee.image} 
-                                        style={{marginLeft: '2px', maxHeight: '34px',maxWidth: '34px',cursor: 'pointer', float: 'right', border: '1px solid', background: "white"}} />
+                                        style={{marginLeft: '2px', maxHeight: '27px',maxWidth: '27px',cursor: 'pointer', float: 'right', border: '1px solid', background: "white",
+                                        minHeight: '27px', minWidth: '27px'}} />
                                         </li>
                                     )
                                 }
@@ -184,7 +185,7 @@ class Header extends Component {
                                     <ul className="dropdown-menu" ref="dropdownmenu">
                                     <li className="p-d-10"><i className="fas fa-user"><Link to="/transfer" onClick={() => this.setTabForTransfer(1)}> Thông tin cá nhân</Link></i></li>
                                     <li className="p-d-10"><i className="fas fa-exchange-alt"><Link to="/transfer" onClick={() => this.setTabForTransfer(2)}> Kiểm tra đơn hàng</Link></i></li>
-                                    <li className="p-d-10"><i className="fas fa-coins"><Link to="#"> Nhận xu</Link></i></li>
+                                    <li className="p-d-10"><i className="fas fa-key"><Link to="/changepass"> Đổi mật khẩu</Link></i></li>
                                     <li className="p-d-10"><i className="fas fa-sign-out-alt"><Link to="/" onClick={this.onLogout}> Đăng xuất</Link></i></li>
                                     </ul>
                                 

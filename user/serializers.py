@@ -27,6 +27,13 @@ class CreateUserSerializer(serializers.ModelSerializer):
                                         validated_data['cmnd'])
         return user
 
+    # def update(self, instance, validated_data):
+    #     instance.email = validated_data.get('email', instance.email)
+    #     instance.password = validated_data.get('password', instance.password)
+    #     instance.save()
+
+    #     return instance
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User

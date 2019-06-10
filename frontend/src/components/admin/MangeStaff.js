@@ -24,7 +24,7 @@ class ManageStaff extends Component {
         this.dataStaff = nextProps.adstaff.map(
             (a, i) => a
         );
-        this.pageSizeStaff = 1;
+        this.pageSizeStaff = 7;
         this.pagesCountStaff = Math.ceil(this.dataStaff.length / this.pageSizeStaff);
     }
 
@@ -39,6 +39,10 @@ class ManageStaff extends Component {
         this.props.openFormEditStaff(staff);
     }
 
+    openFormChangePass = (staff) => {
+        this.props.openFormChangePass(staff);
+    }
+
     deleteStaff = (id) => {
         if (window.confirm("Are you sure to delete this staff ? ")) {
             this.props.deleteStaff(id);
@@ -51,6 +55,10 @@ class ManageStaff extends Component {
 
     closeEditForm = () => {
         this.props.closeAddForm();
+    }
+
+    closeChangeForm = () => {
+        this.props.closeChangeForm();
     }
 
     render() {
@@ -77,7 +85,7 @@ class ManageStaff extends Component {
                                         <th style={{ textAlign: 'right' }}>Số điện thoại</th>
                                         <th style={{ textAlign: 'center' }}>Địa chỉ</th>
                                         <th style={{ textAlign: 'right' }}>CMND</th>
-                                        <th style={{ textAlign: 'right' }}>Hiệu chỉnh</th>
+                                        <th style={{ textAlign: 'center' }}>Hiệu chỉnh</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -93,11 +101,15 @@ class ManageStaff extends Component {
                                                     <td>{staff.phone}</td>
                                                     <td>{staff.address}</td>
                                                     <td>{staff.cmnd}</td>
-                                                    <td align="right">
+                                                    {/* <td align="right">
                                                         <button type="button" className="btn btn-default mg-left" onClick={() => this.openFormEditStaff(staff)}>
                                                             <i className="fas fa-edit"></i> Sửa</button>
                                                         <button type="button" className="btn btn-danger mg-left" onClick={() => this.deleteStaff(staff.id)}>
                                                             <i className="fas fa-trash"></i> Xóa</button>
+                                                    </td> */}
+                                                    <td style={{ cursor: 'pointer' }}>
+                                                        <a onClick={() => this.openFormEditStaff(staff)}>Sửa</a>
+                                                        <a onClick={() => this.deleteStaff(staff.id)}>  |   Xóa</a>
                                                     </td>
                                                 </tr>
                                             ) : <tr></tr>
