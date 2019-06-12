@@ -109,7 +109,7 @@ class ManageStaff extends Component {
                                                     </td> */}
                                                     <td style={{ cursor: 'pointer' }}>
                                                         <a onClick={() => this.openFormEditStaff(staff)}>Sửa</a>
-                                                        <a onClick={() => this.deleteStaff(staff.id)}>  |   Xóa</a>
+                                                        {/* <a onClick={() => this.deleteStaff(staff.id)}>  |   Xóa</a> */}
                                                     </td>
                                                 </tr>
                                             ) : <tr></tr>

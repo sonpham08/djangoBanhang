@@ -128,6 +128,8 @@ class AdminHome extends Component {
             transporter,
             statistic
         } = this.props;
+        console.log(adstaff);
+        
         return (
             <div style={{background:'gainsboro'}} style={{paddingTop: '63px'}}>
                 <AdminHeader

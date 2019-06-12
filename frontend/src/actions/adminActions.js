@@ -225,6 +225,8 @@ export const getListStaff = () => {
         axios({
             url, headers, method: 'get'
         }).then(function(res) {
+            console.log('7777777777777777777', res);
+            
             dispatch({
                 type: types.GET_LIST_STAFF,
                 adstaff: res.data

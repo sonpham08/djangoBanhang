@@ -44,10 +44,10 @@ class ManageCoin extends Component {
                             <h3 className="panel-title">Quản lý xu</h3>
                         </div>
                         <div className="panel-body">
-                            <div className="form_handle_manage_ad">
+                            {/* <div className="form_handle_manage_ad">
 
                                 <button type="button" className="btn btn-success" onClick={this.props.toggleAddForm}><i className="fas fa-plus"></i> Thêm xu</button>
-                            </div>
+                            </div> */}
                             <table className="table table-striped table-hover">
                                 <thead>
                                     <tr>
@@ -70,12 +70,12 @@ class ManageCoin extends Component {
                                                         <td>{coin.coin_id}</td>
                                                         <td>{coin.user[0].fullname}</td>
                                                         <td>{coin.count}</td>
-                                                        <td>
+                                                        {/* <td>
                                                             <button type="button" className="btn btn-default mg-left" >
                                                                 <i className="fas fa-edit"></i> Sửa</button>
                                                             <button type="button" className="btn btn-danger mg-left" >
                                                                 <i className="fas fa-trash"></i> Xóa</button>
-                                                        </td>
+                                                        </td> */}
                                                     </tr>
 
                                                 ) : <tr></tr>

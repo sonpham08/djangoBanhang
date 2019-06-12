@@ -125,7 +125,7 @@ class AdminSideMenu extends Component {
                             to="#" 
                             style={{ color: "white" }}
                             onClick={(e) => this.open(e, 6)}
-                            ><i className="fas fa-shuttle-van"></i> Các đơn hàng đang vận chuyển</Link>
+                            ><i className="fas fa-shuttle-van"></i> Các đơn hàng đã được giao</Link>
                         </li>
                         <li id="manage_staff_ship">
                             <Link 

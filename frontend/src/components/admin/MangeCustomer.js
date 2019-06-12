@@ -77,7 +77,7 @@ class ManageCustomer extends Component {
                                                     <td>{customer.cmnd}</td>
                                                     <td style={{ cursor: 'pointer' }}>
                                                         <a onClick={() => this.openAddFormProduct()}>Sửa</a>
-                                                        <a onClick={() => this.deleteProduct()}>   Xóa</a>
+                                                        {/* <a onClick={() => this.deleteProduct()}>   Xóa</a> */}
                                                     </td>
                                                 </tr>
                                             ) : <tr></tr>

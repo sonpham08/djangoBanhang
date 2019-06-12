@@ -16,12 +16,45 @@ import * as userActions from '../actions/userActions';
 import * as adminActions from '../actions/adminActions';
 import FlashSale from './product/FlashSale';
 
+import {
+    Chat,
+    Channel,
+    ChannelHeader,
+    Thread,
+    Window
+  } from "stream-chat-react";
+import { MessageList, MessageInput } from "stream-chat-react";
+import { StreamChat } from "stream-chat";
+  
+import "stream-chat-react/dist/css/index.css";
+
+// const chatClient = new StreamChat("qk4nn7rpcn75"); // Demo Stream Key
+// const userToken =
+//   "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiY29vbC1za3ktOSJ9.mhikC6HPqPKoCP4aHHfuH9dFgPQ2Fth5QoRAfolJjC4"; // Demo Stream Token
+
+// chatClient.setUser(
+//   {
+//     id: "cool-sky-9",
+//     name: "Cool sky",
+//     image: "https://getstream.io/random_svg/?id=cool-sky-9&name=Cool+sky"
+//   },
+//   userToken
+// );
+
+// const channel = chatClient.channel("messaging", "godevs", {
+//   // image and name are required, however, you can add custom fields
+//   image:
+//     "https://cdn.chrisshort.net/testing-certificate-chains-in-go/GOPHER_MIC_DROP.png",
+//   name: "Talk about Go"
+// });
+
 var $ = require("jquery");
 
 class Home extends Component {
     // eslint-disable-next-line
     constructor(props) {
         super(props);
+
         this.state = {
             showDetail: false,
             product: {},
@@ -46,15 +79,15 @@ class Home extends Component {
     }
 
     async componentDidMount() {
-        await new Promise(resolve => resolve(this.props.adminActions.getListProduct()));
-        await new Promise(resolve => resolve(this.props.userActions.getListProductUser()));
-        await new Promise(resolve => resolve(this.props.userActions.getListProductNew()));
-        await new Promise(resolve => resolve(this.props.userActions.getListProductPromotion()));
+        this.props.adminActions.getListProduct();
+        this.props.userActions.getListProductUser()
+        this.props.userActions.getListProductNew()
+        this.props.userActions.getListProductPromotion()
         await new Promise(resolve => resolve(this.props.userActions.getListStaffship()));
-        await new Promise(resolve => resolve(this.props.adminActions.getListCategory()));
-        await new Promise(resolve => resolve(this.props.adminActions.getListTransporter()));
+        this.props.adminActions.getListCategory()
+        this.props.adminActions.getListTransporter();
         await new Promise(resolve => resolve(this.props.adminActions.getCoin()));
-        await new Promise(resolve => resolve(this.props.userActions.getComment()));
+        this.props.userActions.getComment();
         await new Promise(resolve => resolve(this.props.userActions.getFlashSale()));
         await new Promise(resolve => resolve(this.props.userActions.getLogging()));
     }
@@ -111,13 +144,25 @@ class Home extends Component {
     onSearchProduct = (search_product) => {
         let search = this.state.search;
         search.product_name = search_product;
-        this.setState({search: search});
+        search.category = 0;
+        search.camera = "";
+        search.memory = "";
+        search.price = "";
+        this.setState({
+            search: search,
+        })
     }
 
-    onFilterProduct = (cateogry_id) => {
+    onFilterProduct = (category) => {
         let search = this.state.search;
-        search.category = cateogry_id;
-        this.setState({search: search});
+        search.category = category;
+        search.product_name = "";
+        search.camera = "";
+        search.memory = "";
+        search.price = "";
+        this.setState({
+            search: search
+        });
     }
 
     onFilter = (category_id, name, value) => {
@@ -152,11 +197,12 @@ class Home extends Component {
             promotion, 
             news, 
             comment,
-            adproduct,
             transporter,
             coin,
             flashsale,
         } = this.props;
+        const adproduct = this.props.adproduct;
+        var newadproduct = Object.assign([], adproduct);
         console.log(user);
         // filter data flashsale to rest relate component
         if(flashsale.flashsale_user.empty == false) {
@@ -199,14 +245,14 @@ class Home extends Component {
                 {coin_id: "", count: 0, user: []}
             ];
         }
-        console.log(coin);
+        console.log(camera, memory, price, product_name);
         if(product_name != "") {
-            adproduct = adproduct.filter((product) => {
+            newadproduct = newadproduct.filter((product) => {
                 return product.name.toLowerCase().indexOf(product_name.toLowerCase()) != -1;
             });
         }
         if(category != 0) {
-            adproduct = adproduct.filter((product) => {
+            newadproduct = newadproduct.filter((product) => {
                 return product.category.category_id == category;
             })
         }
@@ -214,17 +260,17 @@ class Home extends Component {
         if(camera != "") {
             switch (camera) {
                 case 1:
-                    adproduct = adproduct.filter((product) => {
+                    newadproduct = newadproduct.filter((product) => {
                         return product.camera.split(',').length == 1;
                     });
                     break;
                 case 2:
-                    adproduct = adproduct.filter((product) => {
+                    newadproduct = newadproduct.filter((product) => {
                         return product.camera.split(',').length == 2;
                     });
                     break;
                 case 3:
-                    adproduct = adproduct.filter((product) => {
+                    newadproduct = newadproduct.filter((product) => {
                         return product.camera.split(',').length == 3;
                     });
                     break;
@@ -236,19 +282,19 @@ class Home extends Component {
         if(memory != "") {
             switch (memory) { 
                 case 12:
-                    adproduct = adproduct.filter((product) => {
+                    newadproduct = newadproduct.filter((product) => {
                         let memory = parseInt(product.memory);
                         return memory > 0 && memory <= 12;
                     });
                     break;
                 case 24:
-                    adproduct = adproduct.filter((product) => {
+                    newadproduct = newadproduct.filter((product) => {
                         let memory = parseInt(product.memory);
                         return memory > 12 && memory <= 32;
                     });
                     break;
                 case 32:
-                    adproduct = adproduct.filter((product) => {
+                    newadproduct = newadproduct.filter((product) => {
                         let memory = parseInt(product.memory);
                         return memory > 32;
                     });
@@ -261,17 +307,17 @@ class Home extends Component {
         if(price != "") {
             switch (price) { 
                 case 2:
-                    adproduct = adproduct.filter((product) => {
+                    newadproduct = newadproduct.filter((product) => {
                         return product.price <= 2000000;
                     });
                     break;
                 case 10:
-                    adproduct = adproduct.filter((product) => {
+                    newadproduct = newadproduct.filter((product) => {
                         return product.price > 2000000 && product.price <= 10000000;
                     });
                     break;
                 case 11:
-                    adproduct = adproduct.filter((product) => {
+                    newadproduct = newadproduct.filter((product) => {
                         return product.price > 10000000;
                     });
                     break;
@@ -316,7 +362,7 @@ class Home extends Component {
                         <div className="row">
                             <SearchProduct
                             // {...this.props}
-                            adproduct={adproduct}
+                            adproduct={newadproduct}
                             showProductDetail={this.showProductDetail}/>
                         </div>
                     </div>
@@ -386,6 +432,16 @@ class Home extends Component {
                     />
                 </div>
                 }
+                {/* <Chat client={this.client} theme={"messaging light"}>
+                    <Channel channel={this.channel}>
+                    <Window>
+                    <ChannelHeader />
+                    <MessageList />
+                    <MessageInput />
+                    </Window>
+                    <Thread />
+                    </Channel>
+                </Chat> */}
                 <Footer/>
             </div>
         );

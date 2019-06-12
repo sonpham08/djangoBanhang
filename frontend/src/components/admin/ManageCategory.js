@@ -21,7 +21,7 @@ class ManageCategory extends Component {
         this.dataCategory = nextProps.adcategories.map(
             (a, i) => a
         );
-        this.pageSizeCategory = 1;
+        this.pageSizeCategory = 6;
         this.pagesCountCategory = Math.ceil(this.dataCategory.length / this.pageSizeCategory);
     }
 

@@ -62,7 +62,7 @@ class ManageBill extends Component {
                                 }
                             </td>
                             <td>{staffs}</td>
-                            <td align="right">
+                            {/* <td align="right">
                                 <button type="button" className="btn btn-default mg-left"
                                     onClick={() => this.changeStatusProduct(EachDetail.bill.bill_id, EachDetail.bill.staff, 2)}>
                                     <i className="fas fa-edit"></i> Sửa</button>
@@ -71,7 +71,7 @@ class ManageBill extends Component {
                                     onClick={() => this.deleteBill(EachDetail.bill.bill_id)}
                                 >
                                     <i className="fas fa-trash"></i> Xóa</button>
-                            </td>
+                            </td> */}
                         </tr>
                     )
                 });
@@ -81,7 +81,7 @@ class ManageBill extends Component {
                 <div className="col-xs-10 col-sm-10 col-md-10 col-lg-10">
                     <div className="panel panel-danger">
                         <div className="panel-heading">
-                            <h3 className="panel-title">Quản lý các đơn hàng đang vận chuyển</h3>
+                            <h3 className="panel-title">Quản lý các đơn hàng đã được giao</h3>
                         </div>
                         <div className="panel-body">
                             <table className="table table-striped table-hover">
@@ -111,14 +111,14 @@ class ManageBill extends Component {
                                             href="#"
                                         />
                                     </PaginationItem>
-                                    {[...Array(this.pagesCountCategory)].map((page, i) =>
+                                    {[...Array(this.pagesCountBill)].map((page, i) =>
                                         <PaginationItem active={i === currentPage} key={i}>
                                             <PaginationLink onClick={e => this.handleSwitchPagination(e, i)} href="#">
                                                 {i + 1}
                                             </PaginationLink>
                                         </PaginationItem>
                                     )}
-                                    <PaginationItem disabled={currentPage >= this.pagesCountCategory - 1}>
+                                    <PaginationItem disabled={currentPage >= this.pagesCountBill - 1}>
                                         <PaginationLink
                                             onClick={e => this.handleSwitchPagination(e, currentPage + 1)}
                                             next

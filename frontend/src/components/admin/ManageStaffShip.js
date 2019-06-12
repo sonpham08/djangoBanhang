@@ -85,8 +85,8 @@ class ManageShip extends Component {
                                                         <td>
                                                             <button type="button" className="btn btn-default mg-left" onClick={() => this.openAddFormStaffShip(staff)}>
                                                                 <i className="fas fa-edit"></i> Sửa</button>
-                                                            <button type="button" className="btn btn-danger mg-left" onClick={() => this.deleteStaffShip(staff.staff_id)}>
-                                                                <i className="fas fa-trash"></i> Xóa</button>
+                                                            {/* <button type="button" className="btn btn-danger mg-left" onClick={() => this.deleteStaffShip(staff.staff_id)}>
+                                                                <i className="fas fa-trash"></i> Xóa</button> */}
                                                         </td>
                                                     </tr>
 
