@@ -54,6 +54,8 @@ INSTALLED_APPS = (
     'user',
     'product',
     'knox',
+    'djoser',
+    'corsheaders',
     # 'chat.core.apps.CoreConfig',
     # 'chat.channels_app.apps.ChannelsAppConfig',
 )
@@ -61,6 +63,7 @@ SITE_ID = 1
 
 MIDDLEWARE = (
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -68,6 +71,8 @@ MIDDLEWARE = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+
+    
 )
 
 REST_FRAMEWORK = {
@@ -202,3 +207,12 @@ EMAIL_HOST_PASSWORD = 'chathangancap'
 
 OLD_PASSWORD_FIELD_ENABLED = True
 LOGOUT_ON_PASSWORD_CHANGE = False
+
+STREAM_API_KEY = "hhn73zrm8dds" # https://getstream.io/dashboard/
+STREAM_API_SECRET = "guhdyrtgr2sdwupfvrck4mt65uprsp28n5uud6twwvwjhxqzssuab3k6whwpzcwy"
+DJOSER = {
+    'SERIALIZERS': {
+        'token': 'auth.serializers.StreamTokenSerializer',
+    }
+}
+CORS_ORIGIN_ALLOW_ALL = True

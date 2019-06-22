@@ -118,7 +118,8 @@ class AdminManage extends Component {
                     editProduct={this.editProduct}
                     openAddFormProduct={this.openAddFormProduct}
                     deleteProduct={this.deleteProduct}
-                    onSetstateForFilterProduct={this.onSetstateForFilterProduct} />
+                    onSetstateForFilterProduct={this.onSetstateForFilterProduct}
+                    />
                 <ManageCategory
                     tab={tab}
                     adcategories={this.props.adcategories}

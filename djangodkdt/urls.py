@@ -30,8 +30,8 @@ urlpatterns = [
     path('api/login', login),
     path('rest-auth/', include('rest_auth.urls') ),
     path('api-token-auth/', views.obtain_auth_token, name="api-token-auth"),
-    # path("/auth/register/$", RegistrationAPI.as_view()),
-    # path('rest-auth/registration/', include('rest_auth.registration.urls')),
+    path('auth/', include('djoser.urls')),
+    path('auth/', include('djoser.urls.authtoken')),
     # path('^rest-auth/registration/', include('rest_auth.registration.urls')),
 
     # path('waitroom/', waitroom, name="waitroom"),

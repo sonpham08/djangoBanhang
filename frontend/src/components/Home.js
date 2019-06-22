@@ -94,7 +94,7 @@ class Home extends Component {
 
     componentWillReceiveProps(nextProps) {
         console.log(nextProps);
-        if(nextProps.user.logging.date !== this.props.user.logging.date && nextProps.user.id != "") {
+        if(nextProps.user.logging !== this.props.user.logging && nextProps.user.id != "") {
             if(nextProps.user.logging.user.findIndex(obj => obj == nextProps.user.id) == -1) {
                 this.props.userActions.logged(nextProps.user.id);
                 let coin_user = nextProps.coin.filter(obj => {
@@ -102,9 +102,11 @@ class Home extends Component {
                 });
                 console.log(coin_user);
     
+                if(coin_user.length > 0) {
+                    this.props.userActions.addCoin(coin_user[0].coin_id, nextProps.user.id, coin_user[0].count);
+                    toastr.success("Bạn đã được tặng 1 xu phần quà đăng nhập mỗi ngày!");
+                }
                 
-                this.props.userActions.addCoin(coin_user[0].coin_id, nextProps.user.id, coin_user[0].count);
-                toastr.success("Bạn đã được tặng 1 xu phần quà đăng nhập mỗi ngày!");
             }
         }
     }

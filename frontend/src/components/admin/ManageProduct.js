@@ -10,7 +10,9 @@ class ManageProduct extends Component {
         super(props);
         this.state = {
             currentPage: 0,
-            tabAd: 1
+            tabAd: 1,
+            name_product: "",
+            dataProductMain: []
         }
     }
 
@@ -27,9 +29,11 @@ class ManageProduct extends Component {
                 return product.category.category_id == nextProps.filter;
             });
         }
+
         this.dataProduct = product_filter.map(
             (a, i) => a
         );
+        this.setState({dataProductMain: this.dataProduct});
         this.pageSizeProduct = 15;
         this.pagesCountProduct = Math.ceil(this.dataProduct.length / this.pageSizeProduct);
     }
@@ -39,6 +43,16 @@ class ManageProduct extends Component {
         this.setState({
             currentPage: index
         });
+    }
+
+    onChange = (event) => {
+        var target = event.target;
+        var name = target.name;  
+        var value = target.value;
+        this.setState({
+            [name]:value
+        });
+        // this.props.onSearchByName(value);
     }
 
     openAddFormProduct = (product) => {
@@ -55,7 +69,14 @@ class ManageProduct extends Component {
     }
 
     render() {
-        const { currentPage } = this.state;
+        const { currentPage, name_product, dataProductMain } = this.state;
+        if(name_product != "") {
+            this.dataProduct = this.dataProduct.filter((product) => {
+                return product.name.toLowerCase().indexOf(name_product.toLowerCase()) != -1;
+            });
+        } else {
+            this.dataProduct = dataProductMain;
+        }
         if(this.props.tab == 1) {
             return (
                 <div className="col-xs-10 col-sm-10 col-md-10 col-lg-10">
@@ -63,6 +84,23 @@ class ManageProduct extends Component {
                     <div className="panel panel-danger">
                         <div className="panel-heading">
                             <h3 className="panel-title">Quản lý sản phẩm</h3>
+                            {/* <div className="form_cate_ad">
+                                <label>Loại sản phẩm: </label>
+                                <select name="" id="input" className="form-control" ref="filter_product" required="required" onChange={this.onFilterProduct}>
+                                    <option value={-1}>All</option>
+                                    {
+                                        this.props.adcategories.map((category, idx) =>
+                                            <option key={idx} value={category.category_id}>{category.name}</option>
+                                        )
+                                    }
+                                </select>
+                            </div> */}
+    
+                        </div>
+                        <div className="panel-body">
+                            <div className="form_handle_manage_ad">
+                                <button type="button" className="btn btn-success" onClick={this.props.toggleAddForm}><i className="fas fa-plus"></i> Thêm sản phẩm</button>
+                            </div>
                             <div className="form_cate_ad">
                                 <label>Loại sản phẩm: </label>
                                 <select name="" id="input" className="form-control" ref="filter_product" required="required" onChange={this.onFilterProduct}>
@@ -74,12 +112,9 @@ class ManageProduct extends Component {
                                     }
                                 </select>
                             </div>
-    
-                        </div>
-                        <div className="panel-body">
-                            <div className="form_handle_manage_ad">
-    
-                                <button type="button" className="btn btn-success" onClick={this.props.toggleAddForm}><i className="fas fa-plus"></i> Thêm sản phẩm</button>
+                            <div className="form_cate_ad" style={{marginRight: '10px'}}>
+                                <label>Tên sản phẩm: </label>
+                                <input type="text" className="form-control" name="name_product" value={name_product} onChange={this.onChange}/>
                             </div>
                             <table className="table table-striped table-hover">
                                 <thead>

@@ -1,6 +1,7 @@
 import * as types from '../constants/AdminConstants';
 import * as typeUser from '../constants/UserConstants';
 import axios from 'axios';
+import toastr from 'toastr';
 import { browserHistory } from 'react-router';
 
 var csrftoken = getCookie('csrftoken');
@@ -60,6 +61,7 @@ export const addProduct = (name, price, size,quantity, hdh, color, CPU,
         });
         Promise.all([add_product, get_list]).then(function(res) {
             res[0].data.category = res[1].data;
+            toastr.success("Thêm sản phẩm thành công!");
             dispatch({
                 type: types.ADD_PRODUCT,
                 adproduct: res[0].data
@@ -110,6 +112,7 @@ export const editProduct = (product) => {
         // })
         Promise.all([edit_product, get_list]).then(function(res) {
             res[0].data.category = res[1].data;
+            toastr.success("Sửa sản phẩm thành công!");
             dispatch({
                 type: types.EDIT_PRODUCT,
                 adproduct: res[0].data
@@ -132,6 +135,7 @@ export const deleteProduct = (product_id) => {
                 product_id: product_id,
                 status: 'success'
             };
+            toastr.success("Xóa sản phẩm thành công!");
             dispatch({
                 type: types.DELETE_PRODUCT,
                 adproduct: result
@@ -171,6 +175,7 @@ export const addCategory = (name) => {
         axios({
             url, headers,method:'post',data:data
         }).then(function(res){
+            toastr.success("Thêm loại sản phẩm thành công!");
             dispatch({
                 type: types.ADD_CATEGORY,
                 adcategories: res.data
@@ -256,6 +261,7 @@ export const editStaffInfo = (staff) => {
         axios({
             url, headers, method: "put", data
         }).then(function(res) {
+            toastr.success("Sửa thông tin nhân viên thành công!");
             dispatch({
                 type: types.EDIT_STAFF_INFO,
                 adstaff: res.data
@@ -278,6 +284,7 @@ export const deleteStaff = (id) => {
                 id: id,
                 status: 'success'
             };
+            toastr.success("Xóa nhân viên thành công!");
             dispatch({
                 type: types.DELETE_STAFF,
                 adstaff: result
@@ -319,6 +326,7 @@ export const editCategory = (category) => {
         axios({
             url, headers, method: 'put', data
         }).then(function(res) {
+            toastr.success("Sửa loại sản phẩm thành công!");
             dispatch({
                 type: types.EDIT_CATEGORY,
                 adcategories: res.data
@@ -341,6 +349,7 @@ export const deleteCategory = (category_id) => {
                 category_id: category_id,
                 status: 'success'
             };
+            toastr.success("Xóa loại sản phẩm thành công!");
             dispatch({
                 type: types.DELETE_CATEGORY,
                 adcategories: result
@@ -415,6 +424,7 @@ export const addStaffship = (name,phone, transporter) => {
                         }
                     ]
                 }
+                toastr.success("Thêm nhân viên thành công!");
                 dispatch({
                     type: types.ADD_STAFFSHIP,
                     adstaffship: result
@@ -454,6 +464,7 @@ export const editStaffship = (staffship) => {
                         }
                     ]
                 }
+                toastr.success("Sửa nhân viên thành công!");
                 dispatch({
                     type: types.EDIT_STAFFSHIP,
                     adstaffship: result
@@ -481,6 +492,7 @@ export const deleteStaffship = (staff_id) => {
                 staff_id: staff_id,
                 status: 'success'
             };
+            toastr.success("Xóa nhân viên thành công!");
             dispatch({
                 type: types.DELETE_STAFFSHIP,
                 adstaffship: result
