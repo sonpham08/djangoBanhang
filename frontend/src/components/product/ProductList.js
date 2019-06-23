@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
+import { Pagination, PaginationItem, PaginationLink, Badge } from 'reactstrap';
 import { BrowserRouter, Link, Route, Router, NavLink } from 'react-router-dom';
 var $ = require("jquery");
 
@@ -74,13 +74,13 @@ class ProductList extends Component {
                                         <h5 
                                         style={{textAlign:'center', margin: '0', textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden'}}
                                         ><strong>{product.name}</strong></h5>
-                                        <p style={{color: 'red', float: 'left'}}>{product.price - (product.price * product.promotion/100)}Đ</p>
+                                        <p style={{color: 'red', float: 'left'}}>{(product.price - (product.price * product.promotion/100)).toLocaleString(navigator.language, { minimumFractionDigits: 0 })}Đ</p>
                                         &nbsp;
-                                        {product.promotion != 0 && <small><i><strike>{product.price}Đ</strike></i></small> }
-                                        {/* <button type="button" className="btn btn-primary" style={{float: 'right', height: '30px'}}>
-                                        Còn lại <span className="badge badge-light">{product.quantity}</span>
-                                        <span className="sr-only">unread messages</span>
-                                        </button> */}
+                                        {product.promotion != 0 && <small><i><strike>{(product.price).toLocaleString(navigator.language, { minimumFractionDigits: 0 })}Đ</strike></i></small> }
+                                        &nbsp;
+                                        {product.promotion != 0 &&
+                                        <Badge style={{background: 'red'}}>-{product.promotion}%</Badge>
+                                        }
                                         <div style={{marginLeft: '55px',right: '0', display: 'initial', float: 'right', position: 'absolute'}}>
                                             <i className="fas fa-star" style={{color: product.rating >= 5 ? 'red':''}}></i>
                                             <i className="fas fa-star" style={{color: product.rating >= 4 ? 'red':''}}></i>

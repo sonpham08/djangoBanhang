@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+# from django.contrib.postgres.fields import JSONField
 # from user.models import User
 User = get_user_model()
 
@@ -37,6 +38,7 @@ class Product(models.Model):
     pay_type = models.IntegerField(default=0) # 0: tien mat, 1: 1 Card
     gurantee = models.CharField(max_length=255)
     promotion = models.IntegerField()
+    description = models.TextField(default="")
     start_promo = models.DateTimeField()
     end_promo = models.DateTimeField()
     category = models.ForeignKey(Category, on_delete=models.CASCADE)

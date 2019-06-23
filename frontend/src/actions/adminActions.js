@@ -21,7 +21,7 @@ function getCookie(name) {
 }
 
 export const addProduct = (name, price, size,quantity, hdh, color, CPU, 
-    memory, camera, pin, gurantee, promotion, start_promo, end_promo, category, image_name) => {
+    memory, camera, pin, gurantee, promotion, start_promo, end_promo, category, image_name, description) => {
     return dispatch => {
         const formData = new FormData();
         formData.append('image', image_name);
@@ -40,6 +40,7 @@ export const addProduct = (name, price, size,quantity, hdh, color, CPU,
         formData.append('start_promo', start_promo);
         formData.append('end_promo', end_promo);
         formData.append('category', category);
+        formData.append('description', description);
         
         let url = '/api/v1/product/';
         let headers = { 'X-CSRFToken': csrftoken, "Content-Type": "multipart/form-data; boundary=something" };
@@ -94,6 +95,7 @@ export const editProduct = (product) => {
             promotion: product.promotion,
             start_promo: product.start_promo,
             end_promo: product.end_promo,
+            description: product.description,
             category: parseInt(product.category.category_id)
         });
         const edit_product = axios({

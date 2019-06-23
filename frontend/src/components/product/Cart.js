@@ -114,9 +114,9 @@ class Cart extends Component {
                                 <div className="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                                     <h5 
                                     style={{color: 'red', marginBottom: '0', marginTop: '0'}}
-                                    >{product_each.price - (product_each.price * product_each.promotion/100)} Đ</h5>
+                                    >{(product_each.price - (product_each.price * product_each.promotion/100)).toLocaleString(navigator.language, { minimumFractionDigits: 0 })} Đ</h5>
                                     {product_each.promotion != 0 && 
-                                    <h5><i><strike>{product_each.price * product_each.promotion/100} Đ</strike></i></h5>}
+                                    <h5><i><strike>{(product_each.price * product_each.promotion/100).toLocaleString(navigator.language, { minimumFractionDigits: 0 })} Đ</strike></i></h5>}
                                 </div>  
                                 <div className="col-xs-6 col-sm-6 col-md-6 col-lg-6">             
                                     <button type="button" className="btn btn-success"

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import DateTime from 'react-datetime';
 import moment from 'moment';
+import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
 import 'moment-timezone';
 var $ = require("jquery");
 
@@ -25,6 +26,7 @@ class AddProduct extends Component {
             product_end_promo: "",
             product_category: "",
             selectedFile: "",
+            product_description: "",
             files: []
         }
     }
@@ -46,7 +48,8 @@ class AddProduct extends Component {
                 product_promotion: nextProps.product.promotion,
                 product_start_promo: nextProps.product.start_promo, 
                 product_end_promo: nextProps.product.end_promo, 
-                product_category: nextProps.product.category
+                product_category: nextProps.product.category,
+                product_description: nextProps.product.description
             });
         }
         if(nextProps.openAddForm == false) {
@@ -55,7 +58,8 @@ class AddProduct extends Component {
                 product_size: "", product_hdh: "", product_color: "",
                 product_CPU: "", product_memory: "", product_camera: "",
                 product_pin: "", product_gurantee: "", product_promotion: "",
-                product_start_promo: "", product_end_promo: "", product_category: ""
+                product_start_promo: "", product_end_promo: "", product_category: "",
+                product_description: "",
                 
             });
         }
@@ -102,10 +106,11 @@ class AddProduct extends Component {
         let end_promo = this.state.product_end_promo;
         let category = this.state.product_category;
         let image_name = this.state.selectedFile;
+        let description = this.state.product_description;
 
         if(this.props.product.product_id == undefined) {
             this.props.addProduct(name, price, size,quantity, hdh, color, CPU, memory,
-                camera, pin, gurantee, promotion, start_promo, end_promo, category, image_name);
+                camera, pin, gurantee, promotion, start_promo, end_promo, category, image_name, description);
         } else {
             let data = {
                 product_id: this.props.product.product_id,
@@ -114,7 +119,7 @@ class AddProduct extends Component {
                 quantity: quantity,
                 size: size, hdh: hdh, color: color, CPU: CPU, memory: memory,
                 camera: camera, pin: pin, gurantee: gurantee, promotion: promotion,
-                start_promo: start_promo, end_promo: end_promo, category: category
+                start_promo: start_promo, end_promo: end_promo, category: category, description: description
             };
             this.props.editProduct(data);
         }
@@ -366,18 +371,22 @@ class AddProduct extends Component {
                                             <label>Ngày kết thúc: </label>
                                         </div>
                                         <div className="col-md-3">
-                                            {/* <input 
-                                            type="datetime-local" 
-                                            className="form-control" 
-                                            ref="product_end_promo"
-                                            name="product_end_promo"
-                                            onChange={this.onChange}
-                                            value={this.state.product_end_promo}/> */}
                                             <DateTime
                                             ref="product_end_promo"
                                             name="product_end_promo"
                                             onChange={this.onChangeDateEnd}
                                             value={this.state.product_end_promo}/>
+                                        </div>
+                                    </div>
+                                    <div className="form-group">
+                                        <div className="col-md-1">
+                                            <label>Mô tả sản phẩm: </label>
+                                        </div>
+                                        <div className="col-md-11">
+                                            <Input type="textarea" 
+                                            name="product_description" 
+                                            value={this.state.product_description} 
+                                            onChange={this.onChange} />
                                         </div>
                                     </div>
                                     <div className="form-group">

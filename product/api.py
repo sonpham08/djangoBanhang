@@ -113,44 +113,6 @@ class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     permission_classes = [permissions.AllowAny, ]
     serializer_class = ProductSerializer
-    
-    # @action(detail=False)
-    # def get_product_hightlight(self, request):
-    #     res=[]
-    #     try:
-    #         products = Product.objects.all()
-    #         dealed = DealedProduct.objects.all()
-    #         categories = Category.objects.all()
-    #         for deal in dealed:
-    #             res.append({
-    #                 "product_id": deal.product.product_id,
-    #                 "name": deal.product.name,
-    #                 "price": deal.product.price,
-    #                 "image": str(deal.product.image),
-    #                 "size":deal.product.size,
-    #                 "quantity": deal.product.quantity,
-    #                 "rating": deal.product.rating,
-    #                 "hdh": deal.product.hdh,
-    #                 "color": deal.product.color,
-    #                 "CPU": deal.product.CPU,
-    #                 "memory": deal.product.memory,
-    #                 "camera": deal.product.camera,
-    #                 "pin": deal.product.pin,
-    #                 "gurantee": deal.product.gurantee,
-    #                 "promotion": deal.product.promotion,
-    #                 "start_promo": deal.product.start_promo,
-    #                 "end_promo": deal.product.end_promo,
-    #                 "flashsale_perform": False,
-    #                 "category": [{
-    #                     "category_id": category.category_id,
-    #                     "name": category.name
-    #                 }for category in categories if category.category_id == deal.product.category.category_id]
-    #             })
-    #         return Response(res, 200)
-    #     except Exception as e:
-    #         return Response({
-    #             "Error": repr(e)
-    #         }, 400)
 
     @action(detail=False)
     def get_product_hightlight(self, request):
@@ -168,6 +130,7 @@ class ProductViewSet(viewsets.ModelViewSet):
                                 "name": product.name,
                                 "image": str(product.image),
                                 "price": product.price,
+                                "description": product.description,
                                 "size":product.size,
                                 "quantity": product.quantity,
                                 "rating": product.rating,
@@ -210,6 +173,7 @@ class ProductViewSet(viewsets.ModelViewSet):
                             "product_id": product.product_id,
                             "name": product.name,
                             "price": product.price,
+                            "description": product.description,
                             "image": str(product.image),
                             "size":product.size,
                             "quantity": product.quantity,
@@ -254,6 +218,7 @@ class ProductViewSet(viewsets.ModelViewSet):
                                 "name": product.name,
                                 "image": str(product.image),
                                 "price": product.price,
+                                "description": product.description,
                                 "size":product.size,
                                 "quantity": product.quantity,
                                 "rating": product.rating,
@@ -298,6 +263,7 @@ class ProductViewSet(viewsets.ModelViewSet):
                                 "image": str(product.image),
                                 "price": product.price,
                                 "size":product.size,
+                                "description": product.description,
                                 "quantity": product.quantity,
                                 "rating": product.rating,
                                 "hdh": product.hdh,

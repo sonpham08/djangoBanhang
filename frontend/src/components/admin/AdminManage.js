@@ -74,9 +74,9 @@ class AdminManage extends Component {
     }
 
     addProduct = (name, price, size,quantity, hdh, color, CPU, memory,
-        camera, pin, gurantee, promotion, start_promo, end_promo, category, image_name) => {
+        camera, pin, gurantee, promotion, start_promo, end_promo, category, image_name, description) => {
         this.props.addProduct(name, price, size, quantity, hdh, color, CPU, memory,
-            camera, pin, gurantee, promotion, start_promo, end_promo, category, image_name);
+            camera, pin, gurantee, promotion, start_promo, end_promo, category, image_name, description);
         this.setState({ openAddForm: false });
     }
 

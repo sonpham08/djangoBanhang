@@ -138,8 +138,10 @@ class ProductDetail extends Component {
                                                 <label>Giá: </label>
                                             </div>                                                            
                                             <div className="col-xs-10 col-sm-10 col-md-10 col-lg-10" style={{display: 'flex'}}>
-                                                <h3 style={{color: 'red', marginTop: '-3px', marginLeft: '10px'}}>{product.price - (product.price * product.promotion/100)} Đ</h3>
-                                                <i><strike> {product.price} Đ</strike></i>
+                                                <h3 style={{color: 'red', marginTop: '-3px', marginLeft: '10px'}}>
+                                                {(product.price - (product.price * product.promotion/100)).toLocaleString(navigator.language, { minimumFractionDigits: 0 })} Đ
+                                                </h3>
+                                                <i><strike> {product.price.toLocaleString(navigator.language, { minimumFractionDigits: 0 })} Đ</strike></i>
                                             </div>                                                                    
                                         </div>
                                         <div className="row mg-bottom">                                           
@@ -274,7 +276,7 @@ class ProductDetail extends Component {
                                         <tbody>
                                         <tr style={{color: 'white'}}>
                                             <td>{product.name}</td>
-                                            <td>{product.price}</td>
+                                            <td>{product.price.toLocaleString(navigator.language, { minimumFractionDigits: 0 })}</td>
                                             <td>{product.size}</td>
                                             <td>{product.quantity}</td>
                                             <td>{product.hdh}</td>
@@ -290,6 +292,12 @@ class ProductDetail extends Component {
                                         </tbody>
                                     </Table>
                                 </Col>
+                                </Row>
+                                <Row>
+                                    <Col sm="12" style={{color: 'white'}}>
+                                        <h3>Mô tả sản phẩm</h3>
+                                        <p>{product.description}</p>
+                                    </Col>
                                 </Row>
                             </TabPane>
                             <TabPane tabId="2">

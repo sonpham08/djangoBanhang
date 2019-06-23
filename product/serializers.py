@@ -65,7 +65,7 @@ class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model=Product
         fields=('product_id',"camera","quantity", "color","end_promo","gurantee","memory","name","pin","price","promotion"
-        ,"size","hdh","start_promo","CPU", "image","category", "rating")
+        ,"size","hdh","start_promo","CPU", "image","category", "rating", "description")
 
 class FlashSaleSerializer(serializers.ModelSerializer):
     class Meta:

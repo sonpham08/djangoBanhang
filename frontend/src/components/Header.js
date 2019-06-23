@@ -123,7 +123,7 @@ class Header extends Component {
                             <form className="form-horizontal" role="form" onSubmit={this.onSearchProduct}>
                             <input 
                             type="text" 
-                            placeholder="Search Product.." 
+                            placeholder="Nhập tên sản phẩm..." 
                             name="search_product"
                             ref="search_product"/>
                             <button type="submit"><i className="fa fa-search"></i></button>

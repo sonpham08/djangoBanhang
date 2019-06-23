@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
+import { Pagination, PaginationItem, PaginationLink, Badge } from 'reactstrap';
 import moment from 'moment';
 import 'moment-timezone';
 
@@ -59,8 +59,11 @@ class ProductListNew extends Component {
                         <h5 
                         style={{textAlign:'center', margin: '0', textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden'}}
                         ><strong>{product_each.name}</strong></h5>
-                        <p style={{ color: 'red', float: 'left' }}>{product_each.price - (product_each.price*product_each.promotion/100)}Đ</p>
-                        &nbsp;<small><i><strike>{product_each.price}Đ</strike></i></small>
+                        <p style={{ color: 'red', float: 'left' }}>{(product_each.price - (product_each.price*product_each.promotion/100)).toLocaleString(navigator.language, { minimumFractionDigits: 0 })}Đ</p>
+                        &nbsp;<small><i><strike>{product_each.price.toLocaleString(navigator.language, { minimumFractionDigits: 0 })}Đ</strike></i></small>&nbsp;
+                        {product_each.promotion != 0 &&
+                        <Badge style={{background: 'red'}}>-{product_each.promotion}%</Badge>
+                        }
                         <br/><p className="rest_promotion">{date}</p>
                         {/* <button type="button" className="btn btn-primary" style={{ float: 'right', height: '30px' }}>
                             Còn lại <span className="badge badge-light">{product_each.quantity}</span>

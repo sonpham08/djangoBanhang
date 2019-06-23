@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
+import { Pagination, PaginationItem, PaginationLink, Badge } from 'reactstrap';
 import { BrowserRouter, Link, Route, Router, NavLink } from 'react-router-dom';
 var $ = require("jquery");
 
@@ -58,13 +58,17 @@ class FlashSale extends Component {
                                     style={{width: '14%'}}>
                                         <img src={"static/dataset/"+product.image} className="img-responsive" alt="Image" 
                                         style={{minHeight: '170px', maxHeight: '170px'}}/>
-                                        <h5
+                                        <h6
                                         title={product.name}
                                         style={{textAlign:'center', margin: '0', textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden'}}
-                                        ><strong>{product.name}</strong></h5>
-                                        <p style={{color: 'red', float: 'left'}}>{product.price - (product.price * product.promotion/100)}Đ</p>
+                                        ><strong>{product.name}</strong></h6>
+                                        <p style={{color: 'red', float: 'left'}}>
+                                        {(product.price - (product.price * product.promotion/100)).toLocaleString(navigator.language, { minimumFractionDigits: 0 })}Đ</p>
                                         &nbsp;
                                         {product.promotion != 0 && <small><i><strike>{product.price}Đ</strike></i></small> }
+                                        {product.promotion != 0 &&
+                                        <Badge style={{background: 'red', float: 'right'}}>-{product.promotion}%</Badge>
+                                        }
                                         {/* <button type="button" className="btn btn-primary" style={{float: 'right', height: '30px'}}>
                                         Còn lại <span className="badge badge-light">{product.quantity}</span>
                                         <span className="sr-only">unread messages</span>

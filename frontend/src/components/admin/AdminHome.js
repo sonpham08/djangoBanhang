@@ -53,9 +53,9 @@ class AdminHome extends Component {
     }
 
     addProduct = (name, price, size,quantity ,hdh, color, CPU, memory,
-    camera, pin, gurantee, promotion, start_promo, end_promo, category, image_name) => {
+    camera, pin, gurantee, promotion, start_promo, end_promo, category, image_name, description) => {
         this.props.adminActions.addProduct(name, price, size,quantity ,hdh, color, CPU, memory,
-            camera, pin, gurantee, promotion, start_promo, end_promo, category, image_name);
+            camera, pin, gurantee, promotion, start_promo, end_promo, category, image_name, description);
     }
 
     editProduct = (data) => {

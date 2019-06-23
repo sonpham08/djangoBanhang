@@ -144,7 +144,7 @@ class BuyNowBox extends Component {
                                                 <label>Thanh toán: </label>
                                             </div>                                        
                                             <div className="col-xs-7 col-sm-7 col-md-7 col-lg-7">
-                                                <p>{product.price - (product.price * product.promotion/100)} Đ</p>
+                                                <p>{(product.price - (product.price * product.promotion/100)).toLocaleString(navigator.language, { minimumFractionDigits: 0 })} Đ</p>
                                             </div>                                          
                                         </div>
         
