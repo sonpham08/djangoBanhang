@@ -11,6 +11,8 @@ class ManageStaff extends Component {
         this.state = {
             currentPage: 0,
             tabAd: 1,
+            name_staff: "",
+            dataStaffMain: []
         }
     }
 
@@ -24,6 +26,7 @@ class ManageStaff extends Component {
         this.dataStaff = nextProps.adstaff.map(
             (a, i) => a
         );
+        this.setState({dataStaffMain: this.dataStaff});
         this.pageSizeStaff = 7;
         this.pagesCountStaff = Math.ceil(this.dataStaff.length / this.pageSizeStaff);
     }
@@ -61,8 +64,27 @@ class ManageStaff extends Component {
         this.props.closeChangeForm();
     }
 
+    onChange = (event) => {
+        var target = event.target;
+        var name = target.name;  
+        var value = target.value;
+        this.setState({
+            [name]:value
+        });
+        // this.props.onSearchByName(value);
+    }
+
     render() {
-        const { currentPage } = this.state;
+        const { currentPage, name_staff, dataStaffMain } = this.state;
+        console.log(this.dataStaff);
+        
+        if(name_staff != "") {
+            this.dataStaff = this.dataStaff.filter((staff) => {
+                return staff.username.toLowerCase().indexOf(name_staff.toLowerCase()) != -1;
+            });
+        } else {
+            this.dataStaff = dataStaffMain;
+        }
         if (this.props.tab == 2) {
             return (
                 <div className="col-xs-10 col-sm-10 col-md-10 col-lg-10">
@@ -75,7 +97,11 @@ class ManageStaff extends Component {
                 
                                 <button type="button" className="btn btn-success" onClick={this.props.toggleAddForm}>
                                     <i className="fas fa-plus"></i> Thêm nhân viên</button>
-
+                                
+                            </div>
+                            <div className="form_cate_ad" style={{marginRight: '10px'}}>
+                                <label>Tên nhân viên: </label>
+                                <input type="text" className="form-control" name="name_staff" value={name_staff} onChange={this.onChange}/>
                             </div>
                             <table className="table table-striped table-hover">
                                 <thead>

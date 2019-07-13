@@ -31,10 +31,20 @@ class ManageBill extends Component {
         });
     }
 
+    onChange = (event) => {
+        var target = event.target;
+        var name = target.name;  
+        var value = target.value;
+        this.setState({
+            [name]:value
+        });
+    }
+
     render() {
         var { currentPage } = this.state;
         var { adcustomer, adstaffship } = this.props;
         var listDetails = [];
+        
         if (this.dataBill != undefined) {
             listDetails = this.dataBill
                 .slice(

@@ -9,7 +9,9 @@ class ManageShip extends Component {
         super(props);
         this.state = {
             currentPage: 0,
-            tabAd: 1
+            tabAd: 1,
+            name_staffship: "",
+            dataStaffShipMain: []
         }
     }
 
@@ -24,6 +26,7 @@ class ManageShip extends Component {
         this.dataStaffShip = nextProps.adstaffship.map(
             (a, i) => a
         );
+        this.setState({dataStaffShipMain: this.dataStaffShip});
         this.pageSizeStaffShip = 5;
         this.pagesCountStaffShip = Math.ceil(this.dataStaffShip.length / this.pageSizeStaffShip);
     }
@@ -45,8 +48,25 @@ class ManageShip extends Component {
         } 
     }
 
+    onChange = (event) => {
+        var target = event.target;
+        var name = target.name;  
+        var value = target.value;
+        this.setState({
+            [name]:value
+        });
+    }
+
     render() {
-        const { currentPage } = this.state;
+        const { currentPage, name_staffship, dataStaffShipMain } = this.state;
+
+        if(name_staffship != "") {
+            this.dataStaffShip = this.dataStaffShip.filter((staff) => {
+                return staff.name.toLowerCase().indexOf(name_staffship.toLowerCase()) != -1;
+            });
+        } else {
+            this.dataStaffShip = dataStaffShipMain;
+        }
         if (this.props.tab == 7) {
             return (
                 <div className="col-xs-10 col-sm-10 col-md-10 col-lg-10">
@@ -59,6 +79,10 @@ class ManageShip extends Component {
                             <div className="form_handle_manage_ad">
 
                                 <button type="button" className="btn btn-success" onClick={this.props.toggleAddForm}><i className="fas fa-plus"></i> Thêm nhân viên</button>
+                            </div>
+                            <div className="form_cate_ad" style={{marginRight: '10px'}}>
+                                <label>Tên nhân viên: </label>
+                                <input type="text" className="form-control" name="name_staffship" value={name_staffship} onChange={this.onChange}/>
                             </div>
                             <table className="table table-striped table-hover">
                                 <thead>
